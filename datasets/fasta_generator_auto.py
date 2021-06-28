@@ -1,15 +1,11 @@
 import requests
 import sys
 
+
 def main():
 
-    input_file = sys.argv[1]
-    with open(input_file,'r') as samples_file:
-        samples = samples_file.read()
-        samples = samples.split('\n')
-
     try:
-        for sample in samples:
+        for sample in range(94,194):
             response = requests.get('https://staphopia.emory.edu/api/sample/' + str(sample) +'/contigs/', 
                                     headers={'Authorization': 'Token de28e2ce809de4202d3232bdaab977d0f33a550e'})
 
