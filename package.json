@@ -1,5 +1,5 @@
 {
-  "name": "covid19-gis",
+  "name": "staphbook",
   "version": "0.1.0",
   "scripts": {
     "postinstall": "npm install --prefix server && npm install --prefix client",
