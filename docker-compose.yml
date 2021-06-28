@@ -1,0 +1,39 @@
+version: "3"
+services:
+  redis:
+    image: redis:latest
+    container_name: cache
+    expose:
+      - 6379
+    ports:
+      - "6379:6379"
+  web:
+    build: .
+    expose:
+        - 8393
+    ports:
+        - "8393:8393"
+    links:
+        - redis
+    environment:
+      - REDIS_URL=redis://cache
+  # server:
+  #   build: ./server
+  #   expose: 
+  #       - "8393"
+  #   ports:
+  #     - "8393:8393"
+  #   links:
+  #       - redis
+  #   environment:
+  #     - REDIS_URL=redis://cache
+  #   command: npm start
+  # client:
+  #   build: ./client
+  #   expose: 
+  #       - "3000"
+  #   ports:
+  #     - "3000:3000"
+  #   stdin_open: true
+  #   tty: true
+  #   command: npm start
