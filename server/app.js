@@ -27,7 +27,7 @@ app.use (cors ());
 // connect to the Database
 // covid 19 MongoDB
 const DATABASE_URL =
-  'mongodb+srv://readonly:readonly@covid-19.hip2i.mongodb.net/covid19';
+  'mongodb+srv://readandwrite:capstone123@amrstaphaureus.zalot.mongodb.net/test';
 MongoClient.connect (DATABASE_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
