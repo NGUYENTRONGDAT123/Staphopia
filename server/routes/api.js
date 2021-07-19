@@ -91,55 +91,63 @@ const redis_get = promisify (redis_client.get).bind (redis_client);
 
 router.get ('/amr-sample', async (req, res, next) => {
   const AMR = req.app.mongodb.db ('AMR');
-  let samples = req.query.samples === undefined
-    ? ''
-    : JSON.parse (req.query.samples);
+  let samples = null;
+  let key = null;
+  try {
+    samples = req.query.samples === undefined
+      ? ['']
+      : JSON.parse (req.query.samples.toString ());
+  } catch (err) {
+    res.status (400).json ({message: 'Bad request'});
+    throw err;
+  }
 
-  let key = samples.join ('-');
-  if (
-    samples.every (function (element) {
-      return typeof element === 'number';
-    })
-  ) {
-    console.log (samples);
-    for (var i = 0; i < samples.length; i++) {
-      samples[i] = samples[i] + '.csv';
-    }
+  key = samples.join ('-');
+  for (var i = 0; i < samples.length; i++) {
+    samples[i] = samples[i] + '.csv';
+  }
 
-    let pipeline = [
+  // Get specific samples if query found
+  let pipeline = [
+    {
+      $match: {Name: {$in: samples}},
+    },
+  ];
+
+  // Get all data if query not found
+  if (req.query.samples === undefined) {
+    pipeline = [
       {
-        $match: {Name: {$in: samples}},
+        $match: {Name: {$exists: true}},
       },
     ];
-
-    // try to get data from redis
-    redis_get (key)
-      .then (async result => {
-        if (result) {
-          res.status (200).json (JSON.parse (result));
-          throw `Caught '${key}' in cache`;
-        } else {
-          // return data from mongodb
-          return AMR.collection ('100Genes').aggregate (pipeline).toArray ();
-        }
-      })
-      .then (async result => {
-        // store the result from mongodb to redis
-        redis_client.setex (
-          key,
-          28800,
-          JSON.stringify ({source: 'Redis Cache', result: result})
-        );
-
-        // send the result back to client
-        return res.send ({source: 'Mongodb', result: result});
-      })
-      .catch (err => {
-        console.log (err);
-      });
-  } else {
-    res.status (400).json ({message: 'Samples ID must be integer'});
   }
+
+  // try to get data from redis
+  redis_get (key)
+    .then (async result => {
+      if (result) {
+        res.status (200).json (JSON.parse (result));
+        throw `Caught '${key}' in cache`;
+      } else {
+        // return data from mongodb
+        return AMR.collection ('100Genes').aggregate (pipeline).toArray ();
+      }
+    })
+    .then (async result => {
+      // store the result from mongodb to redis
+      redis_client.setex (
+        key,
+        28800,
+        JSON.stringify ({source: 'Redis Cache', result: result})
+      );
+
+      // send the result back to client
+      return res.send ({source: 'Mongodb', result: result});
+    })
+    .catch (err => {
+      console.log (err);
+    });
 });
 
 router.get ('/test', async (req, res, next) => {
