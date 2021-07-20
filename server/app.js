@@ -26,38 +26,44 @@ app.use (cors ());
 
 // connect to the Database
 // covid 19 MongoDB
-const DATABASE_URL =
-  'mongodb+srv://readandwrite:capstone123@amrstaphaureus.zalot.mongodb.net/test';
+const DATABASE_URL = 'mongodb+srv://readandwrite:capstone123@amrstaphaureus.zalot.mongodb.net/test';
+
 MongoClient.connect (DATABASE_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-  .then (async db => {
-    app.mongodb = db;
-    app.emit ('ready');
-    app.use ('/api', apiRouter);
+.then (async db => {
+  app.mongodb = db;
+  app.emit ('ready');
+  app.use ('/api', apiRouter);
 
-    // catch 404 and forward to error handler
-    app.use (function (req, res, next) {
-      next (createError (404));
-    });
+  // catch 404 and forward to error handler
+  app.use (function (req, res, next) {
+    next (createError (404));
+  });
 
-    // error handler
-    app.use (function (err, req, res, next) {
-      // set locals, only providing error in development
-      res.locals.message = err.message;
-      res.locals.error = req.app.get ('env') === 'development' ? err : {};
+  // error handler
+  app.use (function (err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get ('env') === 'development' ? err : {};
 
-      // render the error page
-      res.status (err.status || 500);
-      res.render ('error');
-    });
-  })
-  .catch (err => console.log (err));
+    // render the error page
+    res.status (err.status || 500);
+    res.render ('error');
+  });
+})
+.catch (err => console.log (err));
 
 app.on ('ready', () => {
   console.log ('Connected successfully to MongoDB server');
 });
+
+const port = 3001
+
+app.listen(port, () => {
+  console.log(`Server listening at http://localhost:${port}`)
+})
 
 app.on ('exit', function () {
   redisClient.quit ();
