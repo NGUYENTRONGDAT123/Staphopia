@@ -10,7 +10,10 @@ def main():
     try:
         file_path = 'contig_fasta/amrfinder_result/' + sample + '.csv' 
         #get data from csv file
-        data = pd.read_csv(file_path,sep='\t', engine='python')
+        data = pd.read_csv(file_path,sep='\t', engine='python', usecols=['Protein identifier', 'Contig id', 'Start', 'Stop',
+            'Strand', 'Gene symbol', 'Sequence name', 'Scope', 'Element type','Element subtype', 'Class', 'Subclass', 'Method','Target length',
+            'Reference sequence length','% Coverage of reference sequence','% Identity to reference sequence', 'Alignment length','Accession of closest sequence',
+            'Name of closest sequence', 'HMM id', 'HMM description'])
     except:
         print("Theres no data in this csv file!")
 
@@ -33,7 +36,7 @@ def main():
     
     df = pd.DataFrame(data)
     df['sequence'] = AMRgenes
-    df.to_csv(file_path,sep='\t')
+    df.to_csv(file_path,sep='\t', index=False)
        
 if __name__ == "__main__":
     main()
