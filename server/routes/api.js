@@ -100,6 +100,7 @@ router.get ('/amr-sample', async (req, res, next) => {
   // Get all data if query not found
   try {
     if (req.query.samples === undefined) {
+      key = 'amr-sample';
       pipeline = [
         {
           $match: {Name: {$exists: true}},
