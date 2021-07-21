@@ -1,4 +1,4 @@
-from typing import Sequence
+
 import requests
 import sys
 import pandas as pd
