@@ -18,9 +18,9 @@ app.use (logger ('dev'));
 app.use (express.json ());
 app.use (express.urlencoded ({extended: true}));
 app.use (cookieParser ());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use (express.static (path.join (__dirname, 'public')));
 // Serve static files from the React frontend app
-app.use(express.static(path.join(__dirname, '../client/build')))
+app.use (express.static (path.join (__dirname, '../client/build')));
 
 app.use (cors ());
 
@@ -57,6 +57,7 @@ MongoClient.connect (DATABASE_URL, {
 
 app.on ('ready', () => {
   console.log ('Connected successfully to MongoDB server');
+  
 });
 
 const port = 3001
@@ -67,6 +68,7 @@ app.listen(port, () => {
 
 app.on ('exit', function () {
   redisClient.quit ();
+  
 });
 
 module.exports = app;
