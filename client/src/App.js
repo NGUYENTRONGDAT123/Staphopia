@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { BubbleChart } from "./BubbleChart/BubbleChart";
-import data from "./TestingData/data1";
+import data2 from "./TestingData/data2";
 
 function App() {
   // useEffect(() => {
@@ -68,7 +68,7 @@ function App() {
         </div>
         <Route path="/" />
         <Route path="/chart">
-          <BubbleChart width="400" height="400" data={data} />
+          <BubbleChart width="400" height="400" data={data2} />
         </Route>
       </Router>
     </div>
