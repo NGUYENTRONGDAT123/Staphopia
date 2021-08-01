@@ -5,5 +5,7 @@
     "postinstall": "npm install --prefix server && npm install --prefix client",
     "heroku-postbuild": "npm run build --prefix client"
   },
-  "dependencies": {}
+  "dependencies": {
+    "bootstrap": "^5.0.2"
+  }
 }
