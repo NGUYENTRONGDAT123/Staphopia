@@ -1,3 +1,24 @@
-.App {
-  text-align: left;
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  background: #3AA2FB;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #3AA2FB;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #3AA2FB;
+}
+
+html{
+  overflow-x: hidden; 
 }
