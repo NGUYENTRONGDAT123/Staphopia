@@ -16,7 +16,7 @@ export function Navigation() {
   const splitLocation = pathname.split("/");
 
   return (
-    <Navbar bg="dark" expand="lg" variant="dark">
+    <Navbar bg="dark" expand="lg" variant="dark" sticky="top">
       <Container>
         <Navbar.Brand href="/">Staphbook</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
