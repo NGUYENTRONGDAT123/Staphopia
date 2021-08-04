@@ -116,9 +116,8 @@
 
 import React, { useEffect } from "react";
 import * as d3 from "d3";
-import data from "../TestingData/data1";
 
-export const BubbleChart = (props) => {
+export default function BubbleChart(props) {
   const width = props.width;
   const height = props.height;
 
@@ -266,4 +265,4 @@ export const BubbleChart = (props) => {
       <div id="bubblechart" />
     </div>
   );
-};
+}
