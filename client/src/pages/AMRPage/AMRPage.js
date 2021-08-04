@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Row, Col, Card } from "antd";
+import { Row, Col, Card } from "antd";
 import BubbleChart from "../../components/BubbleChart";
 import data from "../../TestingData/data2";
 
