@@ -114,7 +114,7 @@
 //   );
 // };
 
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import * as d3 from "d3";
 
 export default function BubbleChart(props) {
@@ -136,12 +136,18 @@ export default function BubbleChart(props) {
   //   // .on("click", (event) => zoom(event, root));
   // };
 
-  function drawChart() {
+  const drawChart = useCallback(() => {
     let hierarchalData = makeHierarchy(props.data);
     const layoutPack = pack();
     const root = layoutPack(hierarchalData);
     let focus = hierarchalData;
     let view;
+
+    const color = d3
+      .scaleLinear()
+      .domain([0, 5])
+      .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
+      .interpolate(d3.interpolateHcl);
 
     const svg = d3
       .select("#bubblechart")
@@ -231,13 +237,7 @@ export default function BubbleChart(props) {
         });
     }
     return svg.node();
-  }
-
-  const color = d3
-    .scaleLinear()
-    .domain([0, 5])
-    .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
-    .interpolate(d3.interpolateHcl);
+  }, [props.data, height, props.width, props.height, width]);
 
   function pack() {
     return d3
@@ -256,7 +256,7 @@ export default function BubbleChart(props) {
   useEffect(() => {
     // let svg = createSVG();
     drawChart();
-  }, [props.data]);
+  }, [drawChart]);
   // eslint-disable-next-line
 
   return (
