@@ -2,11 +2,9 @@ import React from "react";
 import "./Home.css";
 import { Panel } from "rsuite";
 import { Container, Row, Col } from "react-bootstrap";
-import BubbleGraph from "../Image/BubbleGraph.png";
-import CircleGraph from "../Image/CircleGraph.png";
-import NodeNetwork from "../Image/NodeNetwork.png";
-import QUTLogo from "../Image/QUTLogo.png";
-import EmoryLogo from "../Image/EmoryLogo.png";
+import BubbleGraph from "../../Image/BubbleGraph.png";
+import CircleGraph from "../../Image/CircleGraph.png";
+import NodeNetwork from "../../Image/NodeNetwork.png";
 
 export function Home() {
   return (
@@ -67,14 +65,14 @@ export function Home() {
         </Panel>
       </Panel>
 
-      <Row className="justify-content-md-center">
+      {/* <Row className="justify-content-md-center">
         <Col xs lg="2">
           <img src={QUTLogo} alt="QUT" className="img_logo" />
         </Col>
         <Col xs lg="2">
           <img src={EmoryLogo} alt="Emory" className="img_logo" />
         </Col>
-      </Row>
+      </Row> */}
     </Container>
   );
 }

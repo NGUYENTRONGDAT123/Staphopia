@@ -116,27 +116,14 @@
 
 import React, { useEffect } from "react";
 import * as d3 from "d3";
-import data from "../TestingData/data1";
+import "./BubbleChart.css";
 
 export const BubbleChart = (props) => {
+  // width and height as props
   const width = props.width;
   const height = props.height;
 
-  //create svg container
-
-  // const createSVG = () => {
-  //   return d3
-  //     .select("#bubblechart")
-  //     .append("svg")
-  //     .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
-  //     .style("display", "block")
-  //     .style("margin", "0 -14px")
-  //     .attr("style", "border: thin red solid")
-  //     .style("background", "white")
-  //     .style("cursor", "pointer");
-  //   // .on("click", (event) => zoom(event, root));
-  // };
-
+  //draw the bubble chart
   function drawChart() {
     let hierarchalData = makeHierarchy(props.data);
     const layoutPack = pack();
@@ -144,12 +131,11 @@ export const BubbleChart = (props) => {
     let focus = hierarchalData;
     let view;
 
+    //design the container
     const svg = d3
-      .select("#bubblechart")
+      .select("#bubblechart") //this svg container will be called as id="bubblechart"
       .append("svg")
       .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
-      .attr("width", props.width)
-      .attr("height", props.height)
       .style("display", "block")
       .style("margin", "0 -14px")
       .attr("style", "border: thin red solid")
@@ -157,29 +143,63 @@ export const BubbleChart = (props) => {
       .style("cursor", "pointer")
       .on("click", (event) => zoom(event, root));
 
+    // design the tooltip
+    const tooltip = d3
+      .select("body")
+      .append("div")
+      .style("position", "absolute")
+      .style("z-index", "10")
+      .style("visibility", "hidden")
+      .style("background-color", "black")
+      .style("border-radius", "5px")
+      .style("padding", "10px")
+      .style("color", "white");
+
+    //design the node
     const node = svg
       .append("g")
       .selectAll("circle")
-      .data(root.descendants().slice(1))
+      .data(root.descendants())
+      .enter()
+      .append("circle")
       .join("circle")
+      .attr("class", function (d) {
+        return d.parent
+          ? d.children
+            ? "node"
+            : "node node--leaf"
+          : "node node--root";
+      })
       .attr("fill", (d) => (d.children ? color(d.depth) : "white"))
-      .attr("pointer-events", (d) => (!d.children ? "none" : null))
-      .on("mouseover", function () {
-        d3.select(this).attr("stroke", "#000");
+      .on("mouseover", function (event, d) {
+        tooltip
+          .html(
+            !d.children
+              ? "ID: " + d.data.name + "<br>" + "Value: " + d.data.value
+              : "Name: " + d.data.name
+          )
+          .style("visibility", "visible");
       })
       .on("mouseout", function () {
-        d3.select(this).attr("stroke", null);
+        tooltip.style("visibility", "hidden");
       })
       .on(
         "click",
-        (event, d) => focus !== d && (zoom(event, d), event.stopPropagation())
-      );
+        (event, d) =>
+          // {
+          //   console.log(d);
+          // }
+          focus !== d && (zoom(event, d), event.stopPropagation())
+      )
+      .on("mousemove", function (event) {
+        return tooltip
+          .style("left", event.x + 100 + "px")
+          .style("top", event.y - 10 + "px");
+      });
 
+    //label
     const label = svg
       .append("g")
-      .style("font", "10px sans-serif")
-      .attr("pointer-events", "none")
-      .attr("text-anchor", "middle")
       .selectAll("text")
       .data(root.descendants())
       .join("text")
@@ -189,6 +209,7 @@ export const BubbleChart = (props) => {
 
     zoomTo([root.x, root.y, root.r * 2]);
 
+    //zoom to
     function zoomTo(v) {
       const k = width / v[2];
 
@@ -205,6 +226,7 @@ export const BubbleChart = (props) => {
       node.attr("r", (d) => d.r * k);
     }
 
+    //zoom
     function zoom(event, d) {
       // const focus0 = focus;
 
@@ -231,15 +253,18 @@ export const BubbleChart = (props) => {
           if (d.parent !== focus) this.style.display = "none";
         });
     }
+
     return svg.node();
   }
 
+  //color
   const color = d3
     .scaleLinear()
     .domain([0, 5])
     .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
     .interpolate(d3.interpolateHcl);
 
+  //pack data
   function pack() {
     return d3
       .pack()
@@ -247,6 +272,7 @@ export const BubbleChart = (props) => {
       .padding(3);
   }
 
+  //create hierachy of data
   function makeHierarchy(data) {
     return d3
       .hierarchy({ children: data })
@@ -254,8 +280,8 @@ export const BubbleChart = (props) => {
       .sort((a, b) => b.value - a.value);
   }
 
+  //render again everytime there are new data adjusted
   useEffect(() => {
-    // let svg = createSVG();
     drawChart();
   }, [props.data]);
   // eslint-disable-next-line
