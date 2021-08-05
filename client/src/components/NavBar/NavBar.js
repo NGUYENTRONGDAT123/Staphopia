@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from "react-router-dom";
 
-export function Navigation() {
+export default function Navigation() {
   //assigning location variable
   const location = useLocation();
 

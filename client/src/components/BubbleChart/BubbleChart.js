@@ -114,17 +114,36 @@
 //   );
 // };
 
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import * as d3 from "d3";
 import "./BubbleChart.css";
 
-export const BubbleChart = (props) => {
-  // width and height as props
+export default function BubbleChart(props) {
   const width = props.width;
   const height = props.height;
 
-  //draw the bubble chart
-  function drawChart() {
+  //create svg container
+
+  // const createSVG = () => {
+  //   return d3
+  //     .select("#bubblechart")
+  //     .append("svg")
+  //     .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
+  //     .style("display", "block")
+  //     .style("margin", "0 -14px")
+  //     .attr("style", "border: thin red solid")
+  //     .style("background", "white")
+  //     .style("cursor", "pointer");
+  //   // .on("click", (event) => zoom(event, root));
+  // };
+
+  const color = d3
+    .scaleLinear()
+    .domain([0, 5])
+    .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
+    .interpolate(d3.interpolateHcl);
+
+  const drawChart = useCallback(() => {
     let hierarchalData = makeHierarchy(props.data);
     const layoutPack = pack();
     const root = layoutPack(hierarchalData);
@@ -255,14 +274,9 @@ export const BubbleChart = (props) => {
     }
 
     return svg.node();
-  }
+  }, [color, height, width, props.data]);
 
   //color
-  const color = d3
-    .scaleLinear()
-    .domain([0, 5])
-    .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
-    .interpolate(d3.interpolateHcl);
 
   //pack data
   function pack() {
@@ -283,7 +297,7 @@ export const BubbleChart = (props) => {
   //render again everytime there are new data adjusted
   useEffect(() => {
     drawChart();
-  }, [props.data]);
+  }, [drawChart]);
   // eslint-disable-next-line
 
   return (
@@ -292,4 +306,4 @@ export const BubbleChart = (props) => {
       <div id="bubblechart" />
     </div>
   );
-};
+}

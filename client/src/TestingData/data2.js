@@ -414,7 +414,7 @@ const data = [
   },
 ];
 
-export const data2 = [
+const data2 = [
   {
     name: "amr",
     children: [
@@ -463,3 +463,5 @@ export const data2 = [
     ],
   },
 ];
+
+export default data2;

@@ -6,7 +6,7 @@ import BubbleGraph from "../../Image/BubbleGraph.png";
 import CircleGraph from "../../Image/CircleGraph.png";
 import NodeNetwork from "../../Image/NodeNetwork.png";
 
-export function Home() {
+export default function HomePage() {
   return (
     <Container>
       <Panel className="pn">
