@@ -1,5 +1,5 @@
 import React from 'react';
-import './Home.css';
+import './HomePage.css';
 import {Panel} from 'rsuite';
 import {Container, Row, Col} from 'react-bootstrap';
 import BubbleGraph from '../../Image/BubbleGraph.png';
