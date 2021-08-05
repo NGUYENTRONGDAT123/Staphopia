@@ -116,7 +116,7 @@
 
 import React, { useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { selectSample } from "../../redux/actions/visualization";
+import { selectSample, showAMRTable } from "../../redux/actions/visualization";
 import * as d3 from "d3";
 import "./BubbleChart.css";
 
@@ -211,6 +211,7 @@ export default function BubbleChart(props) {
           if (focus !== d) {
             console.log(d);
             dispatch(selectSample(d));
+            dispatch(showAMRTable(d));
             zoom(event, d);
             event.stopPropagation();
           }

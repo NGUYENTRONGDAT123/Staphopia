@@ -7,7 +7,7 @@ import data from "../../TestingData/data2";
 import "antd/dist/antd.css";
 export default function AMRPage() {
   const SampleInfo = useSelector((state) => state.Visualization.sampleInfo);
-
+  const AMRTable = useSelector((state) => state.Visualization.amrTable);
   return (
     <Row gutter={[8, 8]} type="flex">
       <Col span={5}>

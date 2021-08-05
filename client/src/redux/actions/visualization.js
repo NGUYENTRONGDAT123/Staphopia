@@ -8,3 +8,12 @@ export function selectSample(sample) {
     });
   };
 }
+
+export function showAMRTable(sample) {
+  return (dispatch) => {
+    dispatch({
+      type: types.SHOW_AMR_TABLE,
+      payload: sample,
+    });
+  };
+}

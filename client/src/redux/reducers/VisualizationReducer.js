@@ -14,6 +14,12 @@ export default function Visualization(state = initialState, action) {
         sampleInfo: action.payload,
       };
 
+    case types.SHOW_AMR_TABLE:
+      return {
+        ...state,
+        amrTable: action.payload,
+      };
+
     default:
       return initialState;
   }

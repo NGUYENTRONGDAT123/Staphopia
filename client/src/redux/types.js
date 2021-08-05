@@ -5,3 +5,4 @@ export const FETCH_USER = "FETCH_USER";
 
 /** Visualization actions */
 export const SAMPLE_SELECTED = "SAMPLE_SELECTED";
+export const SHOW_AMR_TABLE = "SHOW_AMR_TABLE";
