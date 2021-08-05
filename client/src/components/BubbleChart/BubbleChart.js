@@ -303,6 +303,13 @@ export default function BubbleChart(props) {
   return (
     <div>
       <h2>Bubble Chart</h2>
+      <p>
+        Each dark green circle represents one type of Antibiotic, each smaller white circle represents one sample that has contigs resist to the Antibiotics. 
+        The size of the Antibiotic circle would be proportional to the number of samples that consisted. 
+        The circles would be colorized by a hue color palette ( dark color for antibiotics with high resistance, light color for low resistance
+        ones). When users hover the mouse, the circle would be highlighted and when users zoom in the circle bucket, more information would be 
+        displayed such as details about antibiotics and samples.
+      </p> 
       <div id="bubblechart" />
     </div>
   );

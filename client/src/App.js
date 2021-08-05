@@ -4,8 +4,8 @@ import "antd/dist/antd.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import { Layout } from "antd";
-import HomePage from "./pages/HomePage/HomePage";
-import AMRPage from "./pages/AMRPage/AMRPage";
+import HomePage from "./Pages/HomePage/HomePage";
+import AMRPage from "./Pages/AMRPage/AMRPage";
 const { Footer, Content } = Layout;
 
 function App() {

@@ -1,12 +1,12 @@
-import React from "react";
-import "./Home.css";
-import { Panel } from "rsuite";
-import { Container, Row, Col } from "react-bootstrap";
-import BubbleGraph from "../../Image/BubbleGraph.png";
-import CircleGraph from "../../Image/CircleGraph.png";
-import NodeNetwork from "../../Image/NodeNetwork.png";
+import React from 'react';
+import './Home.css';
+import {Panel} from 'rsuite';
+import {Container, Row, Col} from 'react-bootstrap';
+import BubbleGraph from '../../Image/BubbleGraph.png';
+import CircleGraph from '../../Image/CircleGraph.png';
+import NodeNetwork from '../../Image/NodeNetwork.png';
 
-export default function HomePage() {
+export default function HomePage () {
   return (
     <Container>
       <Panel className="pn">
@@ -29,9 +29,9 @@ export default function HomePage() {
                 <img src={BubbleGraph} alt="bubble graph" />
                 <h2>AMR Bubble Graph</h2>
                 <p>
-                  the size of the circles represents the percentage of samples
-                  in Staphopia API resist to which antibiotics, whereas the
-                  circles representing the antibiotics
+                  The dark green circles indicate the antibiotic medicine. The size will depend on how many samples resistance to that antibiotic. We can also use color to indicate this ass well.
+                  The small white circles are sample that contains contigs resistance to that antibiotic. Currently we only show the sample id in circle. Is there any other information about the sample you would like us to show? 
+                  The size of the white sample circle is decided by how many contigs in the sample resistance to the antibiotic.
                 </p>
               </Panel>
             </Col>
@@ -40,10 +40,9 @@ export default function HomePage() {
                 <img src={CircleGraph} alt="circle graph" />
                 <h2>AMR Circle Graph</h2>
                 <p>
-                  This graph provides information of certain sequences resistant
-                  to specific antibiotics in one sample in Staphopia API. The
-                  arrows indicate that the sequences relate to each other and
-                  they are in the same assembled contig.
+                  This graph provides information of certain sequences resistant to specific antibiotics in one sample in 
+                  Staphopia API. The arrows indicate that the sequences relate to each other and they are in 
+                  the same assembled contig.
                 </p>
               </Panel>
             </Col>
