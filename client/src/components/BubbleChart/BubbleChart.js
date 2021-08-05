@@ -229,21 +229,7 @@ export default function BubbleChart(props) {
     zoomTo([root.x, root.y, root.r * 2]);
 
     //zoom to
-    function zoomTo(v) {
-      const k = width / v[2];
-
-      view = v;
-
-      label.attr(
-        "transform",
-        (d) => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`
-      );
-      node.attr(
-        "transform",
-        (d) => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`
-      );
-      node.attr("r", (d) => d.r * k);
-    }
+    function zoomTo(v) {}
 
     //zoom
     function zoom(event, d) {
