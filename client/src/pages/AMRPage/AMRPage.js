@@ -5,14 +5,11 @@ import data from '../../TestingData/data2';
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
 import InfiniteScroll from 'react-infinite-scroller';
 
-const {Search} = Input;
-const SAMPLES = ['99', '100', '101', '102', '103', '104'];
+const SAMPLES = [ ...Array(100).keys() ].map( i => i+1);;
 
 export default function AMRPage () {
-  const [availableSample, setAvailableSample] = useState (SAMPLES);
-  // const [toAddSample, setToAddSample] = useState ([]);
-
   const [name, setName] = useState ('');
+  const [availableSample, setAvailableSample] = useState (SAMPLES);
   const [toAddSample, setToAddSample] = useState ([]);
   const [foundSample, setFoundSample] = useState ([]);
 
@@ -92,14 +89,8 @@ export default function AMRPage () {
             {availableSample && availableSample.length > 0
               ? availableSample.map (sample => (
                   <Menu.Item
-                    key={`remove-menu`.concat (sample)}
-                    icon={
-                      <DeleteOutlined
-                        key={sample}
-                        style={{overflow: 'right'}}
-                        onClick={handleDelete}
-                      />
-                    }
+                    key={sample}                    
+                    onClick={handleDelete}
                   >
                     {sample}
                   </Menu.Item>
@@ -129,7 +120,7 @@ export default function AMRPage () {
                     type="text"
                     icon={<EditOutlined />}
                     onClick={e => {
-                      // e.stopPropagation ();
+                      e.stopPropagation ();
                       handleAdd (item);
                     }}
                   />
