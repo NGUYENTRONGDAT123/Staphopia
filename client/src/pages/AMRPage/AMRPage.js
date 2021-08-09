@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {Row, Col, Card, Menu, Input, Space} from 'antd';
+import {Row, Col, Card, Menu, Input, List, Button} from 'antd';
 import BubbleChart from '../../components/BubbleChart';
 import data from '../../TestingData/data2';
-import {DeleteOutlined} from '@ant-design/icons';
-import { faAlignJustify } from '@fortawesome/free-solid-svg-icons';
+import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const {Search} = Input;
 const SAMPLES = ['99', '100', '101', '102', '103', '104'];
@@ -33,8 +33,9 @@ export default function AMRPage () {
   };
 
   const handleDelete = value => {
-    if (value.key !== 'notFound') {
-      let sampleToDelete = value.key;
+    console.log (value);
+    if (value !== 'notFound') {
+      let sampleToDelete = value;
       const newAvailableList = availableSample.filter (
         sample => sample !== sampleToDelete
       );
@@ -47,8 +48,8 @@ export default function AMRPage () {
   };
 
   const handleAdd = value => {
-    if (value.key !== 'notFound') {
-      let sampleToDelete = value.key;
+    if (value !== 'notFound') {
+      let sampleToDelete = value;
       const newToAddList = toAddSample.filter (
         sample => sample !== sampleToDelete
       );
@@ -66,13 +67,38 @@ export default function AMRPage () {
     <Row gutter={[8, 8]} type="flex">
       <Col span={5}>
         <Card title={`Sample to Remove`}>
-          <Menu mode="inline" >
+          <InfiniteScroll loadMore='true'>
+            <List
+              dataSource={availableSample}
+              renderItem={item => (
+                <List.Item key={item}>
+                  <List.Item.Meta title={item} />
+                  <Button
+                    key={item}
+                    type="text"
+                    icon={<DeleteOutlined />}
+                    onClick={e => {
+                      e.stopPropagation ();
+                      e.preventDefault();
+                      handleDelete (item);
+                    }}
+                  />
+                </List.Item>
+              )}
+            />
+          </InfiniteScroll>
+
+          {/* <Menu mode="inline" key={`remove-sample`}>
             {availableSample && availableSample.length > 0
               ? availableSample.map (sample => (
                   <Menu.Item
-                    key={sample}
+                    key={`remove-menu`.concat (sample)}
                     icon={
-                      <DeleteOutlined key={sample} style={{float:'right'}} onClick={handleDelete} />
+                      <DeleteOutlined
+                        key={sample}
+                        style={{overflow: 'right'}}
+                        onClick={handleDelete}
+                      />
                     }
                   >
                     {sample}
@@ -82,7 +108,7 @@ export default function AMRPage () {
                   No results found
                 </Menu.Item>}
 
-          </Menu>
+          </Menu> */}
         </Card>
         <Card title={`Sample to Add`}>
           <input
@@ -92,7 +118,26 @@ export default function AMRPage () {
             className="input"
             placeholder="Filter"
           />
-          <Menu mode="inline" onClick={handleAdd}>
+          <InfiniteScroll loadMore={true}>
+            <List
+              dataSource={foundSample}
+              renderItem={item => (
+                <List.Item key={item}>
+                  <List.Item.Meta title={item} />
+                  <Button
+                    key={item}
+                    type="text"
+                    icon={<EditOutlined />}
+                    onClick={e => {
+                      // e.stopPropagation ();
+                      handleAdd (item);
+                    }}
+                  />
+                </List.Item>
+              )}
+            />
+          </InfiniteScroll>
+          {/* <Menu mode="inline" onClick={handleAdd}>
             {foundSample.length > 0
               ? foundSample.map (sample => (
                   <Menu.Item key={sample}>{sample}</Menu.Item>
@@ -100,7 +145,7 @@ export default function AMRPage () {
               : <Menu.Item disabled={true} key="notFound">
                   No results found
                 </Menu.Item>}
-          </Menu>
+          </Menu> */}
         </Card>
       </Col>
       <Col span={13}>
