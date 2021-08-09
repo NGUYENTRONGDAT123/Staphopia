@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import {Row, Col, Card, Menu, Input, Space} from 'antd';
 import BubbleChart from '../../components/BubbleChart';
 import data from '../../TestingData/data2';
-import 'antd/dist/antd.css';
+import {DeleteOutlined} from '@ant-design/icons';
+import { faAlignJustify } from '@fortawesome/free-solid-svg-icons';
 
 const {Search} = Input;
 const SAMPLES = ['99', '100', '101', '102', '103', '104'];
@@ -13,24 +14,23 @@ export default function AMRPage () {
 
   const [name, setName] = useState ('');
   const [toAddSample, setToAddSample] = useState ([]);
+  const [foundSample, setFoundSample] = useState ([]);
 
   const filter = e => {
     const keyword = e.target.value;
-    const tempList = toAddSample.map((sample) => sample);
     if (keyword !== '') {
       const results = toAddSample.filter (sample => {
         return sample.toLowerCase ().startsWith (keyword.toLowerCase ());
         // Use the toLowerCase() method to make it case-insensitive
       });
-      setToAddSample (results);
+      setFoundSample (results);
     } else {
-      setToAddSample (tempList);
+      setFoundSample (toAddSample);
       // If the text field is empty, show all samples
     }
 
     setName (keyword);
   };
-
 
   const handleDelete = value => {
     if (value.key !== 'notFound') {
@@ -39,8 +39,10 @@ export default function AMRPage () {
         sample => sample !== sampleToDelete
       );
       const newToAddList = toAddSample.concat (sampleToDelete);
+      const newFoundList = foundSample.concat (sampleToDelete);
       setAvailableSample (newAvailableList);
       setToAddSample (newToAddList);
+      setFoundSample (newFoundList);
     }
   };
 
@@ -50,9 +52,13 @@ export default function AMRPage () {
       const newToAddList = toAddSample.filter (
         sample => sample !== sampleToDelete
       );
+      const newFoundList = foundSample.filter (
+        sample => sample !== sampleToDelete
+      );
       const newAvailableList = availableSample.concat (sampleToDelete);
       setAvailableSample (newAvailableList);
       setToAddSample (newToAddList);
+      setFoundSample (newFoundList);
     }
   };
 
@@ -60,12 +66,21 @@ export default function AMRPage () {
     <Row gutter={[8, 8]} type="flex">
       <Col span={5}>
         <Card title={`Sample to Remove`}>
-          <Menu mode="inline" onClick={handleDelete}>
+          <Menu mode="inline" >
             {availableSample && availableSample.length > 0
               ? availableSample.map (sample => (
-                  <Menu.Item key={sample}>{sample}</Menu.Item>
+                  <Menu.Item
+                    key={sample}
+                    icon={
+                      <DeleteOutlined key={sample} style={{float:'right'}} onClick={handleDelete} />
+                    }
+                  >
+                    {sample}
+                  </Menu.Item>
                 ))
-              : <Menu.Item disabled={true} key="notFound">No results found</Menu.Item>}
+              : <Menu.Item disabled={true} key="notFound">
+                  No results found
+                </Menu.Item>}
 
           </Menu>
         </Card>
@@ -78,11 +93,13 @@ export default function AMRPage () {
             placeholder="Filter"
           />
           <Menu mode="inline" onClick={handleAdd}>
-            {toAddSample && toAddSample.length > 0
-              ? toAddSample.map (sample => (
+            {foundSample.length > 0
+              ? foundSample.map (sample => (
                   <Menu.Item key={sample}>{sample}</Menu.Item>
                 ))
-              : <Menu.Item disabled={true} key="notFound">No results found</Menu.Item>}
+              : <Menu.Item disabled={true} key="notFound">
+                  No results found
+                </Menu.Item>}
           </Menu>
         </Card>
       </Col>
