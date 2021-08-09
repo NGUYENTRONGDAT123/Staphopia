@@ -3,9 +3,10 @@ import {Row, Col, Card, Menu, Input, List, Button} from 'antd';
 import BubbleChart from '../../components/BubbleChart';
 import data from '../../TestingData/data2';
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
+import './AMRPage.css';
 import InfiniteScroll from 'react-infinite-scroller';
 
-const SAMPLES = [ ...Array(100).keys() ].map( i => i+1);;
+const SAMPLES = [...Array (100).keys ()].map (i => i + 1);
 
 export default function AMRPage () {
   const [name, setName] = useState ('');
@@ -17,7 +18,7 @@ export default function AMRPage () {
     const keyword = e.target.value;
     if (keyword !== '') {
       const results = toAddSample.filter (sample => {
-        return sample.toLowerCase ().startsWith (keyword.toLowerCase ());
+        return sample.toString().toLowerCase ().startsWith (keyword.toLowerCase ());
         // Use the toLowerCase() method to make it case-insensitive
       });
       setFoundSample (results);
@@ -64,26 +65,24 @@ export default function AMRPage () {
     <Row gutter={[8, 8]} type="flex">
       <Col span={5}>
         <Card title={`Sample to Remove`}>
-          <InfiniteScroll loadMore='true'>
-            <List
-              dataSource={availableSample}
-              renderItem={item => (
-                <List.Item key={item}>
-                  <List.Item.Meta title={item} />
-                  <Button
-                    key={item}
-                    type="text"
-                    icon={<DeleteOutlined />}
-                    onClick={e => {
-                      e.stopPropagation ();
-                      e.preventDefault();
-                      handleDelete (item);
-                    }}
-                  />
-                </List.Item>
-              )}
-            />
-          </InfiniteScroll>
+          <List
+            dataSource={availableSample}
+            style={{overflow: 'auto', height: '30vh'}}
+            renderItem={item => (
+              <List.Item key={item} onMouseEnter={() => console.log('alo')} onClick={() => {console.log("click")}}>
+                <List.Item.Meta title={item} />
+                <Button
+                  key={item}
+                  type="text"
+                  icon={<DeleteOutlined />}
+                  onClick={e => {
+                    e.stopPropagation ();
+                    handleDelete (item);
+                  }}
+                />
+              </List.Item>
+            )}
+          />
 
           {/* <Menu mode="inline" key={`remove-sample`}>
             {availableSample && availableSample.length > 0
@@ -102,32 +101,33 @@ export default function AMRPage () {
           </Menu> */}
         </Card>
         <Card title={`Sample to Add`}>
-          <input
+          {/* <input
             type="search"
             value={name}
             onChange={filter}
             className="input"
             placeholder="Filter"
+            style={{width: '30vh'}}
+          /> */}
+          <Input value={name} onChange= {filter} placeholder="search sample" prefix={<EditOutlined />} />
+          <List
+            dataSource={foundSample}
+            style={{overflow: 'auto', height: '30vh'}}
+            renderItem={item => (
+              <List.Item key={item}>
+                <List.Item.Meta title={item} />
+                <Button
+                  key={item}
+                  type="text"
+                  icon={<EditOutlined />}
+                  onClick={e => {
+                    e.stopPropagation ();
+                    handleAdd (item);
+                  }}
+                />
+              </List.Item>
+            )}
           />
-          <InfiniteScroll loadMore={true}>
-            <List
-              dataSource={foundSample}
-              renderItem={item => (
-                <List.Item key={item}>
-                  <List.Item.Meta title={item} />
-                  <Button
-                    key={item}
-                    type="text"
-                    icon={<EditOutlined />}
-                    onClick={e => {
-                      e.stopPropagation ();
-                      handleAdd (item);
-                    }}
-                  />
-                </List.Item>
-              )}
-            />
-          </InfiniteScroll>
           {/* <Menu mode="inline" onClick={handleAdd}>
             {foundSample.length > 0
               ? foundSample.map (sample => (
