@@ -30,12 +30,7 @@ app.use (cors ());
 
 
 
-if (process.env.NODE_ENV === 'production') {
-	app.use(express.static('client/build'));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname + '/../client/build/index.html'));
-  });
-}
+
 
 // connect to the Database
 // covid 19 MongoDB
@@ -50,7 +45,11 @@ MongoClient.connect (DATABASE_URL, {
     app.mongodb = db;
     app.emit ('ready');
     app.use ('/api', apiRouter);
-
+    if (process.env.NODE_ENV === 'production') {
+      app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname + '/../client/build/index.html'));
+      });
+    }
     // catch 404 and forward to error handler
     app.use (function (req, res, next) {
       next (createError (404));
