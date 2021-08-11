@@ -4,11 +4,14 @@ import BubbleChart from '../../components/BubbleChart';
 import data from '../../TestingData/data2';
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
 import './AMRPage.css';
-import InfiniteScroll from 'react-infinite-scroller';
+import { useSelector } from "react-redux";
+
 
 const SAMPLES = [...Array (100).keys ()].map (i => i + 1);
 
 export default function AMRPage () {
+  const SampleInfo = useSelector((state) => state.Visualization.sampleInfo);
+  const AMRTable = useSelector((state) => state.Visualization.amrTable);
   const [name, setName] = useState ('');
   const [availableSample, setAvailableSample] = useState (SAMPLES);
   const [toAddSample, setToAddSample] = useState ([]);
@@ -60,6 +63,7 @@ export default function AMRPage () {
       setFoundSample (newFoundList);
     }
   };
+
 
   return (
     <Row gutter={[8, 8]} type="flex">
@@ -156,7 +160,9 @@ export default function AMRPage () {
       <Col span={6}>
         <Row gutter={[8, 8]}>
           <Col key="Sample-Info" span={24}>
-            <Card title="Sample Information" />
+            <Card title="Sample Information">
+              <p>{SampleInfo ? SampleInfo.data.name : null}</p>
+            </Card>
           </Col>
         </Row>
         <Row gutter={[8, 8]}>
