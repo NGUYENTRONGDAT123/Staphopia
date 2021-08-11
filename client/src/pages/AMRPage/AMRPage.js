@@ -1,10 +1,13 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Row, Col, Card } from "antd";
 import BubbleChart from "../../components/BubbleChart";
 import data from "../../TestingData/data2";
 
 import "antd/dist/antd.css";
 export default function AMRPage() {
+  const SampleInfo = useSelector((state) => state.Visualization.sampleInfo);
+  const AMRTable = useSelector((state) => state.Visualization.amrTable);
   return (
     <Row gutter={[8, 8]} type="flex">
       <Col span={5}>
@@ -27,7 +30,9 @@ export default function AMRPage() {
       <Col span={6}>
         <Row gutter={[8, 8]}>
           <Col key="Sample-Info" span={24}>
-            <Card title="Sample Information" />
+            <Card title="Sample Information">
+              <p>{SampleInfo ? SampleInfo.data.name : null}</p>
+            </Card>
           </Col>
         </Row>
         <Row gutter={[8, 8]}>
