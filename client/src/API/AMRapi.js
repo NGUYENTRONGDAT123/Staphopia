@@ -50,3 +50,26 @@ export function AMRGene(sample) {
     return repo;
   }
 }
+
+// a function for fetching data from API for Packed Circle Graph
+export function PackedCircleData() {
+  const url = "http://localhost:8393/api/packed-circle";
+  const [repo, setRepo] = React.useState([]);
+  React.useEffect(() => {
+    const getRepo = async () => {
+      try {
+        const res = await axios.get(url);
+        if (res.statusText === "OK") {
+          const myRepo = res.data.result;
+          setRepo(myRepo);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getRepo();
+  }, []);
+  if (repo !== undefined) {
+    return repo;
+  }
+}

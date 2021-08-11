@@ -338,7 +338,7 @@ router.get("/packed-circle", async (req, res, next) => {
     {
       $group: {
         _id: {
-          subclass: "$Subclass",
+          class: "$Class",
           name: "$Name",
         },
         value: { $sum: 1 },
@@ -346,13 +346,23 @@ router.get("/packed-circle", async (req, res, next) => {
     },
     {
       $group: {
-        _id: "$_id.subclass",
-        info: {
+        _id: "$_id.class",
+        children: {
           $push: {
             name: "$_id.name",
             value: "$value",
           },
         },
+      },
+    },
+    {
+      $addFields: {
+        name: "$_id",
+      },
+    },
+    {
+      $project: {
+        _id: 0,
       },
     },
   ];

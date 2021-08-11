@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col, Card } from "antd";
 import BubbleChart from "../../components/BubbleChart";
-import data from "../../TestingData/data2";
+// import data from "../../TestingData/data2";
 
 import "antd/dist/antd.css";
 export default function AMRPage() {
@@ -14,7 +14,7 @@ export default function AMRPage() {
         <Row gutter={[8, 8]}>
           <Col key="Bubble-chart" span={24}>
             <Card title="Geographic Information System">
-              <BubbleChart width="900" height="900" data={data} />
+              <BubbleChart width="900" height="900" />
             </Card>
           </Col>
         </Row>
