@@ -146,8 +146,8 @@ export default function BubbleChart(props) {
     .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
     .interpolate(d3.interpolateHcl);
 
-  // let data = PackedCircleData();
-  let data = data2;
+  let data = PackedCircleData();
+  //let data = data2;
   let hierarchalData = makeHierarchy(data);
   const layoutPack = pack();
   const root = layoutPack(hierarchalData);
@@ -191,7 +191,7 @@ export default function BubbleChart(props) {
         return d.parent
           ? d.children
             ? "node"
-            : "node node--leaf _" + d.data.name
+            : "node node--leaf _" + d.data.name.replace(".csv", "")
           : "node node--root";
       })
       .attr("fill", (d) => (d.children ? color(d.depth) : "white"))
@@ -204,7 +204,7 @@ export default function BubbleChart(props) {
           )
           .style("visibility", "visible");
         if (!d.children) {
-          d3.selectAll("._" + d.data.name)
+          d3.selectAll("._" + d.data.name.replace(".csv", ""))
             .attr("stroke", "#000")
             .attr("stroke-width", "1.5px");
         }
@@ -212,7 +212,10 @@ export default function BubbleChart(props) {
       .on("mouseout", function (event, d) {
         tooltip.style("visibility", "hidden");
         if (!d.children) {
-          d3.selectAll("._" + d.data.name).attr("stroke", "none");
+          d3.selectAll("._" + d.data.name.replace(".csv", "")).attr(
+            "stroke",
+            "none"
+          );
         }
       })
       .on(
