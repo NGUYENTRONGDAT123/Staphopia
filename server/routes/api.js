@@ -407,6 +407,61 @@ router.get ('/sample-subclass', async (req, res, next) => {
     });
 });
 
+router.get ('/sample-metadata', async (req, res, next) => {
+  const AMR = req.app.mongodb.db ('AMR');
+  let samples = null;
+  let key = null;
+
+  // Get all data if query not found
+  try {
+    if (req.query.samples === undefined) {
+      key = 'sample-metadata';
+      pipeline = [
+        {
+          $match: {sample_id: {$exists: true}},
+        },
+      ];
+    } else {
+      samples = JSON.parse (req.query.samples.toString ());
+      key = 'sample-metadata'.concat (samples.join ('-'));
+      samples = samples.map (Number);
+      pipeline = [
+        {
+          $match: {sample_id: {$in: samples}},
+        },
+      ];
+    }
+  } catch (err) {
+    res.status (400).send ({error: true, message: 'Bad request!'});
+  }
+
+  // try to get data from redis
+  redis_get (key)
+    .then (async result => {
+      if (result) {
+        res.status (200).json (JSON.parse (result));
+        throw `Caught '${key}' in cache`;
+      } else {
+        // return data from mongodb
+        return AMR.collection ('Metadata').aggregate (pipeline).toArray ();
+      }
+    })
+    .then (async result => {
+      // store the result from mongodb to redis
+      redis_client.setex (
+        key,
+        28800,
+        JSON.stringify ({source: 'Redis Cache', result: result})
+      );
+
+      // send the result back to client
+      return res.send ({source: 'Mongodb', result: result});
+    })
+    .catch (err => {
+      console.log (err);
+    });
+});
+
 router.get ('/test', async (req, res, next) => {
   res.status (200).json ({message: 'Test api'});
 });

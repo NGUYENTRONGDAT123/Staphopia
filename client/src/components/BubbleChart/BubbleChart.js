@@ -305,7 +305,7 @@ export default function BubbleChart(props) {
       .sort((a, b) => b.value - a.value);
   }
 
-  //render again everytime there are new data adjusted
+  //render again every time there are new data adjusted
   useEffect(() => {
     drawChart();
   }, []);
