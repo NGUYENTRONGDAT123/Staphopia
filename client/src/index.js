@@ -6,7 +6,10 @@ import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Provider } from "react-redux";
 import { store } from "./redux/reduxStore";
+import { fetchPackedCircleData } from "./redux/actions/visualization";
 import 'antd/dist/antd.css';
+
+store.dispatch(fetchPackedCircleData);
 
 ReactDOM.render (
   <React.StrictMode>

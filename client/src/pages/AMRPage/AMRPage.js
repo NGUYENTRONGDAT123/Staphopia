@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {Row, Col, Card, Menu, Input, List, Button} from 'antd';
-import BubbleChart from '../../components/BubbleChart';
-import SearchPanel from '../../components/SearchPanel';
-import SampleInfoPanel from '../../components/SampleInfoPanel';
+import BubbleChart from '../../components/bubble-chart';
+import SearchPanel from '../../components/search-panel';
+import SampleInfoPanel from '../../components/sample-info-panel';
 import data from '../../TestingData/data2';
 import './AMRPage.css';
 import {useSelector, useDispatch} from 'react-redux';
-import {PackedCircleData} from '../../API/AMRapi';
+import {PackedCircleData} from '../../api/AMRapi';
 import {fetchPackedCircleData} from '../../redux/actions/visualization';
 import axios from 'axios';
 
@@ -22,9 +22,10 @@ export default function AMRPage () {
   const [loading, setLoading] = useState (false);
   const [error, setError] = useState (false);
 
-  useEffect (() => {
-    getData ();
-  }, []);
+  // useEffect (() => {
+  //   // getData ();
+  //   dispatch(fetchPackedCircleData);
+  // }, []);
 
   async function getData () {
     const url = '/api/packed-circle';
@@ -52,7 +53,7 @@ export default function AMRPage () {
         <Row gutter={[8, 8]}>
           <Col key="Bubble-chart" span={24}>
             <Card title="Geographic Information System">
-              {/* <BubbleChart width="900" height="900" /> */}
+              <BubbleChart width="900" height="900" />
             </Card>
           </Col>
         </Row>

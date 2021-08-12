@@ -1,0 +1,410 @@
+import React, {useState, useEffect} from 'react';
+import {Row, Col, Card, Menu, Input, List, Button, Tree} from 'antd';
+import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
+import {useSelector, useDispatch} from 'react-redux';
+import {selectSample} from '../../redux/actions/visualization';
+const {Search} = Input;
+
+const SAMPLES = [...Array (100).keys ()].map (i => i + 1);
+export default function SearchPanel () {
+  const SampleInfo = useSelector (state => state.Visualization.sampleInfo);
+  const PackedCircleData = useSelector (
+    state => state.Visualization.packedCircleData
+  );
+  const AMRTable = useSelector (state => state.Visualization.amrTable);
+  const SampleSelect = useSelector (
+    state => state.Visualization.sampleSelection
+  );
+  const dispatch = useDispatch ();
+
+  const treeData = [
+    {
+      title: '0-0',
+      key: '0-0',
+      children: [
+        {
+          title: '0-0-0',
+          key: '0-0-0',
+          children: [
+            {
+              title: '0-0-0-0',
+              key: '0-0-0-0',
+            },
+            {
+              title: '0-0-0-1',
+              key: '0-0-0-1',
+            },
+            {
+              title: '0-0-0-2',
+              key: '0-0-0-2',
+            },
+          ],
+        },
+        {
+          title: '0-0-1',
+          key: '0-0-1',
+          children: [
+            {
+              title: '0-0-1-0',
+              key: '0-0-1-0',
+            },
+            {
+              title: '0-0-1-1',
+              key: '0-0-1-1',
+            },
+            {
+              title: '0-0-1-2',
+              key: '0-0-1-2',
+            },
+          ],
+        },
+        {
+          title: '0-0-2',
+          key: '0-0-2',
+        },
+      ],
+    },
+    {
+      title: '0-1',
+      key: '0-1',
+      children: [
+        {
+          title: '0-1-0-0',
+          key: '0-1-0-0',
+        },
+        {
+          title: '0-1-0-1',
+          key: '0-1-0-1',
+        },
+        {
+          title: '0-1-0-2',
+          key: '0-1-0-2',
+        },
+      ],
+    },
+    {
+      title: '0-2',
+      key: '0-2',
+    },
+  ];
+  const [data, setData] = useState ([]);
+  const [dataList, setDataList] = useState ([]);
+  const [restoreData, setRestoreData] = useState ([]);
+
+  useEffect (
+    () => {
+      var dataTemp = [];
+      var dataListTemp = [];
+      if (PackedCircleData !== null) {
+        for (let i = 0; i < PackedCircleData.length; i++) {
+          if (PackedCircleData[i].name !== null) {
+            dataTemp[i] = {};
+            dataTemp[i].title = PackedCircleData[i].name;
+            dataTemp[i].key = PackedCircleData[i].name;
+            dataTemp[i].children = [];
+            dataListTemp.push ({
+              title: dataTemp[i].title,
+              key: dataTemp[i].key,
+            });
+            for (let j = 0; j < PackedCircleData[i].children.length; j++) {
+              dataTemp[i].children[j] = {};
+              dataTemp[i].children[j].title =
+                PackedCircleData[i].children[j].name;
+              dataTemp[i].children[j].key = PackedCircleData[i].name == null
+                ? ''
+                : PackedCircleData[i].name.concat (
+                    PackedCircleData[i].children[j].name
+                  );
+              dataListTemp.push ({
+                title: dataTemp[i].children[j].title,
+                key: dataTemp[i].children[j].key,
+              });
+            }
+          }
+        }
+      }
+      setDataList (dataListTemp);
+      setData (dataTemp);
+      setRestoreData (dataListTemp);
+    },
+    [PackedCircleData]
+  );
+
+  const [name, setName] = useState ('');
+  const [availableSample, setAvailableSample] = useState (SAMPLES);
+  const [toAddSample, setToAddSample] = useState ([]);
+  const [foundSample, setFoundSample] = useState ([]);
+
+  const [expandedKeys, setExpandedKeys] = useState ([]);
+  const [checkedKeys, setCheckedKeys] = useState ([]);
+  const [selectedKeys, setSelectedKeys] = useState ([]);
+  const [autoExpandParent, setAutoExpandParent] = useState (true);
+  const [searchValue, setSearchValue] = useState ([]);
+
+  const onChange = e => {
+    const {value} = e.target;
+    if (value !== '') {
+      const expandedKeys = dataList
+        .map (item => {
+          if (item.title.indexOf (value) > -1) {
+            return getParentKey (item.key, data);
+          }
+          return null;
+        })
+        .filter ((item, i, self) => item && self.indexOf (item) === i);
+
+      const checkedKeys = dataList
+        .map (item => {
+          if (item.key.indexOf (value) > -1) {
+            return item.key;
+          }
+          return null;
+        })
+        .filter ((item, i, self) => item && self.indexOf (item) === i);
+      // this.setState ({
+      //   expandedKeys,
+      //   searchValue: value,
+      //   autoExpandParent: true,
+      // });
+      setExpandedKeys (expandedKeys);
+      setCheckedKeys (checkedKeys);
+      setSearchValue (value);
+      setAutoExpandParent (true);
+    } else {
+      setExpandedKeys ([]);
+      setCheckedKeys ([]);
+      setSearchValue (value);
+      setAutoExpandParent (true);
+    }
+  };
+
+  const getParentKey = (key, tree) => {
+    let parentKey;
+    for (let i = 0; i < tree.length; i++) {
+      const node = tree[i];
+      if (node.children) {
+        if (node.children.some (item => item.key === key)) {
+          parentKey = node.key;
+        } else if (getParentKey (key, node.children)) {
+          parentKey = getParentKey (key, node.children);
+        }
+      }
+    }
+    return parentKey;
+  };
+
+  const onExpand = expandedKeysValue => {
+    console.log ('onExpand', expandedKeysValue); // if not set autoExpandParent to false, if children expanded, parent can not collapse.
+    // or, you can remove all expanded children keys.
+
+    setExpandedKeys (expandedKeysValue);
+    setAutoExpandParent (false);
+  };
+
+  const onCheck = checkedKeysValue => {
+    console.log ('onCheck', checkedKeysValue);
+    setCheckedKeys (checkedKeysValue);
+  };
+
+  const onSelect = (selectedKeysValue, info) => {
+    console.log ('onSelect', info);
+    setSelectedKeys (selectedKeysValue);
+  };
+
+  const filter = e => {
+    const keyword = e.target.value;
+    if (keyword !== '') {
+      const results = toAddSample.filter (sample => {
+        return sample
+          .toString ()
+          .toLowerCase ()
+          .startsWith (keyword.toLowerCase ());
+        // Use the toLowerCase() method to make it case-insensitive
+      });
+      setFoundSample (results.map (r => Number (r)));
+    } else {
+      setFoundSample (toAddSample);
+      // If the text field is empty, show all samples
+    }
+    setName (keyword);
+  };
+
+  const handleDelete = value => {
+    let sampleToDelete = parseInt (value);
+    const newAvailableList = availableSample.filter (
+      sample => sample !== sampleToDelete
+    );
+    const newToAddList = toAddSample.concat (sampleToDelete);
+    const newFoundList = foundSample.concat (sampleToDelete);
+    setAvailableSample (newAvailableList.sort ((a, b) => a - b));
+    setToAddSample (newToAddList.sort ((a, b) => a - b));
+    setFoundSample (newFoundList.sort ((a, b) => a - b));
+  };
+
+  const handleAdd = value => {
+    let sampleToDelete = parseInt (value);
+    const newToAddList = toAddSample.filter (
+      sample => sample !== sampleToDelete
+    );
+    const newFoundList = foundSample.filter (
+      sample => sample !== sampleToDelete
+    );
+    const newAvailableList = availableSample.concat (sampleToDelete);
+    setAvailableSample (newAvailableList.sort ((a, b) => a - b));
+    setToAddSample (newToAddList.sort ((a, b) => a - b));
+    setFoundSample (newFoundList.sort ((a, b) => a - b));
+  };
+
+  const handleClick = value => {
+    dispatch (selectSample (value));
+    console.log (SampleInfo);
+  };
+
+  const handleDeleteSelected = value => {
+    let sampleToDelete = checkedKeys;
+    console.log (sampleToDelete);
+    console.log (dataList);
+    console.log (data);
+
+    let removedDataList = dataList.filter (function (item) {
+      return sampleToDelete.indexOf (item.key) <= -1;
+    });
+
+    console.log (removedDataList);
+
+    // for (let i = 0; i < data.length; i++) {
+    //   for (let j = 0; j < data[i].children.length; j++) {
+    //     if (sampleToDelete.includes(data[i].children[j].key)) {
+
+    //     }
+    //   }
+    // }
+    
+    console.log(filter(data, sampleToDelete[0]));
+    //TODO
+
+    function filter (array, text) {
+      const getNodes = (result, object) => {
+        if (object.key === text) {
+          result.push (object);
+          return result;
+        }
+        if (Array.isArray (object.children)) {
+          const children = object.children.reduce (getNodes, []);
+          if (children.length) result.push ({...object, children});
+        }
+        return result;
+      };
+
+      return array.reduce (getNodes, []);
+    }
+  };
+
+  const loop = data =>
+    data.map (item => {
+      const index = item.title.indexOf (searchValue);
+      const beforeStr = item.title.substr (0, index);
+      const afterStr = item.title.substr (index + searchValue.length);
+      const title = index > -1
+        ? <span>
+            {beforeStr}
+            <span className="site-tree-search-value">{searchValue}</span>
+            {afterStr}
+          </span>
+        : <span>{item.title}</span>;
+      if (item.children) {
+        return {title, key: item.key, children: loop (item.children)};
+      }
+
+      return {
+        title,
+        key: item.key,
+      };
+    });
+  return (
+    <div>
+      <Card title={`Sample to Remove`}>
+        <List
+          dataSource={availableSample}
+          style={{overflow: 'auto', height: '30vh'}}
+          renderItem={item => (
+            <List.Item
+              key={item}
+              onMouseEnter={() => console.log ('alo')}
+              onClick={e => {
+                e.stopPropagation ();
+                handleClick (item);
+              }}
+            >
+              <List.Item.Meta title={item} />
+              <Button
+                key={item}
+                type="text"
+                icon={<DeleteOutlined />}
+                onClick={e => {
+                  e.stopPropagation ();
+                  handleDelete (item);
+                }}
+              />
+            </List.Item>
+          )}
+        />
+      </Card>
+      <Card title={`Sample to Add`}>
+        <Input
+          value={name}
+          onChange={filter}
+          placeholder="search sample"
+          prefix={<EditOutlined />}
+        />
+        <List
+          dataSource={foundSample}
+          style={{overflow: 'auto', height: '30vh'}}
+          renderItem={item => (
+            <List.Item key={item}>
+              <List.Item.Meta title={item} />
+              <Button
+                key={item}
+                type="text"
+                icon={<EditOutlined />}
+                onClick={e => {
+                  e.stopPropagation ();
+                  handleAdd (item);
+                }}
+              />
+            </List.Item>
+          )}
+        />
+      </Card>
+
+      <Search
+        style={{marginBottom: 8}}
+        placeholder="Search"
+        onChange={onChange}
+      />
+      <Tree
+        checkable
+        style={{overflow: 'auto', height: '30vh'}}
+        onExpand={onExpand}
+        expandedKeys={expandedKeys}
+        autoExpandParent={autoExpandParent}
+        onCheck={onCheck}
+        checkedKeys={checkedKeys}
+        onSelect={onSelect}
+        selectedKeys={selectedKeys}
+        treeData={loop (data)}
+      />
+
+      <Button>Restore</Button>
+      <Button
+        onClick={e => {
+          e.stopPropagation ();
+          handleDeleteSelected ();
+        }}
+      >
+        Delete Selected
+      </Button>
+
+    </div>
+  );
+}
