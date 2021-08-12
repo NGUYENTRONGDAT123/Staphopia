@@ -119,7 +119,7 @@ import { useDispatch } from "react-redux";
 import { showAMRTable } from "../../redux/actions/visualization";
 import * as d3 from "d3";
 import "./BubbleChart.css";
-import { PackedCircleData } from "../../API/AMRapi";
+import { PackedCircleData } from "../../api/AMRapi";
 import data2 from "../../TestingData/data2";
 
 export default function BubbleChart(props) {
@@ -304,15 +304,12 @@ export default function BubbleChart(props) {
     }
 
     return svg.node();
-
   }, [color, height, width]);
-
 
   //color
 
   //render again every time there are new data adjusted
   useEffect(() => {
-
     if (!isLoading) {
       drawChart();
     }

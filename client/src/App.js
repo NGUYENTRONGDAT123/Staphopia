@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import "antd/dist/antd.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import NavBar from "./components/navbar";
+import NavBar from "./components/NavBar";
 import { Layout } from "antd";
 import HomePage from "./pages/HomePage/HomePage";
 import AMRPage from "./pages/AMRPage/AMRPage";
