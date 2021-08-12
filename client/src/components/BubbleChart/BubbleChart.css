@@ -11,6 +11,10 @@
   fill: white;
 }
 
+.node--leaf:active {
+  pointer-events: none;
+}
+
 .label {
   font: 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-anchor: middle;

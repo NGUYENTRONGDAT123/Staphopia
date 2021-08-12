@@ -239,7 +239,9 @@ export default function BubbleChart(props) {
       .join("text")
       .style("fill-opacity", (d) => (d.parent === root ? 1 : 0))
       .style("display", (d) => (d.parent === root ? "inline" : "none"))
-      .text((d) => d.data.name);
+      .text((d) =>
+        !d.children ? d.data.name.replace(".csv", "") : d.data.name
+      );
 
     zoomTo([root.x, root.y, root.r * 2]);
 
