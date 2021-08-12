@@ -23,7 +23,7 @@ export default function AMRPage () {
   const [error, setError] = useState (false);
 
   useEffect (() => {
-    getData ();    
+    getData ();
   }, []);
 
   async function getData () {
