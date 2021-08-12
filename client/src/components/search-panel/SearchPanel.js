@@ -93,31 +93,49 @@ export default function SearchPanel () {
 
   useEffect (
     () => {
+      console.log('useEffect called');
       var dataTemp = [];
       var dataListTemp = [];
+      var restoreDataTemp = [];
       if (PackedCircleData !== null) {
         for (let i = 0; i < PackedCircleData.length; i++) {
           if (PackedCircleData[i].name !== null) {
-            dataTemp[i] = {};
-            dataTemp[i].title = PackedCircleData[i].name;
-            dataTemp[i].key = PackedCircleData[i].name;
-            dataTemp[i].children = [];
+            dataTemp.push ({
+              title: PackedCircleData[i].name,
+              key: PackedCircleData[i].name,
+              children: [],
+            });
+
+            restoreDataTemp.push ({
+              title: PackedCircleData[i].name,
+              key: PackedCircleData[i].name,
+              children: [],
+            });
+
             dataListTemp.push ({
-              title: dataTemp[i].title,
-              key: dataTemp[i].key,
+              title: PackedCircleData[i].name,
+              key: PackedCircleData[i].name,
             });
             for (let j = 0; j < PackedCircleData[i].children.length; j++) {
-              dataTemp[i].children[j] = {};
-              dataTemp[i].children[j].title =
-                PackedCircleData[i].children[j].name;
-              dataTemp[i].children[j].key = PackedCircleData[i].name == null
-                ? ''
-                : PackedCircleData[i].name.concat (
-                    PackedCircleData[i].children[j].name
-                  );
+              dataTemp[dataTemp.length - 1].children.push ({
+                title: PackedCircleData[i].children[j].name,
+                key: PackedCircleData[i].name.concat (
+                  PackedCircleData[i].children[j].name
+                ),
+              });
+
+              restoreDataTemp[restoreDataTemp.length - 1].children.push ({
+                title: PackedCircleData[i].children[j].name,
+                key: PackedCircleData[i].name.concat (
+                  PackedCircleData[i].children[j].name
+                ),
+              });
+
               dataListTemp.push ({
-                title: dataTemp[i].children[j].title,
-                key: dataTemp[i].children[j].key,
+                title: PackedCircleData[i].children[j].name,
+                key: PackedCircleData[i].name.concat (
+                  PackedCircleData[i].children[j].name
+                ),
               });
             }
           }
@@ -125,7 +143,7 @@ export default function SearchPanel () {
       }
       setDataList (dataListTemp);
       setData (dataTemp);
-      setRestoreData (dataListTemp);
+      setRestoreData (restoreDataTemp);
     },
     [PackedCircleData]
   );
@@ -207,7 +225,7 @@ export default function SearchPanel () {
   };
 
   const onSelect = (selectedKeysValue, info) => {
-    console.log ('onSelect', info);
+    console.log ('onSelect', selectedKeysValue);
     setSelectedKeys (selectedKeysValue);
   };
 
@@ -262,9 +280,8 @@ export default function SearchPanel () {
 
   const handleDeleteSelected = value => {
     let sampleToDelete = checkedKeys;
-    console.log (sampleToDelete);
-    console.log (dataList);
-    console.log (data);
+    console.log (restoreData);
+    let dataTemp1 = [...data];
 
     let removedDataList = dataList.filter (function (item) {
       return sampleToDelete.indexOf (item.key) <= -1;
@@ -272,33 +289,30 @@ export default function SearchPanel () {
 
     console.log (removedDataList);
 
-    // for (let i = 0; i < data.length; i++) {
-    //   for (let j = 0; j < data[i].children.length; j++) {
-    //     if (sampleToDelete.includes(data[i].children[j].key)) {
+    for (let i = 0; i < data.length; i++) {
+      // for (let j = 0; j < data[i].children.length; j++) {
+      //   if (sampleToDelete.includes(data[i].children[j].key)) {
 
-    //     }
-    //   }
-    // }
-    
-    console.log(filter(data, sampleToDelete[0]));
-    //TODO
-
-    function filter (array, text) {
-      const getNodes = (result, object) => {
-        if (object.key === text) {
-          result.push (object);
-          return result;
-        }
-        if (Array.isArray (object.children)) {
-          const children = object.children.reduce (getNodes, []);
-          if (children.length) result.push ({...object, children});
-        }
-        return result;
-      };
-
-      return array.reduce (getNodes, []);
+      //   }
+      // }
+      if (data[i] !== undefined) {
+        var filtered = data[i].children.filter (function (item) {
+          return sampleToDelete.indexOf (item.key) <= -1;
+        });
+        dataTemp1[i].children = filtered;
+      }
     }
+
+    setData (dataTemp1);
+    console.log(restoreData);
   };
+
+  const handleRestore = value => {
+    let dataTemp2 = [...restoreData]
+    setData(dataTemp2);
+    console.log(restoreData);
+  }
+
 
   const loop = data =>
     data.map (item => {
@@ -395,7 +409,14 @@ export default function SearchPanel () {
         treeData={loop (data)}
       />
 
-      <Button>Restore</Button>
+      <Button
+        onClick={e => {
+          e.stopPropagation ();
+          handleRestore ();
+        }}
+      >
+        Restore
+      </Button>
       <Button
         onClick={e => {
           e.stopPropagation ();
