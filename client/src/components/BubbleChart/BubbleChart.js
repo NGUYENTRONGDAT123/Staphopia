@@ -115,6 +115,8 @@
 // };
 
 import React, { useEffect, useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { selectSample, showAMRTable } from "../../redux/actions/visualization";
 import * as d3 from "d3";
 import "./BubbleChart.css";
 import { PackedCircleData } from "../../API/AMRapi";
@@ -123,6 +125,7 @@ import data2 from "../../TestingData/data2";
 export default function BubbleChart(props) {
   const width = props.width;
   const height = props.height;
+  const dispatch = useDispatch();
 
   //pack data
   function pack() {
@@ -220,10 +223,20 @@ export default function BubbleChart(props) {
       })
       .on(
         "click",
-        (event, d) =>
-          // console.log(d);
 
-          focus !== d && (zoom(event, d), event.stopPropagation())
+        (event, d) => {
+          if (focus !== d) {
+            console.log(d);
+            dispatch(selectSample(d));
+            dispatch(showAMRTable(d));
+            zoom(event, d);
+            event.stopPropagation();
+          }
+        }
+        // {
+        //   console.log(d);
+        // }
+        // focus !== d && (zoom(event, d), event.stopPropagation())
       )
       .on("mousemove", function (event) {
         return tooltip
@@ -291,12 +304,15 @@ export default function BubbleChart(props) {
     }
 
     return svg.node();
+
   }, [color, height, width]);
+
 
   //color
 
   //render again everytime there are new data adjusted
   useEffect(() => {
+
     if (!isLoading) {
       drawChart();
     }
