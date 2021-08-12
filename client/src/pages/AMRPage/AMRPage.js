@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Row, Col, Card, Menu, Input, List, Button } from "antd";
-import BubbleChart from "../../components/bubbleChart";
+import BubbleChart from "../../components/bubble-chart";
 import SearchPanel from "../../components/SearchPanel";
 import SampleInfoPanel from "../../components/SampleInfoPanel";
 import data from "../../TestingData/data2";
