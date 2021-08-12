@@ -2,9 +2,9 @@ import React from "react";
 import "./HomePage.css";
 import { Panel } from "rsuite";
 import { Container, Row, Col } from "react-bootstrap";
-import BubbleGraph from "../../image/BubbleGraph.png";
-import CircleGraph from "../../image/CircleGraph.png";
-import NodeNetwork from "../../image/NodeNetwork.png";
+import BubbleGraph from "../../Image/BubbleGraph.png";
+import CircleGraph from "../../Image/CircleGraph.png";
+import NodeNetwork from "../../Image/NodeNetwork.png";
 
 export default function HomePage() {
   return (

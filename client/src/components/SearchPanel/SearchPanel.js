@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Row, Col, Card, Menu, Input, List, Button} from 'antd';
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
 import {useSelector, useDispatch} from 'react-redux';
@@ -7,6 +7,9 @@ import {selectSample} from '../../redux/actions/visualization';
 const SAMPLES = [...Array (100).keys ()].map (i => i + 1);
 export default function SearchPanel () {
   const SampleInfo = useSelector (state => state.Visualization.sampleInfo);
+  const PackedCircleData = useSelector (
+    state => state.Visualization.packedCircleData
+  );
   const AMRTable = useSelector (state => state.Visualization.amrTable);
   const SampleSelect = useSelector (
     state => state.Visualization.sampleSelection
@@ -43,7 +46,6 @@ export default function SearchPanel () {
     );
     const newToAddList = toAddSample.concat (sampleToDelete);
     const newFoundList = foundSample.concat (sampleToDelete);
-    console.log (newAvailableList);
     setAvailableSample (newAvailableList.sort ((a, b) => a - b));
     setToAddSample (newToAddList.sort ((a, b) => a - b));
     setFoundSample (newFoundList.sort ((a, b) => a - b));
@@ -122,6 +124,8 @@ export default function SearchPanel () {
           )}
         />
       </Card>
+
+      
     </div>
   );
 }

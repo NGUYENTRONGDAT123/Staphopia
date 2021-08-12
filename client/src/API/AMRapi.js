@@ -72,6 +72,7 @@ export function PackedCircleData() {
     getRepo();
   }, [setRepo]);
   if (repo !== undefined) {
+    console.log(repo);
     return [repo, isLoading];
   }
 }

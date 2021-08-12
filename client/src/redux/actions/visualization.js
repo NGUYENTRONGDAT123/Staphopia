@@ -17,3 +17,12 @@ export function showAMRTable(sample) {
     });
   };
 }
+
+export function fetchPackedCircleData(sample) {
+  return (dispatch) => {
+    dispatch({
+      type: types.FETCH_PACKED_CIRCLE_DATA,
+      payload: sample,
+    });
+  };
+}

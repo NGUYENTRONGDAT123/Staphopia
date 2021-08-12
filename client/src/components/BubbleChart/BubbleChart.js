@@ -119,7 +119,7 @@ import { useDispatch } from "react-redux";
 import { showAMRTable } from "../../redux/actions/visualization";
 import * as d3 from "d3";
 import "./BubbleChart.css";
-import { PackedCircleData } from "../../api/AMRapi";
+import { PackedCircleData } from "../../API/AMRapi";
 import data2 from "../../TestingData/data2";
 
 export default function BubbleChart(props) {
