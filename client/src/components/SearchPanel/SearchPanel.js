@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Row, Col, Card, Menu, Input, List, Button} from 'antd';
+import {Row, Col, Card, Menu, Input, List, Button, Tree} from 'antd';
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
 import {useSelector, useDispatch} from 'react-redux';
 import {selectSample} from '../../redux/actions/visualization';
@@ -7,7 +7,7 @@ import {selectSample} from '../../redux/actions/visualization';
 const SAMPLES = [...Array (100).keys ()].map (i => i + 1);
 export default function SearchPanel () {
   const SampleInfo = useSelector (state => state.Visualization.sampleInfo);
-  const PackedCircleData = useSelector (
+  const data = useSelector (
     state => state.Visualization.packedCircleData
   );
   const AMRTable = useSelector (state => state.Visualization.amrTable);
@@ -20,6 +20,29 @@ export default function SearchPanel () {
   const [availableSample, setAvailableSample] = useState (SAMPLES);
   const [toAddSample, setToAddSample] = useState ([]);
   const [foundSample, setFoundSample] = useState ([]);
+
+  const [expandedKeys, setExpandedKeys] = useState([]);
+  const [checkedKeys, setCheckedKeys] = useState([]);
+  const [selectedKeys, setSelectedKeys] = useState([]);
+  const [autoExpandParent, setAutoExpandParent] = useState(true);
+
+  const onExpand = (expandedKeysValue) => {
+    console.log('onExpand', expandedKeysValue); // if not set autoExpandParent to false, if children expanded, parent can not collapse.
+    // or, you can remove all expanded children keys.
+
+    setExpandedKeys(expandedKeysValue);
+    setAutoExpandParent(false);
+  };
+
+  const onCheck = (checkedKeysValue) => {
+    console.log('onCheck', checkedKeysValue);
+    setCheckedKeys(checkedKeysValue);
+  };
+
+  const onSelect = (selectedKeysValue, info) => {
+    console.log('onSelect', info);
+    setSelectedKeys(selectedKeysValue);
+  };
 
   const filter = e => {
     const keyword = e.target.value;
@@ -124,6 +147,18 @@ export default function SearchPanel () {
           )}
         />
       </Card>
+
+      <Tree
+      checkable
+      onExpand={onExpand}
+      expandedKeys={expandedKeys}
+      autoExpandParent={autoExpandParent}
+      onCheck={onCheck}
+      checkedKeys={checkedKeys}
+      onSelect={onSelect}
+      selectedKeys={selectedKeys}
+      treeData={data}
+    />
 
       
     </div>
