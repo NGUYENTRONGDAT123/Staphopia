@@ -55,6 +55,7 @@ export function AMRGene(sample) {
 export function PackedCircleData() {
   const url = "http://localhost:8393/api/packed-circle";
   const [repo, setRepo] = React.useState([]);
+  const [isLoading, setLoading] = React.useState(true);
   React.useEffect(() => {
     const getRepo = async () => {
       try {
@@ -62,14 +63,15 @@ export function PackedCircleData() {
         if (res.statusText === "OK") {
           const myRepo = res.data.result;
           setRepo(myRepo);
+          setLoading(false);
         }
       } catch (err) {
         console.log(err);
       }
     };
     getRepo();
-  }, []);
+  }, [setRepo]);
   if (repo !== undefined) {
-    return repo;
+    return [repo, isLoading];
   }
 }

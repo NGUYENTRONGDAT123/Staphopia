@@ -146,7 +146,7 @@ export default function BubbleChart(props) {
     .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
     .interpolate(d3.interpolateHcl);
 
-  let data = PackedCircleData();
+  let [data, isLoading] = PackedCircleData();
   //let data = data2;
   let hierarchalData = makeHierarchy(data);
   const layoutPack = pack();
@@ -295,8 +295,10 @@ export default function BubbleChart(props) {
 
   //render again everytime there are new data adjusted
   useEffect(() => {
-    drawChart();
-  }, [drawChart]);
+    if (!isLoading) {
+      drawChart();
+    }
+  }, [drawChart, isLoading]);
   // eslint-disable-next-line
 
   return (
