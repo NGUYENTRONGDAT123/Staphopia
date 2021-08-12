@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Row, Col, Card } from "antd";
-import BubbleChart from "../../components/BubbleChart";
+import BubbleChart from "../../components/bubble-chart";
 // import data from "../../TestingData/data2";
 
 import "antd/dist/antd.css";
