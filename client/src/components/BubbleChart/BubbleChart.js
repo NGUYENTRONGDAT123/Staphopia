@@ -116,7 +116,7 @@
 
 import React, { useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { selectSample, showAMRTable } from "../../redux/actions/visualization";
+import { showAMRTable } from "../../redux/actions/visualization";
 import * as d3 from "d3";
 import "./BubbleChart.css";
 
@@ -210,7 +210,7 @@ export default function BubbleChart(props) {
         (event, d) => {
           if (focus !== d) {
             console.log(d);
-            dispatch(selectSample(d));
+            // dispatch(selectSample(d));
             dispatch(showAMRTable(d));
             zoom(event, d);
             event.stopPropagation();
@@ -315,12 +315,16 @@ export default function BubbleChart(props) {
     <div>
       <h2>Bubble Chart</h2>
       <p>
-        Each dark green circle represents one type of Antibiotic, each smaller white circle represents one sample that has contigs resist to the Antibiotics. 
-        The size of the Antibiotic circle would be proportional to the number of samples that consisted. 
-        The circles would be colorized by a hue color palette ( dark color for antibiotics with high resistance, light color for low resistance
-        ones). When users hover the mouse, the circle would be highlighted and when users zoom in the circle bucket, more information would be 
-        displayed such as details about antibiotics and samples.
-      </p> 
+        Each dark green circle represents one type of Antibiotic, each smaller
+        white circle represents one sample that has contigs resist to the
+        Antibiotics. The size of the Antibiotic circle would be proportional to
+        the number of samples that consisted. The circles would be colorized by
+        a hue color palette ( dark color for antibiotics with high resistance,
+        light color for low resistance ones). When users hover the mouse, the
+        circle would be highlighted and when users zoom in the circle bucket,
+        more information would be displayed such as details about antibiotics
+        and samples.
+      </p>
       <div id="bubblechart" />
     </div>
   );
