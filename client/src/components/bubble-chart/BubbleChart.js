@@ -310,7 +310,7 @@ export default function BubbleChart(props) {
 
   //color
 
-  //render again everytime there are new data adjusted
+  //render again every time there are new data adjusted
   useEffect(() => {
 
     if (!isLoading) {
