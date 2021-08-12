@@ -119,26 +119,29 @@ import { useDispatch } from "react-redux";
 import { showAMRTable } from "../../redux/actions/visualization";
 import * as d3 from "d3";
 import "./BubbleChart.css";
+import { PackedCircleData } from "../../API/AMRapi";
+import data2 from "../../TestingData/data2";
 
 export default function BubbleChart(props) {
   const width = props.width;
   const height = props.height;
   const dispatch = useDispatch();
 
-  //create svg container
+  //pack data
+  function pack() {
+    return d3
+      .pack()
+      .size([500 - 2, 500 - 2])
+      .padding(3);
+  }
 
-  // const createSVG = () => {
-  //   return d3
-  //     .select("#bubblechart")
-  //     .append("svg")
-  //     .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
-  //     .style("display", "block")
-  //     .style("margin", "0 -14px")
-  //     .attr("style", "border: thin red solid")
-  //     .style("background", "white")
-  //     .style("cursor", "pointer");
-  //   // .on("click", (event) => zoom(event, root));
-  // };
+  //create hierachy of data
+  function makeHierarchy(data) {
+    return d3
+      .hierarchy({ children: data })
+      .sum((d) => d.value)
+      .sort((a, b) => b.value - a.value);
+  }
 
   const color = d3
     .scaleLinear()
@@ -146,13 +149,15 @@ export default function BubbleChart(props) {
     .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
     .interpolate(d3.interpolateHcl);
 
-  const drawChart = useCallback(() => {
-    let hierarchalData = makeHierarchy(props.data);
-    const layoutPack = pack();
-    const root = layoutPack(hierarchalData);
-    let focus = hierarchalData;
-    let view;
+  let [data, isLoading] = PackedCircleData();
+  //let data = data2;
+  let hierarchalData = makeHierarchy(data);
+  const layoutPack = pack();
+  const root = layoutPack(hierarchalData);
+  let focus = hierarchalData;
+  let view;
 
+  const drawChart = useCallback(() => {
     //design the container
     const svg = d3
       .select("#bubblechart") //this svg container will be called as id="bubblechart"
@@ -189,7 +194,7 @@ export default function BubbleChart(props) {
         return d.parent
           ? d.children
             ? "node"
-            : "node node--leaf"
+            : "node node--leaf _" + d.data.name.replace(".csv", "")
           : "node node--root";
       })
       .attr("fill", (d) => (d.children ? color(d.depth) : "white"))
@@ -197,16 +202,28 @@ export default function BubbleChart(props) {
         tooltip
           .html(
             !d.children
-              ? "ID: " + d.data.name + "<br>" + "Value: " + d.data.value
+              ? "Name: " + d.data.name + "<br>" + "Value: " + d.data.value
               : "Name: " + d.data.name
           )
           .style("visibility", "visible");
+        if (!d.children) {
+          d3.selectAll("._" + d.data.name.replace(".csv", ""))
+            .attr("stroke", "#000")
+            .attr("stroke-width", "1.5px");
+        }
       })
-      .on("mouseout", function () {
+      .on("mouseout", function (event, d) {
         tooltip.style("visibility", "hidden");
+        if (!d.children) {
+          d3.selectAll("._" + d.data.name.replace(".csv", "")).attr(
+            "stroke",
+            "none"
+          );
+        }
       })
       .on(
         "click",
+
         (event, d) => {
           if (focus !== d) {
             console.log(d);
@@ -235,7 +252,9 @@ export default function BubbleChart(props) {
       .join("text")
       .style("fill-opacity", (d) => (d.parent === root ? 1 : 0))
       .style("display", (d) => (d.parent === root ? "inline" : "none"))
-      .text((d) => d.data.name);
+      .text((d) =>
+        !d.children ? d.data.name.replace(".csv", "") : d.data.name
+      );
 
     zoomTo([root.x, root.y, root.r * 2]);
 
@@ -285,30 +304,19 @@ export default function BubbleChart(props) {
     }
 
     return svg.node();
-  }, [color, height, width, props.data, dispatch]);
+
+  }, [color, height, width]);
+
 
   //color
 
-  //pack data
-  function pack() {
-    return d3
-      .pack()
-      .size([500 - 2, 500 - 2])
-      .padding(3);
-  }
-
-  //create hierachy of data
-  function makeHierarchy(data) {
-    return d3
-      .hierarchy({ children: data })
-      .sum((d) => d.value)
-      .sort((a, b) => b.value - a.value);
-  }
-
   //render again every time there are new data adjusted
   useEffect(() => {
-    drawChart();
-  }, []);
+
+    if (!isLoading) {
+      drawChart();
+    }
+  }, [drawChart, isLoading]);
   // eslint-disable-next-line
 
   return (

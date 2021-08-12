@@ -1,19 +1,19 @@
-import React, {useState} from 'react';
-import {Row, Col, Card, Menu, Input, List, Button} from 'antd';
-import BubbleChart from '../../components/BubbleChart';
-import SearchPanel from '../../components/SearchPanel';
-import SampleInfoPanel from '../../components/SampleInfoPanel';
-import data from '../../TestingData/data2';
-import './AMRPage.css';
-import {useSelector, useDispatch} from 'react-redux';
+import React, { useState } from "react";
+import { Row, Col, Card, Menu, Input, List, Button } from "antd";
+import BubbleChart from "../../components/bubbleChart";
+import SearchPanel from "../../components/SearchPanel";
+import SampleInfoPanel from "../../components/SampleInfoPanel";
+import data from "../../TestingData/data2";
+import "./AMRPage.css";
+import { useSelector, useDispatch } from "react-redux";
 
-export default function AMRPage () {
-  const SampleInfo = useSelector (state => state.Visualization.sampleInfo);
-  const AMRTable = useSelector (state => state.Visualization.amrTable);
-  const SampleSelect = useSelector (
-    state => state.Visualization.sampleSelection
+export default function AMRPage() {
+  const SampleInfo = useSelector((state) => state.Visualization.sampleInfo);
+  const AMRTable = useSelector((state) => state.Visualization.amrTable);
+  const SampleSelect = useSelector(
+    (state) => state.Visualization.sampleSelection
   );
-  const dispatch = useDispatch ();
+  const dispatch = useDispatch();
 
   return (
     <Row gutter={[8, 8]} type="flex">
@@ -24,7 +24,7 @@ export default function AMRPage () {
         <Row gutter={[8, 8]}>
           <Col key="Bubble-chart" span={24}>
             <Card title="Geographic Information System">
-              <BubbleChart width="900" height="900" data={data} />
+              <BubbleChart width="900" height="900" />
             </Card>
           </Col>
         </Row>
