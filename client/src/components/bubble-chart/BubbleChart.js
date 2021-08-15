@@ -1,125 +1,10 @@
-// import React, { Component, useEffect } from "react";
-// import * as d3 from "d3";
-// import classData from "../TestingData/classData";
-
-// export const BubbleChart = (props) => {
-//   //hardcode for now
-//   const width = 800;
-//   const height = 600;
-
-//   // ------------- draw the bubbles ----------------------------//
-
-//   // create a svg container
-//   const createSVG = () => {
-//     return d3
-//       .select("#bubblechart") // id will be bubblechart
-//       .append("svg")
-//       .attr("width", width)
-//       .attr("height", height)
-//       .attr("style", "border: thin red solid")
-//       .attr("font-size", 10)
-//       .attr("font-family", "sans-serif")
-//       .attr("text-anchor", "middle");
-//   };
-
-//   function drawChart(svg) {
-//     let hierarchalData = makeHierarchy(classData);
-//     let packLayout = pack([width - 5, height - 5]);
-//     const root = packLayout(hierarchalData);
-
-//     const leaf = svg
-//       .selectAll("g")
-//       .data(root.leaves())
-//       .join("g")
-//       .attr("transform", (d) => `translate(${d.x + 1},${d.y + 1})`)
-//       /// Trigger functions
-//       .on("mouseover", showTooltip)
-//       .on("mousemove", moveTooltip)
-//       .on("mouseleave", hideTooltip);
-
-//     leaf
-//       .append("circle")
-//       .attr("r", (d) => d.r)
-//       .attr("fill-opacity", 0.7)
-//       .attr("fill", "navy");
-
-//     leaf.append("clipPath").append("use");
-
-//     // .attr("xlink:href", (d) => d.leafUid.href); //this is for opening new page
-
-//     leaf
-//       .append("text")
-//       .attr("clip-path", (d) => d.clipUid)
-//       .selectAll("tspan")
-//       .data((d) => d.data.name.split(/(?=[A-Z][a-z])|\s+/g))
-//       .join("tspan")
-//       .attr("x", 0)
-//       .attr("y", (d, i, nodes) => `${i - nodes.length / 2 + 0.8}em`)
-//       .text((d) => d);
-//   }
-
-//   function pack(size) {
-//     return d3.pack().size(size).padding(3);
-//   }
-
-//   function makeHierarchy(data) {
-//     return d3.hierarchy({ children: data }).sum((d) => d.total);
-//   }
-//   // ----------------------------------------------------------------------//
-
-//   // ----------------------- Create tooltip -----------------------------//
-
-//   const tooltip = d3
-//     .select("#bubblechart")
-//     .append("div")
-//     .style("opacity", 0)
-//     .attr("class", "tooltip")
-//     .style("background-color", "black")
-//     .style("border-radius", "5px")
-//     .style("padding", "10px")
-//     .style("color", "white");
-
-//   // Show tooltip when hovering mouse on circle
-//   function showTooltip(event, d) {
-//     tooltip.transition().duration(200);
-//     tooltip
-//       .style("opacity", 1)
-//       .html("Country: " + d.name)
-//       .style("left", event.x / 2 + "px")
-//       .style("top", event.y / 2 + 30 + "px");
-//   }
-
-//   //Move the tooltip when the mouse is still hovering the circle
-//   function moveTooltip(event, d) {
-//     tooltip
-//       .style("left", event.x / 2 + "px")
-//       .style("top", event.y / 2 + 30 + "px");
-//   }
-
-//   //Hide the tooltip when not hovering the circle
-//   function hideTooltip(d) {
-//     tooltip.transition().duration(200).style("opacity", 0);
-//   }
-
-//   useEffect(() => {
-//     let svg = createSVG();
-//     drawChart(svg);
-//   });
-
-//   return (
-//     <div>
-//       <h2>Bubble Chart</h2>
-//       <div id="bubblechart" />
-//     </div>
-//   );
-// };
-
 import React, { useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { showAMRTable } from "../../redux/actions/visualization";
 import * as d3 from "d3";
 import "./BubbleChart.css";
 import { PackedCircleData } from "../../api/AMRapi";
+import { svg } from "d3";
 // import data2 from "../../TestingData/data2";
 
 export default function BubbleChart(props) {
@@ -226,17 +111,13 @@ export default function BubbleChart(props) {
 
         (event, d) => {
           if (focus !== d) {
-            console.log(d);
+            //console.log(d);
             // dispatch(selectSample(d));
-            dispatch(showAMRTable(d));
+            // dispatch(showAMRTable(d));
             zoom(event, d);
             event.stopPropagation();
           }
         }
-        // {
-        //   console.log(d);
-        // }
-        // focus !== d && (zoom(event, d), event.stopPropagation())
       )
       .on("mousemove", function (event) {
         return tooltip
