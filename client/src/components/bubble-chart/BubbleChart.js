@@ -87,7 +87,11 @@ export default function BubbleChart(props) {
         tooltip
           .html(
             !d.children
-              ? "Name: " + d.data.name + "<br>" + "Value: " + d.data.value
+              ? "ID: " +
+                  d.data.name.replace(".csv", "") +
+                  "<br>" +
+                  "Number of AMR sequences: " +
+                  d.data.value
               : "Name: " + d.data.name
           )
           .style("visibility", "visible");
@@ -119,10 +123,10 @@ export default function BubbleChart(props) {
           }
         }
       )
-      .on("mousemove", function (event) {
+      .on("mousemove", (event) => {
         return tooltip
-          .style("left", event.x + 100 + "px")
-          .style("top", event.y - 10 + "px");
+          .style("left", event.pageX + 100 + "px")
+          .style("top", event.pageY + 10 + "px");
       });
 
     //label
