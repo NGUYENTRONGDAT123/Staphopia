@@ -120,7 +120,7 @@ import { showAMRTable } from "../../redux/actions/visualization";
 import * as d3 from "d3";
 import "./BubbleChart.css";
 import { PackedCircleData } from "../../api/AMRapi";
-import data2 from "../../TestingData/data2";
+// import data2 from "../../TestingData/data2";
 
 export default function BubbleChart(props) {
   const width = props.width;
