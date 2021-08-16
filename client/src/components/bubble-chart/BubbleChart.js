@@ -39,13 +39,16 @@ export default function BubbleChart(props) {
 
   let [data, isLoading] = PackedCircleData();
   let hierarchalData = makeHierarchy(data);
-  const layoutPack = pack();
-  const root = layoutPack(hierarchalData);
+  let layoutPack = pack();
+  let root = layoutPack(hierarchalData);
   let focus = hierarchalData;
   let view;
 
   const drawChart = useCallback(() => {
     //design the container
+
+    const t = d3.transition().duration(750);
+
     const svg = d3
       .select("#bubblechart") //this svg container will be called as id="bubblechart"
       .append("svg")
@@ -56,7 +59,6 @@ export default function BubbleChart(props) {
       .style("background", "white")
       .style("cursor", "pointer")
       .on("click", (event) => zoom(event, root));
-
     // design the tooltip
     const tooltip = d3
       .select("body")
@@ -71,12 +73,21 @@ export default function BubbleChart(props) {
 
     //design the node
     const node = svg
-      .append("g")
       .selectAll("circle")
       .data(root.descendants())
+      // .join("circle")
+      // .attr("class", function (d) {
+      //   return d.parent
+      //     ? d.children
+      //       ? "node"
+      //       : "node node--leaf _" + d.data.name.replace(".csv", "")
+      //     : "node node--root";
+      // })
+      // .attr("fill", (d) => (d.children ? color(d.depth) : "white"));
+
       .join(
-        (enter) =>
-          enter
+        function (enter) {
+          return enter
             .append("circle")
             .attr("class", function (d) {
               return d.parent
@@ -85,15 +96,24 @@ export default function BubbleChart(props) {
                   : "node node--leaf _" + d.data.name.replace(".csv", "")
                 : "node node--root";
             })
-            .attr("fill", (d) => (d.children ? color(d.depth) : "white")),
-        (update) => update.transition().duration((d, i) => i * 2),
+            .call((enter) =>
+              enter
+                .transition()
+                .attr("duration", "750")
+
+                .attr("fill", (d) => (d.children ? color(d.depth) : "white"))
+            );
+        },
+
+        (update) => update,
         (exit) =>
           exit
-            .transition()
-            .duration((d, i) => i * 2)
+            .call((exit) => exit.transition().duration((d, i) => i * 2))
             .remove()
-      )
+      );
 
+    //mouse events
+    node
       .on("mouseover", function (event, d) {
         tooltip
           .html(
@@ -138,12 +158,7 @@ export default function BubbleChart(props) {
         return tooltip
           .style("left", event.pageX + 100 + "px")
           .style("top", event.pageY + 10 + "px");
-      })
-      .transition()
-      .duration((d, i) => i * 2);
-    // (exit) => {
-    //   exit.exit().transition().duration(200).style("opacity", 0).remove();
-    // };
+      });
 
     //label
     const label = svg
