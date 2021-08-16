@@ -1,16 +1,19 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { showAMRTable } from "../../redux/actions/visualization";
 import * as d3 from "d3";
 import "./BubbleChart.css";
 import { PackedCircleData } from "../../api/AMRapi";
 import { svg } from "d3";
-// import data2 from "../../TestingData/data2";
+import data2 from "../../testing-data/data2";
+import { Button } from "bootstrap";
 
 export default function BubbleChart(props) {
   const width = props.width;
   const height = props.height;
   const dispatch = useDispatch();
+
+  // const [data, setData] = useState([]);
 
   //pack data
   function pack() {
@@ -35,7 +38,6 @@ export default function BubbleChart(props) {
     .interpolate(d3.interpolateHcl);
 
   let [data, isLoading] = PackedCircleData();
-  //let data = data2;
   let hierarchalData = makeHierarchy(data);
   const layoutPack = pack();
   const root = layoutPack(hierarchalData);
@@ -72,17 +74,26 @@ export default function BubbleChart(props) {
       .append("g")
       .selectAll("circle")
       .data(root.descendants())
-      .enter()
-      .append("circle")
-      .join("circle")
-      .attr("class", function (d) {
-        return d.parent
-          ? d.children
-            ? "node"
-            : "node node--leaf _" + d.data.name.replace(".csv", "")
-          : "node node--root";
-      })
-      .attr("fill", (d) => (d.children ? color(d.depth) : "white"))
+      .join(
+        (enter) =>
+          enter
+            .append("circle")
+            .attr("class", function (d) {
+              return d.parent
+                ? d.children
+                  ? "node"
+                  : "node node--leaf _" + d.data.name.replace(".csv", "")
+                : "node node--root";
+            })
+            .attr("fill", (d) => (d.children ? color(d.depth) : "white")),
+        (update) => update.transition().duration((d, i) => i * 2),
+        (exit) =>
+          exit
+            .transition()
+            .duration((d, i) => i * 2)
+            .remove()
+      )
+
       .on("mouseover", function (event, d) {
         tooltip
           .html(
@@ -127,7 +138,12 @@ export default function BubbleChart(props) {
         return tooltip
           .style("left", event.pageX + 100 + "px")
           .style("top", event.pageY + 10 + "px");
-      });
+      })
+      .transition()
+      .duration((d, i) => i * 2);
+    // (exit) => {
+    //   exit.exit().transition().duration(200).style("opacity", 0).remove();
+    // };
 
     //label
     const label = svg
@@ -216,6 +232,7 @@ export default function BubbleChart(props) {
         and samples.
       </p>
       <div id="bubblechart" />
+      {/* <Button onClick={setData(data2)}>Hello</Button> */}
     </div>
   );
 }
