@@ -93,7 +93,7 @@ export default function SearchPanel () {
 
   useEffect (
     () => {
-      console.log('useEffect called');
+      console.log ('useEffect called');
       var dataTemp = [];
       var dataListTemp = [];
       var restoreDataTemp = [];
@@ -304,15 +304,14 @@ export default function SearchPanel () {
     }
 
     setData (dataTemp1);
-    console.log(restoreData);
+    console.log (restoreData);
   };
 
   const handleRestore = value => {
-    let dataTemp2 = [...restoreData]
-    setData(dataTemp2);
-    console.log(restoreData);
-  }
-
+    // let dataTemp2 = [...restoreData]
+    let dataTemp2 = JSON.parse (JSON.stringify (restoreData));
+    setData (dataTemp2);
+  };
 
   const loop = data =>
     data.map (item => {
