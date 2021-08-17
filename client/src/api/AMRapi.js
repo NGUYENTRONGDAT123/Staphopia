@@ -76,3 +76,10 @@ export function PackedCircleData() {
     return [repo, isLoading];
   }
 }
+
+export async function fetchPackedCircleData() {
+  const url = "http://localhost:8393/api/packed-circle";
+  const result = await fetch(url);
+  const data = await result.json();
+  return data.result;
+}
