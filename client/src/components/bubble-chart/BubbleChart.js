@@ -1,17 +1,12 @@
-import React, { useEffect, useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
-import { showAMRTable } from "../../redux/actions/visualization";
+import React, { useEffect, useCallback, useRef, useState } from "react";
 import * as d3 from "d3";
 import "./BubbleChart.css";
-import { PackedCircleData } from "../../api/AMRapi";
-import { svg } from "d3";
-import data2 from "../../testing-data/data2";
-import { Button } from "bootstrap";
 
 export default function BubbleChart(props) {
   const width = props.width;
   const height = props.height;
-  const { data, isLoading } = props;
+  const { data, isLoading, selectSample } = props;
+  const ref = useRef();
 
   // const [data, setData] = useState([]);
 
@@ -43,21 +38,22 @@ export default function BubbleChart(props) {
   let focus = hierarchalData;
   let view;
 
+  //design the container
+  const svg = d3
+    .select(ref.current) //this svg container will be called as id="bubblechart"
+    .append("svg")
+    .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
+    .style("display", "block")
+    .style("margin", "0 -14px")
+    .attr("style", "border: thin red solid")
+    .style("background", "white")
+    .style("cursor", "pointer");
+
   const drawChart = useCallback(() => {
-    //design the container
+    let preClick = null;
+    svg.selectAll(".node").remove();
 
-    const t = d3.transition().duration(750);
-
-    const svg = d3
-      .select("#bubblechart") //this svg container will be called as id="bubblechart"
-      .append("svg")
-      .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
-      .style("display", "block")
-      .style("margin", "0 -14px")
-      .attr("style", "border: thin red solid")
-      .style("background", "white")
-      .style("cursor", "pointer")
-      .on("click", (event) => zoom(event, root));
+    svg.on("click", (event) => zoom(event, root));
     // design the tooltip
     const tooltip = d3
       .select("body")
@@ -74,20 +70,11 @@ export default function BubbleChart(props) {
     const node = svg
       .selectAll("circle")
       .data(root.descendants())
-      // .join("circle")
-      // .attr("class", function (d) {
-      //   return d.parent
-      //     ? d.children
-      //       ? "node"
-      //       : "node node--leaf _" + d.data.name.replace(".csv", "")
-      //     : "node node--root";
-      // })
-      // .attr("fill", (d) => (d.children ? color(d.depth) : "white"));
-
       .join(
-        function (enter) {
+        (enter) => {
           return enter
             .append("circle")
+            .attr("fill", (d) => (d.children ? color(d.depth) : "white"))
             .attr("class", function (d) {
               return d.parent
                 ? d.children
@@ -95,21 +82,48 @@ export default function BubbleChart(props) {
                   : "node node--leaf _" + d.data.name.replace(".csv", "")
                 : "node node--root";
             })
-            .call((enter) =>
-              enter
+            .style("opacity", 0)
+            .call((circle) =>
+              circle
                 .transition()
-                .attr("duration", "750")
-
-                .attr("fill", (d) => (d.children ? color(d.depth) : "white"))
+                .duration((d, i) => i * 2)
+                .style("opacity", 1)
             );
         },
 
-        (update) => update,
+        (update) =>
+          update
+            .append("circle")
+            .style("opacity", 0)
+            .attr("duration", "750")
+            .attr("fill", (d) => (d.children ? color(d.depth) : "white"))
+            .attr("class", function (d) {
+              return d.parent
+                ? d.children
+                  ? "node"
+                  : "node node--leaf _" + d.data.name.replace(".csv", "")
+                : "node node--root";
+            })
+            .call((circle) => circle.transition()),
         (exit) =>
           exit
             .call((exit) => exit.transition().duration((d, i) => i * 2))
             .remove()
       );
+
+    node
+      .enter()
+      .append("circle")
+      .transition()
+      .duration(750)
+      .attr("class", function (d) {
+        return d.parent
+          ? d.children
+            ? "node"
+            : "node node--leaf _" + d.data.name.replace(".csv", "")
+          : "node node--root";
+      })
+      .attr("fill", (d) => (d.children ? color(d.depth) : "white"));
 
     //mouse events
     node
@@ -141,16 +155,29 @@ export default function BubbleChart(props) {
         }
       })
       .on("click", (event, d) => {
-        if (focus !== d) {
-          console.log(d);
+        if (focus !== d && d.depth !== 2) {
           zoom(event, d);
           event.stopPropagation();
+        }
+        if (d.depth === 2) {
+          selectSample(d.data.name.replace(".csv", ""));
+          if (preClick !== null) {
+            d3.selectAll("._" + preClick).attr(
+              "class",
+              "node node--leaf _" + preClick
+            );
+          }
+          d3.selectAll("._" + d.data.name.replace(".csv", "")).attr(
+            "class",
+            "node node--leaf active _" + d.data.name.replace(".csv", "")
+          );
+          preClick = d.data.name.replace(".csv", "");
         }
       })
       .on("mousemove", (event) => {
         return tooltip
-          .style("left", event.pageX + 100 + "px")
-          .style("top", event.pageY + 10 + "px");
+          .style("left", event.pageX + 10 + "px")
+          .style("top", event.pageY - 50 + "px");
       });
 
     //label
@@ -220,9 +247,11 @@ export default function BubbleChart(props) {
   // render again every time there are new data adjusted
   useEffect(() => {
     if (!isLoading && data) {
+      d3.selectAll(".node").remove();
+      d3.selectAll("text").remove();
       drawChart();
     }
-  }, [drawChart, isLoading]);
+  }, [data, isLoading]);
   // eslint-disable-next-line
 
   return (
@@ -239,7 +268,7 @@ export default function BubbleChart(props) {
         more information would be displayed such as details about antibiotics
         and samples.
       </p>
-      <div id="bubblechart" />
+      <svg ref={ref} width={"100%"} height={width} />
       {/* <Button onClick={setData(data2)}>Hello</Button> */}
     </div>
   );

@@ -11,8 +11,9 @@
   fill: white;
 }
 
-.node--leaf:active {
-  pointer-events: none;
+.active {
+  stroke: #000;
+  stroke-width: 1.5px;
 }
 
 .label {
