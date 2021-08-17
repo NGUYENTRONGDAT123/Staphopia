@@ -369,6 +369,8 @@ router.get("/packed-circle", async (req, res, next) => {
         },
       },
     ];
+
+    // exmple for search query: localhost:8393/api/packed-circle?samples=[163,123];
   } else {
     samples = JSON.parse(req.query.samples.toString());
     key = samples.join("-");
