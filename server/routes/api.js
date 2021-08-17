@@ -330,42 +330,87 @@ router.get("/sample-subclass", async (req, res, next) => {
 
 router.get("/packed-circle", async (req, res, next) => {
   const AMR = req.app.mongodb.db("AMR");
+  let samples = null;
   let key = null;
+  let pipeline;
 
   // Get all neccessary data for packed circle graph
-  key = "packed-circle";
-  let pipeline = [
-    {
-      $group: {
-        _id: {
-          class: "$Class",
-          name: "$Name",
+  if (req.query.samples === undefined) {
+    key = "packed-circle";
+    pipeline = [
+      {
+        $group: {
+          _id: {
+            class: "$Class",
+            name: "$Name",
+          },
+          value: { $sum: 1 },
         },
-        value: { $sum: 1 },
       },
-    },
-    {
-      $group: {
-        _id: "$_id.class",
-        children: {
-          $push: {
-            name: "$_id.name",
-            value: "$value",
+      {
+        $group: {
+          _id: "$_id.class",
+          children: {
+            $push: {
+              name: "$_id.name",
+              value: "$value",
+            },
           },
         },
       },
-    },
-    {
-      $addFields: {
-        name: "$_id",
+      {
+        $addFields: {
+          name: "$_id",
+        },
       },
-    },
-    {
-      $project: {
-        _id: 0,
+      {
+        $project: {
+          _id: 0,
+        },
       },
-    },
-  ];
+    ];
+  } else {
+    samples = JSON.parse(req.query.samples.toString());
+    key = samples.join("-");
+    for (var i = 0; i < samples.length; i++) {
+      samples[i] = samples[i] + ".csv";
+    }
+    pipeline = [
+      {
+        $match: { Name: { $in: samples } },
+      },
+      {
+        $group: {
+          _id: {
+            class: "$Class",
+            name: "$Name",
+          },
+          value: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.class",
+          children: {
+            $push: {
+              name: "$_id.name",
+              value: "$value",
+            },
+          },
+        },
+      },
+      {
+        $addFields: {
+          name: "$_id",
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+        },
+      },
+    ];
+  }
 
   // try to get data from redis
   redis_get(key)
