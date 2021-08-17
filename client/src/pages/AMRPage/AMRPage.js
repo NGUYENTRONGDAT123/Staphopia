@@ -10,6 +10,7 @@ import {PackedCircleData} from '../../api/AMRapi';
 import {fetchPackedCircleData} from '../../redux/actions/visualization';
 import axios from 'axios';
 
+
 export default function AMRPage () {
   const SampleInfo = useSelector (state => state.Visualization.sampleInfo);
   const AMRTable = useSelector (state => state.Visualization.amrTable);
