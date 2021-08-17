@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Row, Col, Card, Menu, Input, List, Button } from "antd";
+import {Row, Col, Card, Menu, Input, List, Button} from 'antd';
 import BubbleChart from '../../components/bubble-chart';
 import SearchPanel from '../../components/search-panel';
 import SampleInfoPanel from '../../components/sample-info-panel';
@@ -11,6 +11,7 @@ import {
   dispatchDeleteSample,
   dispatchPackedCircleData,
   dispatchRestoreSample,
+  dispatchPackedCircleRestoreData,
   selectSample,
 } from '../../redux/actions/visualization';
 import AmrTable from '../../components/amr-table';
@@ -25,6 +26,10 @@ export default function AMRPage () {
   const PackedCircleData = useSelector (
     state => state.Visualization.packedCircleData
   );
+
+  const PackedCircleRestoreData = useSelector (
+    state => state.Visualization.packedCircleRestoreData
+  );
   const dispatch = useDispatch ();
 
   useEffect (() => {
@@ -32,6 +37,7 @@ export default function AMRPage () {
       setIsLoadingPacked (true);
       const result = await fetchPackedCircleData ();
       dispatch (dispatchPackedCircleData (result));
+      dispatch (dispatchPackedCircleRestoreData (result));
       setIsLoadingPacked (false);
     }
     getPackedData ();
@@ -52,12 +58,16 @@ export default function AMRPage () {
   return (
     <Row gutter={[8, 8]} type="flex">
       <Col span={5}>
-        <SearchPanel
+        {
+          PackedCircleData !== null && PackedCircleRestoreData !== null ? <SearchPanel
           packedData={PackedCircleData}
+          restorePoint={PackedCircleRestoreData}
           selectSample={handleSelectSample}
           deleteSample={handleDeleteSample}
-          restorSample={handleRestoreSample}
-        />
+          restoreSample={handleRestoreSample}
+        /> : <div></div>
+        }
+        
       </Col>
       <Col span={13}>
         <Row gutter={[8, 8]}>
