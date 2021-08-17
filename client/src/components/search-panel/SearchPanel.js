@@ -227,6 +227,11 @@ export default function SearchPanel () {
   const onSelect = (selectedKeysValue, info) => {
     console.log ('onSelect', selectedKeysValue);
     setSelectedKeys (selectedKeysValue);
+    var matches = selectedKeysValue[0].match(/(\d+)/);
+
+    if (matches) {
+      dispatch (selectSample (matches[0]));
+    }
   };
 
   const filter = e => {
