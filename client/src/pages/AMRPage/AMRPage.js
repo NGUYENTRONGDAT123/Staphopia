@@ -56,9 +56,9 @@ export default function AMRPage() {
     dispatch(dispatchRestoreSample(samples));
   };
 
-  const handleBubbleSample = (samples) => {
-    dispatch(selectSample(samples));
-  };
+  // const handleBubbleSample = (samples) => {
+  //   dispatch(selectSample(samples));
+  // };
   return (
     <Row gutter={[8, 8]} type="flex">
       <Col span={5}>
@@ -83,7 +83,7 @@ export default function AMRPage() {
                 height="900"
                 data={PackedCircleData}
                 isLoading={isLoadingPacked}
-                selectSample={handleBubbleSample}
+                selectSample={handleSelectSample}
               />
             </Card>
           </Col>
