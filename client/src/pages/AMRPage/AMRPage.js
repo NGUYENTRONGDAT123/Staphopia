@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Card, Menu, Input, List, Button } from "antd";
+import { Row, Col, Card } from "react-bootstrap";
 import BubbleChart from "../../components/bubble-chart";
 import SearchPanel from "../../components/search-panel";
 import SampleInfoPanel from "../../components/sample-info-panel";
@@ -13,6 +13,7 @@ import {
   dispatchRestoreSample,
   selectSample,
 } from "../../redux/actions/visualization";
+import AmrTable from "../../components/AmrTable";
 
 export default function AMRPage() {
   const [isLoadingPacked, setIsLoadingPacked] = useState(false);
@@ -49,8 +50,8 @@ export default function AMRPage() {
     dispatch(dispatchRestoreSample(samples));
   };
   return (
-    <Row gutter={[8, 8]} type="flex">
-      <Col span={5}>
+    <Row className="px-3">
+      <Col lg={3}>
         <SearchPanel
           packedData={PackedCircleData}
           selectSample={handleSelectSample}
@@ -58,36 +59,32 @@ export default function AMRPage() {
           restorSample={handleRestoreSample}
         />
       </Col>
-      <Col span={13}>
-        <Row gutter={[8, 8]}>
-          <Col key="Bubble-chart" span={24}>
-            <Card title="Geographic Information System">
-              <BubbleChart
-                width="900"
-                height="900"
-                data={PackedCircleData}
-                isLoading={isLoadingPacked}
-              />
-            </Card>
+      <Col lg={9}>
+        <Row>
+          <Col key="Bubble-chart" lg={9}>
+            <BubbleChart
+              width="900"
+              height="900"
+              data={PackedCircleData}
+              isLoading={isLoadingPacked}
+            />
+          </Col>
+          <Col lg={3}>
+            <Row>
+              <Col key="Sample-Info">
+                <SampleInfoPanel />
+              </Col>
+            </Row>
+            <Row>
+              <Col key="AMR-Statistic">
+                <div>alo</div>
+              </Col>
+            </Row>
           </Col>
         </Row>
-        <Row gutter={[8, 8]}>
-          <Col key="AMR-Table" span={24}>
-            <Card title="AMR Table" />
-          </Col>
-        </Row>
-      </Col>
-      <Col span={6}>
-        <Row gutter={[8, 8]}>
-          <Col key="Sample-Info" span={24}>
-            <Card title="Sample Information">
-              <SampleInfoPanel />
-            </Card>
-          </Col>
-        </Row>
-        <Row gutter={[8, 8]}>
-          <Col key="AMR-Statistic" span={24}>
-            <Card title="AMR Statistic" />
+        <Row className="my-4">
+          <Col key="AMR-Table">
+            <AmrTable />
           </Col>
         </Row>
       </Col>
