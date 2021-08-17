@@ -331,11 +331,13 @@ router.get("/sample-subclass", async (req, res, next) => {
 
 router.get("/packed-circle", async (req, res, next) => {
   const AMR = req.app.mongodb.db("AMR");
+  let samples = null;
   let key = null;
+  let pipeline;
 
   // Get all neccessary data for packed circle graph
   key = "packed-circle";
-  let pipeline = [
+  pipeline = [
     {
       $group: {
         _id: {

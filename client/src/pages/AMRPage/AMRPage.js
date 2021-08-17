@@ -1,73 +1,78 @@
-import React, {useState, useEffect} from 'react';
-import {Row, Col, Card, Menu, Input, List, Button} from 'antd';
-import BubbleChart from '../../components/bubble-chart';
-import SearchPanel from '../../components/search-panel';
-import SampleInfoPanel from '../../components/sample-info-panel';
+import React, { useState, useEffect } from "react";
+import { Row, Col, Card, Menu, Input, List, Button } from "antd";
+import BubbleChart from "../../components/bubble-chart";
+import SearchPanel from "../../components/search-panel";
+import SampleInfoPanel from "../../components/sample-info-panel";
 // import data from "../../TestingData/data2";
-import './AMRPage.css';
-import {useSelector, useDispatch} from 'react-redux';
-import {fetchPackedCircleData, fetchSelectedSample} from '../../api/AMRapi';
+import "./AMRPage.css";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchPackedCircleData, fetchSelectedSample } from "../../api/AMRapi";
 import {
   dispatchDeleteSample,
   dispatchPackedCircleData,
   dispatchRestoreSample,
   dispatchPackedCircleRestoreData,
   selectSample,
-} from '../../redux/actions/visualization';
-import AmrTable from '../../components/amr-table';
+} from "../../redux/actions/visualization";
+import AmrTable from "../../components/amr-table";
 
-export default function AMRPage () {
-  const [isLoadingPacked, setIsLoadingPacked] = useState (false);
-  const SampleInfoData = useSelector (state => state.Visualization.sampleInfo);
-  const AMRTableData = useSelector (state => state.Visualization.amrTable);
-  const SampleSelectData = useSelector (
-    state => state.Visualization.sampleSelection
+export default function AMRPage() {
+  const [isLoadingPacked, setIsLoadingPacked] = useState(false);
+  const SampleInfoData = useSelector((state) => state.Visualization.sampleInfo);
+  const AMRTableData = useSelector((state) => state.Visualization.amrTable);
+  const SampleSelectData = useSelector(
+    (state) => state.Visualization.sampleSelection
   );
-  const PackedCircleData = useSelector (
-    state => state.Visualization.packedCircleData
+  const PackedCircleData = useSelector(
+    (state) => state.Visualization.packedCircleData
   );
 
-  const PackedCircleRestoreData = useSelector (
-    state => state.Visualization.packedCircleRestoreData
+  const PackedCircleRestoreData = useSelector(
+    (state) => state.Visualization.packedCircleRestoreData
   );
-  const dispatch = useDispatch ();
+  const dispatch = useDispatch();
 
-  useEffect (() => {
-    async function getPackedData () {
-      setIsLoadingPacked (true);
-      const result = await fetchPackedCircleData ();
-      dispatch (dispatchPackedCircleData (result));
-      dispatch (dispatchPackedCircleRestoreData (result));
-      setIsLoadingPacked (false);
+  useEffect(() => {
+    async function getPackedData() {
+      setIsLoadingPacked(true);
+      const result = await fetchPackedCircleData();
+      dispatch(dispatchPackedCircleData(result));
+      dispatch(dispatchPackedCircleRestoreData(result));
+      setIsLoadingPacked(false);
     }
-    getPackedData ();
+    getPackedData();
   }, []);
 
-  const handleSelectSample = async sample => {
-    const data = await fetchSelectedSample (sample);
-    dispatch (selectSample (data));
+  const handleSelectSample = async (sample) => {
+    const data = await fetchSelectedSample(sample);
+    dispatch(selectSample(data));
   };
 
-  const handleDeleteSample = samples => {
-    dispatch (dispatchDeleteSample (samples));
+  const handleDeleteSample = (samples) => {
+    dispatch(dispatchDeleteSample(samples));
   };
 
-  const handleRestoreSample = samples => {
-    dispatch (dispatchRestoreSample (samples));
+  const handleRestoreSample = (samples) => {
+    dispatch(dispatchRestoreSample(samples));
   };
+
+  // const handleBubbleSample = (samples) => {
+  //   dispatch(selectSample(samples));
+  // };
   return (
     <Row gutter={[8, 8]} type="flex">
       <Col span={5}>
-        {
-          PackedCircleData !== null && PackedCircleRestoreData !== null ? <SearchPanel
-          packedData={PackedCircleData}
-          restorePoint={PackedCircleRestoreData}
-          selectSample={handleSelectSample}
-          deleteSample={handleDeleteSample}
-          restoreSample={handleRestoreSample}
-        /> : <div></div>
-        }
-        
+        {PackedCircleData !== null && PackedCircleRestoreData !== null ? (
+          <SearchPanel
+            packedData={PackedCircleData}
+            restorePoint={PackedCircleRestoreData}
+            selectSample={handleSelectSample}
+            deleteSample={handleDeleteSample}
+            restoreSample={handleRestoreSample}
+          />
+        ) : (
+          <div />
+        )}
       </Col>
       <Col span={13}>
         <Row gutter={[8, 8]}>
@@ -78,6 +83,7 @@ export default function AMRPage () {
                 height="900"
                 data={PackedCircleData}
                 isLoading={isLoadingPacked}
+                selectSample={handleSelectSample}
               />
             </Card>
           </Col>
@@ -94,7 +100,11 @@ export default function AMRPage () {
         <Row gutter={[8, 8]}>
           <Col key="Sample-Info" span={24}>
             <Card title="Sample Information">
-              <SampleInfoPanel />
+              {SampleInfoData !== null ? (
+                <SampleInfoPanel sampleMetadata={SampleInfoData} />
+              ) : (
+                <div />
+              )}
             </Card>
           </Col>
         </Row>

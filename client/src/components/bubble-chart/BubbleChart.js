@@ -1,127 +1,14 @@
-// import React, { Component, useEffect } from "react";
-// import * as d3 from "d3";
-// import classData from "../TestingData/classData";
-
-// export const BubbleChart = (props) => {
-//   //hardcode for now
-//   const width = 800;
-//   const height = 600;
-
-//   // ------------- draw the bubbles ----------------------------//
-
-//   // create a svg container
-//   const createSVG = () => {
-//     return d3
-//       .select("#bubblechart") // id will be bubblechart
-//       .append("svg")
-//       .attr("width", width)
-//       .attr("height", height)
-//       .attr("style", "border: thin red solid")
-//       .attr("font-size", 10)
-//       .attr("font-family", "sans-serif")
-//       .attr("text-anchor", "middle");
-//   };
-
-//   function drawChart(svg) {
-//     let hierarchalData = makeHierarchy(classData);
-//     let packLayout = pack([width - 5, height - 5]);
-//     const root = packLayout(hierarchalData);
-
-//     const leaf = svg
-//       .selectAll("g")
-//       .data(root.leaves())
-//       .join("g")
-//       .attr("transform", (d) => `translate(${d.x + 1},${d.y + 1})`)
-//       /// Trigger functions
-//       .on("mouseover", showTooltip)
-//       .on("mousemove", moveTooltip)
-//       .on("mouseleave", hideTooltip);
-
-//     leaf
-//       .append("circle")
-//       .attr("r", (d) => d.r)
-//       .attr("fill-opacity", 0.7)
-//       .attr("fill", "navy");
-
-//     leaf.append("clipPath").append("use");
-
-//     // .attr("xlink:href", (d) => d.leafUid.href); //this is for opening new page
-
-//     leaf
-//       .append("text")
-//       .attr("clip-path", (d) => d.clipUid)
-//       .selectAll("tspan")
-//       .data((d) => d.data.name.split(/(?=[A-Z][a-z])|\s+/g))
-//       .join("tspan")
-//       .attr("x", 0)
-//       .attr("y", (d, i, nodes) => `${i - nodes.length / 2 + 0.8}em`)
-//       .text((d) => d);
-//   }
-
-//   function pack(size) {
-//     return d3.pack().size(size).padding(3);
-//   }
-
-//   function makeHierarchy(data) {
-//     return d3.hierarchy({ children: data }).sum((d) => d.total);
-//   }
-//   // ----------------------------------------------------------------------//
-
-//   // ----------------------- Create tooltip -----------------------------//
-
-//   const tooltip = d3
-//     .select("#bubblechart")
-//     .append("div")
-//     .style("opacity", 0)
-//     .attr("class", "tooltip")
-//     .style("background-color", "black")
-//     .style("border-radius", "5px")
-//     .style("padding", "10px")
-//     .style("color", "white");
-
-//   // Show tooltip when hovering mouse on circle
-//   function showTooltip(event, d) {
-//     tooltip.transition().duration(200);
-//     tooltip
-//       .style("opacity", 1)
-//       .html("Country: " + d.name)
-//       .style("left", event.x / 2 + "px")
-//       .style("top", event.y / 2 + 30 + "px");
-//   }
-
-//   //Move the tooltip when the mouse is still hovering the circle
-//   function moveTooltip(event, d) {
-//     tooltip
-//       .style("left", event.x / 2 + "px")
-//       .style("top", event.y / 2 + 30 + "px");
-//   }
-
-//   //Hide the tooltip when not hovering the circle
-//   function hideTooltip(d) {
-//     tooltip.transition().duration(200).style("opacity", 0);
-//   }
-
-//   useEffect(() => {
-//     let svg = createSVG();
-//     drawChart(svg);
-//   });
-
-//   return (
-//     <div>
-//       <h2>Bubble Chart</h2>
-//       <div id="bubblechart" />
-//     </div>
-//   );
-// };
-
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useRef, useState } from "react";
 import * as d3 from "d3";
 import "./BubbleChart.css";
 
 export default function BubbleChart(props) {
   const width = props.width;
   const height = props.height;
-  const { data, isLoading } = props;
+  const { data, isLoading, selectSample } = props;
+  const ref = useRef();
+
+  // const [data, setData] = useState([]);
 
   //pack data
   function pack() {
@@ -146,24 +33,27 @@ export default function BubbleChart(props) {
     .interpolate(d3.interpolateHcl);
 
   let hierarchalData = makeHierarchy(data);
-  const layoutPack = pack();
-  const root = layoutPack(hierarchalData);
+  let layoutPack = pack();
+  let root = layoutPack(hierarchalData);
   let focus = hierarchalData;
   let view;
 
-  const drawChart = useCallback(() => {
-    //design the container
-    const svg = d3
-      .select("#bubblechart") //this svg container will be called as id="bubblechart"
-      .append("svg")
-      .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
-      .style("display", "block")
-      .style("margin", "0 -14px")
-      .attr("style", "border: thin red solid")
-      .style("background", "white")
-      .style("cursor", "pointer")
-      .on("click", (event) => zoom(event, root));
+  //design the container
+  const svg = d3
+    .select(ref.current) //this svg container will be called as id="bubblechart"
+    .append("svg")
+    .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
+    .style("display", "block")
+    .style("margin", "0 -14px")
+    .attr("style", "border: thin red solid")
+    .style("background", "white")
+    .style("cursor", "pointer");
 
+  const drawChart = useCallback(() => {
+    let preClick = null;
+    svg.selectAll(".node").remove();
+
+    svg.on("click", (event) => zoom(event, root));
     // design the tooltip
     const tooltip = d3
       .select("body")
@@ -178,12 +68,54 @@ export default function BubbleChart(props) {
 
     //design the node
     const node = svg
-      .append("g")
       .selectAll("circle")
       .data(root.descendants())
+      .join(
+        (enter) => {
+          return enter
+            .append("circle")
+            .attr("fill", (d) => (d.children ? color(d.depth) : "white"))
+            .attr("class", function (d) {
+              return d.parent
+                ? d.children
+                  ? "node"
+                  : "node node--leaf _" + d.data.name.replace(".csv", "")
+                : "node node--root";
+            })
+            .style("opacity", 0)
+            .call((circle) =>
+              circle
+                .transition()
+                .duration((d, i) => i * 2)
+                .style("opacity", 1)
+            );
+        },
+
+        (update) =>
+          update
+            .append("circle")
+            .style("opacity", 0)
+            .attr("duration", "750")
+            .attr("fill", (d) => (d.children ? color(d.depth) : "white"))
+            .attr("class", function (d) {
+              return d.parent
+                ? d.children
+                  ? "node"
+                  : "node node--leaf _" + d.data.name.replace(".csv", "")
+                : "node node--root";
+            })
+            .call((circle) => circle.transition()),
+        (exit) =>
+          exit
+            .call((exit) => exit.transition().duration((d, i) => i * 2))
+            .remove()
+      );
+
+    node
       .enter()
       .append("circle")
-      .join("circle")
+      .transition()
+      .duration(750)
       .attr("class", function (d) {
         return d.parent
           ? d.children
@@ -191,12 +123,19 @@ export default function BubbleChart(props) {
             : "node node--leaf _" + d.data.name.replace(".csv", "")
           : "node node--root";
       })
-      .attr("fill", (d) => (d.children ? color(d.depth) : "white"))
+      .attr("fill", (d) => (d.children ? color(d.depth) : "white"));
+
+    //mouse events
+    node
       .on("mouseover", function (event, d) {
         tooltip
           .html(
             !d.children
-              ? "Name: " + d.data.name + "<br>" + "Value: " + d.data.value
+              ? "ID: " +
+                  d.data.name.replace(".csv", "") +
+                  "<br>" +
+                  "Number of AMR sequences: " +
+                  d.data.value
               : "Name: " + d.data.name
           )
           .style("visibility", "visible");
@@ -215,24 +154,30 @@ export default function BubbleChart(props) {
           );
         }
       })
-      .on(
-        "click",
-        (event, d) => {
-          if (focus !== d) {
-            console.log(d);
-            zoom(event, d);
-            event.stopPropagation();
-          }
+      .on("click", (event, d) => {
+        if (focus !== d && d.depth !== 2) {
+          zoom(event, d);
+          event.stopPropagation();
         }
-        // {
-        //   console.log(d);
-        // }
-        // focus !== d && (zoom(event, d), event.stopPropagation())
-      )
-      .on("mousemove", function (event) {
+        if (d.depth === 2) {
+          selectSample(d.data.name.replace(".csv", ""));
+          if (preClick !== null) {
+            d3.selectAll("._" + preClick).attr(
+              "class",
+              "node node--leaf _" + preClick
+            );
+          }
+          d3.selectAll("._" + d.data.name.replace(".csv", "")).attr(
+            "class",
+            "node node--leaf active _" + d.data.name.replace(".csv", "")
+          );
+          preClick = d.data.name.replace(".csv", "");
+        }
+      })
+      .on("mousemove", (event) => {
         return tooltip
-          .style("left", event.x + 100 + "px")
-          .style("top", event.y - 10 + "px");
+          .style("left", event.pageX + 10 + "px")
+          .style("top", event.pageY - 50 + "px");
       });
 
     //label
@@ -302,9 +247,11 @@ export default function BubbleChart(props) {
   // render again every time there are new data adjusted
   useEffect(() => {
     if (!isLoading && data) {
+      d3.selectAll(".node").remove();
+      d3.selectAll("text").remove();
       drawChart();
     }
-  }, [drawChart, isLoading]);
+  }, [data, isLoading]);
   // eslint-disable-next-line
 
   return (
@@ -321,7 +268,8 @@ export default function BubbleChart(props) {
         more information would be displayed such as details about antibiotics
         and samples.
       </p>
-      <div id="bubblechart" />
+      <svg ref={ref} width={"100%"} height={width} />
+      {/* <Button onClick={setData(data2)}>Hello</Button> */}
     </div>
   );
 }
