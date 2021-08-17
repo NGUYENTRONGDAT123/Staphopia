@@ -22,10 +22,6 @@ export default function AMRPage () {
   const [loading, setLoading] = useState (false);
   const [error, setError] = useState (false);
 
-  // useEffect (() => {
-  //   // getData ();
-  //   dispatch(fetchPackedCircleData);
-  // }, []);
 
   async function getData () {
     const url = '/api/packed-circle';
