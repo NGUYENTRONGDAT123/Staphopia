@@ -335,84 +335,39 @@ router.get("/packed-circle", async (req, res, next) => {
   let pipeline;
 
   // Get all neccessary data for packed circle graph
-  if (req.query.samples === undefined) {
-    key = "packed-circle";
-    pipeline = [
-      {
-        $group: {
-          _id: {
-            class: "$Class",
-            name: "$Name",
-          },
-          value: { $sum: 1 },
+  key = "packed-circle";
+  pipeline = [
+    {
+      $group: {
+        _id: {
+          class: "$Class",
+          name: "$Name",
         },
+        value: { $sum: 1 },
       },
-      {
-        $group: {
-          _id: "$_id.class",
-          children: {
-            $push: {
-              name: "$_id.name",
-              value: "$value",
-            },
+    },
+    {
+      $group: {
+        _id: "$_id.class",
+        children: {
+          $push: {
+            name: "$_id.name",
+            value: "$value",
           },
         },
       },
-      {
-        $addFields: {
-          name: "$_id",
-        },
+    },
+    {
+      $addFields: {
+        name: "$_id",
       },
-      {
-        $project: {
-          _id: 0,
-        },
+    },
+    {
+      $project: {
+        _id: 0,
       },
-    ];
-
-    // exmple for search query: localhost:8393/api/packed-circle?samples=[163,123];
-  } else {
-    samples = JSON.parse(req.query.samples.toString());
-    key = samples.join("-");
-    for (var i = 0; i < samples.length; i++) {
-      samples[i] = samples[i] + ".csv";
-    }
-    pipeline = [
-      {
-        $match: { Name: { $in: samples } },
-      },
-      {
-        $group: {
-          _id: {
-            class: "$Class",
-            name: "$Name",
-          },
-          value: { $sum: 1 },
-        },
-      },
-      {
-        $group: {
-          _id: "$_id.class",
-          children: {
-            $push: {
-              name: "$_id.name",
-              value: "$value",
-            },
-          },
-        },
-      },
-      {
-        $addFields: {
-          name: "$_id",
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-        },
-      },
-    ];
-  }
+    },
+  ];
 
   // try to get data from redis
   redis_get(key)
