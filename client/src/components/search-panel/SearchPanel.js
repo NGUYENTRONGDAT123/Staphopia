@@ -18,6 +18,82 @@ export default function SearchPanel () {
   const [toAddSample, setToAddSample] = useState ([]);
   const [foundSample, setFoundSample] = useState ([]);
 
+  const [expandedKeys, setExpandedKeys] = useState ([]);
+  const [checkedKeys, setCheckedKeys] = useState ([]);
+  const [selectedKeys, setSelectedKeys] = useState ([]);
+  const [autoExpandParent, setAutoExpandParent] = useState (true);
+  const [searchValue, setSearchValue] = useState ([]);
+
+  const onChange = e => {
+    const {value} = e.target;
+    if (value !== '') {
+      const expandedKeys = dataList
+        .map (item => {
+          if (item.title.indexOf (value) > -1) {
+            return getParentKey (item.key, data);
+          }
+          return null;
+        })
+        .filter ((item, i, self) => item && self.indexOf (item) === i);
+
+      const checkedKeys = dataList
+        .map (item => {
+          if (item.key.indexOf (value) > -1) {
+            return item.key;
+          }
+          return null;
+        })
+        .filter ((item, i, self) => item && self.indexOf (item) === i);
+      // this.setState ({
+      //   expandedKeys,
+      //   searchValue: value,
+      //   autoExpandParent: true,
+      // });
+      setExpandedKeys (expandedKeys);
+      setCheckedKeys (checkedKeys);
+      setSearchValue (value);
+      setAutoExpandParent (true);
+    } else {
+      setExpandedKeys ([]);
+      setCheckedKeys ([]);
+      setSearchValue (value);
+      setAutoExpandParent (true);
+    }
+  };
+
+  const getParentKey = (key, tree) => {
+    let parentKey;
+    for (let i = 0; i < tree.length; i++) {
+      const node = tree[i];
+      if (node.children) {
+        if (node.children.some (item => item.key === key)) {
+          parentKey = node.key;
+        } else if (getParentKey (key, node.children)) {
+          parentKey = getParentKey (key, node.children);
+        }
+      }
+    }
+    return parentKey;
+  };
+
+  const onExpand = expandedKeysValue => {
+    console.log ('onExpand', expandedKeysValue); // if not set autoExpandParent to false, if children expanded, parent can not collapse.
+    // or, you can remove all expanded children keys.
+
+    setExpandedKeys (expandedKeysValue);
+    setAutoExpandParent (false);
+  };
+
+  const onCheck = checkedKeysValue => {
+    console.log ('onCheck', checkedKeysValue);
+    setCheckedKeys (checkedKeysValue);
+  };
+
+  const onSelect = (selectedKeysValue, info) => {
+    console.log ('onSelect', selectedKeysValue);
+    setSelectedKeys (selectedKeysValue);
+  };
+
   const filter = e => {
     const keyword = e.target.value;
     if (keyword !== '') {
