@@ -94,7 +94,7 @@ export async function fetchSelectedSample(sampleId) {
   const sampleResult = await fetch(sampleInfoUrl);
   const sampleInfo = await sampleResult.json();
   return {
-    amrTable,
-    sampleInfo,
+    amrTable: amrTable.result,
+    sampleInfo: sampleInfo.result,
   };
 }

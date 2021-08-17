@@ -26,3 +26,21 @@ export function dispatchPackedCircleData(data) {
     });
   };
 }
+
+export function dispatchDeleteSample(samples) {
+  return (dispatch) => {
+    dispatch({
+      type: types.DELETE_SAMPLE,
+      payload: samples,
+    });
+  };
+}
+
+export function dispatchRestoreSample(samples) {
+  return (dispatch) => {
+    dispatch({
+      type: types.RESTORE_SAMPLE,
+      payload: samples,
+    });
+  };
+}

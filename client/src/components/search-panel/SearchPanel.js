@@ -3,7 +3,7 @@ import { Card, Input, Button, Tree } from "antd";
 const { Search } = Input;
 
 export default function SearchPanel(props) {
-  const { packedData, selectSample } = props;
+  const { packedData, selectSample, deleteSample, restoreSample } = props;
 
   const [data, setData] = useState([]);
   const [dataList, setDataList] = useState([]);
@@ -156,14 +156,14 @@ export default function SearchPanel(props) {
         dataTemp1[i].children = filtered;
       }
     }
-
+    deleteSample(dataTemp1);
     setData(dataTemp1);
-    console.log(restoreData);
   };
 
   const handleRestore = (value) => {
     // let dataTemp2 = [...restoreData]
     let dataTemp2 = JSON.parse(JSON.stringify(restoreData));
+    restoreSample(dataTemp2);
     setData(dataTemp2);
   };
 

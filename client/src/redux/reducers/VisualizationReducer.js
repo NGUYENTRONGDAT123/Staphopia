@@ -28,6 +28,17 @@ export default function Visualization(state = initialState, action) {
         packedCircleData: action.payload,
       };
 
+    case types.DELETE_SAMPLE:
+      return {
+        ...state,
+        packedCircleData: action.payload,
+      };
+
+    case types.RESTORE_SAMPLE:
+      return {
+        ...state,
+        packedCircleData: action.payload,
+      };
     default:
       return initialState;
   }

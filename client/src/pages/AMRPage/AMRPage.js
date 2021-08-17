@@ -8,7 +8,9 @@ import "./AMRPage.css";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchPackedCircleData, fetchSelectedSample } from "../../api/AMRapi";
 import {
+  dispatchDeleteSample,
   dispatchPackedCircleData,
+  dispatchRestoreSample,
   selectSample,
 } from "../../redux/actions/visualization";
 
@@ -38,12 +40,22 @@ export default function AMRPage() {
     const data = await fetchSelectedSample(sample);
     dispatch(selectSample(data));
   };
+
+  const handleDeleteSample = (samples) => {
+    dispatch(dispatchDeleteSample(samples));
+  };
+
+  const handleRestoreSample = (samples) => {
+    dispatch(dispatchRestoreSample(samples));
+  };
   return (
     <Row gutter={[8, 8]} type="flex">
       <Col span={5}>
         <SearchPanel
           packedData={PackedCircleData}
           selectSample={handleSelectSample}
+          deleteSample={handleDeleteSample}
+          restorSample={handleRestoreSample}
         />
       </Col>
       <Col span={13}>
