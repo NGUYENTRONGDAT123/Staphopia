@@ -71,7 +71,7 @@ export default function AMRPage() {
             restoreSample={handleRestoreSample}
           />
         ) : (
-          <div></div>
+          <div />
         )}
       </Col>
       <Col span={13}>
@@ -100,7 +100,11 @@ export default function AMRPage() {
         <Row gutter={[8, 8]}>
           <Col key="Sample-Info" span={24}>
             <Card title="Sample Information">
-              <SampleInfoPanel />
+              {SampleInfoData !== null ? (
+                <SampleInfoPanel sampleMetadata={SampleInfoData} />
+              ) : (
+                <div />
+              )}
             </Card>
           </Col>
         </Row>
