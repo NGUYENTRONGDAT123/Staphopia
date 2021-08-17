@@ -1,13 +1,14 @@
-import * as types from "../types";
+import * as types from '../types';
 const initialState = {
   sampleInfo: null,
   amrStatistic: null,
   sampleSelection: null,
   amrTable: null,
   packedCircleData: null,
+  packedCircleRestoreData: null,
 };
 
-export default function Visualization(state = initialState, action) {
+export default function Visualization (state = initialState, action) {
   switch (action.type) {
     case types.SAMPLE_SELECTED:
       return {
@@ -26,6 +27,12 @@ export default function Visualization(state = initialState, action) {
       return {
         ...state,
         packedCircleData: action.payload,
+      };
+
+    case types.FETCH_PACKED_CIRCLE_RESTORE_DATA:
+      return {
+        ...state,
+        packedCircleRestoreData: action.payload,
       };
 
     case types.DELETE_SAMPLE:

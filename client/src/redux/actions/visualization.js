@@ -27,6 +27,15 @@ export function dispatchPackedCircleData(data) {
   };
 }
 
+export function dispatchPackedCircleRestoreData(data) {
+  return (dispatch) => {
+    dispatch({
+      type: types.FETCH_PACKED_CIRCLE_RESTORE_DATA,
+      payload: data,
+    });
+  };
+}
+
 export function dispatchDeleteSample(samples) {
   return (dispatch) => {
     dispatch({

@@ -3,8 +3,13 @@ import {Card, Input, Button, Tree} from 'antd';
 const {Search} = Input;
 
 export default function SearchPanel (props) {
-  const {packedData, selectSample, deleteSample, restoreSample} = props;
-
+  const {
+    packedData,
+    selectSample,
+    deleteSample,
+    restoreSample,
+    restorePoint,
+  } = props;
   const [data, setData] = useState ([]);
   const [dataList, setDataList] = useState ([]);
   const [restoreData, setRestoreData] = useState ([]);
@@ -21,13 +26,7 @@ export default function SearchPanel (props) {
               title: packedData[i].name,
               key: packedData[i].name,
               children: [],
-            });
-
-            restoreDataTemp.push ({
-              title: packedData[i].name,
-              key: packedData[i].name,
-              children: [],
-            });
+            });       
 
             dataListTemp.push ({
               title: packedData[i].name,
@@ -38,13 +37,7 @@ export default function SearchPanel (props) {
                 title: packedData[i].children[j].name,
                 key: packedData[i].name.concat (packedData[i].children[j].name),
                 value: packedData[i].children[j].value,
-              });
-
-              restoreDataTemp[restoreDataTemp.length - 1].children.push ({
-                title: packedData[i].children[j].name,
-                key: packedData[i].name.concat (packedData[i].children[j].name),
-                value: packedData[i].children[j].value,
-              });
+              });        
 
               dataListTemp.push ({
                 title: packedData[i].children[j].name,
@@ -53,12 +46,33 @@ export default function SearchPanel (props) {
             }
           }
         }
+
+        for (let i = 0; i < restorePoint.length; i++) {
+          if (restorePoint[i].name !== null) {
+            restoreDataTemp.push ({
+              title: restorePoint[i].name,
+              key: restorePoint[i].name,
+              children: [],
+            });
+
+            for (let j = 0; j < restorePoint[i].children.length; j++) {
+              restoreDataTemp[restoreDataTemp.length - 1].children.push ({
+                title: restorePoint[i].children[j].name,
+                key: restorePoint[i].name.concat (
+                  restorePoint[i].children[j].name
+                ),
+                value: restorePoint[i].children[j].value,
+              });
+            }
+          }
+        }
       }
       setDataList (dataListTemp);
       setData (dataTemp);
       setRestoreData (restoreDataTemp);
+      console.log(restoreDataTemp);
     },
-    [packedData]
+    [packedData, restorePoint]
   );
 
   const [expandedKeys, setExpandedKeys] = useState ([]);
@@ -149,9 +163,10 @@ export default function SearchPanel (props) {
       }
     }
 
-    let newPackedData = formatData(dataTemp);
-    deleteSample(newPackedData);
+    let newPackedData = formatData (dataTemp);
+    deleteSample (newPackedData);
     setData (dataTemp);
+    console.log (restoreData);
   };
 
   const formatData = dataTemp => {
@@ -172,11 +187,10 @@ export default function SearchPanel (props) {
   };
 
   const handleRestore = value => {
-    // let dataTemp2 = [...restoreData]
-    let dataTemp = JSON.parse (JSON.stringify (restoreData));
-    let newPackedData = formatData(dataTemp);
+    let dataTemp2 = JSON.parse (JSON.stringify (restoreData));
+    let newPackedData = formatData(dataTemp2);
     restoreSample (newPackedData);
-    setData (dataTemp);
+    setData (dataTemp2);
   };
 
   const loop = data =>
