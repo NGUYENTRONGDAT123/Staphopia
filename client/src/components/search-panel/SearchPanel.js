@@ -213,7 +213,6 @@ export default function SearchPanel () {
 
   const onExpand = expandedKeysValue => {
     console.log ('onExpand', expandedKeysValue); // if not set autoExpandParent to false, if children expanded, parent can not collapse.
-    // or, you can remove all expanded children keys.
 
     setExpandedKeys (expandedKeysValue);
     setAutoExpandParent (false);
