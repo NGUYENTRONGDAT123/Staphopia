@@ -17,31 +17,32 @@ router.get("/amr-sample", async (req, res, next) => {
   const AMR = req.app.mongodb.db("AMR");
   let samples = null;
   let key = null;
+  let pipeline;
 
   // Get all data if query not found
-  try {
-    if (req.query.samples === undefined) {
-      key = "amr-sample";
-      pipeline = [
-        {
-          $match: { Name: { $exists: true } },
-        },
-      ];
-    } else {
-      samples = JSON.parse(req.query.samples.toString());
-      key = samples.join("-");
-      for (var i = 0; i < samples.length; i++) {
-        samples[i] = samples[i] + ".csv";
-      }
-      pipeline = [
-        {
-          $match: { Name: { $in: samples } },
-        },
-      ];
+  if (req.query.samples === undefined) {
+    key = "amr-sample";
+    pipeline = [
+      {
+        $match: { Name: { $exists: true } },
+      },
+    ];
+  } else {
+    samples = JSON.parse(req.query.samples.toString());
+    key = samples.join("-");
+    for (var i = 0; i < samples.length; i++) {
+      samples[i] = samples[i] + ".csv";
     }
-  } catch (err) {
-    res.status(400).send({ error: true, message: "Bad request!" });
+    pipeline = [
+      {
+        $match: { Name: { $in: samples } },
+      },
+    ];
   }
+
+  // catch (err) {
+  //   res.status (400).send ({error: true, message: 'Bad request!'});
+  // }
 
   // try to get data from redis
   redis_get(key)
@@ -400,29 +401,30 @@ router.get("/sample-metadata", async (req, res, next) => {
   const AMR = req.app.mongodb.db("AMR");
   let samples = null;
   let key = null;
+  let pipeline;
 
   // Get all data if query not found
-  try {
-    if (req.query.samples === undefined) {
-      key = "sample-metadata";
-      pipeline = [
-        {
-          $match: { sample_id: { $exists: true } },
-        },
-      ];
-    } else {
-      samples = JSON.parse(req.query.samples.toString());
-      key = "sample-metadata".concat(samples.join("-"));
-      samples = samples.map(Number);
-      pipeline = [
-        {
-          $match: { sample_id: { $in: samples } },
-        },
-      ];
-    }
-  } catch (err) {
-    res.status(400).send({ error: true, message: "Bad request!" });
+  // try {
+  if (req.query.samples === undefined) {
+    key = "sample-metadata";
+    pipeline = [
+      {
+        $match: { sample_id: { $exists: true } },
+      },
+    ];
+  } else {
+    samples = JSON.parse(req.query.samples.toString());
+    key = "sample-metadata".concat(samples.join("-"));
+    samples = samples.map(Number);
+    pipeline = [
+      {
+        $match: { sample_id: { $in: samples } },
+      },
+    ];
   }
+  // } catch (err) {
+  //   res.status(400).send({ error: true, message: "Bad request!" });
+  // }
 
   // try to get data from redis
   redis_get(key)

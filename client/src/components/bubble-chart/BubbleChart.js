@@ -11,7 +11,7 @@ import { Button } from "bootstrap";
 export default function BubbleChart(props) {
   const width = props.width;
   const height = props.height;
-  const dispatch = useDispatch();
+  const { data, isLoading } = props;
 
   // const [data, setData] = useState([]);
 
@@ -37,7 +37,6 @@ export default function BubbleChart(props) {
     .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
     .interpolate(d3.interpolateHcl);
 
-  let [data, isLoading] = PackedCircleData();
   let hierarchalData = makeHierarchy(data);
   let layoutPack = pack();
   let root = layoutPack(hierarchalData);
@@ -141,19 +140,13 @@ export default function BubbleChart(props) {
           );
         }
       })
-      .on(
-        "click",
-
-        (event, d) => {
-          if (focus !== d) {
-            //console.log(d);
-            // dispatch(selectSample(d));
-            // dispatch(showAMRTable(d));
-            zoom(event, d);
-            event.stopPropagation();
-          }
+      .on("click", (event, d) => {
+        if (focus !== d) {
+          console.log(d);
+          zoom(event, d);
+          event.stopPropagation();
         }
-      )
+      })
       .on("mousemove", (event) => {
         return tooltip
           .style("left", event.pageX + 100 + "px")
@@ -224,9 +217,9 @@ export default function BubbleChart(props) {
 
   //color
 
-  //render again every time there are new data adjusted
+  // render again every time there are new data adjusted
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && data) {
       drawChart();
     }
   }, [drawChart, isLoading]);

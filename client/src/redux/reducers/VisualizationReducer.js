@@ -4,6 +4,7 @@ const initialState = {
   amrStatistic: null,
   sampleSelection: null,
   amrTable: null,
+  packedCircleData: null,
 };
 
 export default function Visualization(state = initialState, action) {
@@ -11,7 +12,8 @@ export default function Visualization(state = initialState, action) {
     case types.SAMPLE_SELECTED:
       return {
         ...state,
-        sampleInfo: action.payload,
+        sampleInfo: action.payload.sampleInfo,
+        amrTable: action.payload.amrTable,
       };
 
     case types.SHOW_AMR_TABLE:
@@ -20,6 +22,23 @@ export default function Visualization(state = initialState, action) {
         amrTable: action.payload,
       };
 
+    case types.FETCH_PACKED_CIRCLE_DATA:
+      return {
+        ...state,
+        packedCircleData: action.payload,
+      };
+
+    case types.DELETE_SAMPLE:
+      return {
+        ...state,
+        packedCircleData: action.payload,
+      };
+
+    case types.RESTORE_SAMPLE:
+      return {
+        ...state,
+        packedCircleData: action.payload,
+      };
     default:
       return initialState;
   }

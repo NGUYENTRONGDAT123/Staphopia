@@ -72,6 +72,29 @@ export function PackedCircleData() {
     getRepo();
   }, [setRepo]);
   if (repo !== undefined) {
+    console.log(repo);
     return [repo, isLoading];
   }
+}
+
+export async function fetchPackedCircleData() {
+  const url = "http://localhost:8393/api/packed-circle";
+  const result = await fetch(url);
+  const data = await result.json();
+  return data.result;
+}
+
+export async function fetchSelectedSample(sampleId) {
+  const amrTableUrl = `http://localhost:8393/api/amr-sample?samples=[${sampleId}]`;
+  const sampleInfoUrl = `http://localhost:8393/api/sample-metadata?samples=[${sampleId}]`;
+
+  const amrResult = await fetch(amrTableUrl);
+  const amrTable = await amrResult.json();
+
+  const sampleResult = await fetch(sampleInfoUrl);
+  const sampleInfo = await sampleResult.json();
+  return {
+    amrTable: amrTable.result,
+    sampleInfo: sampleInfo.result,
+  };
 }
