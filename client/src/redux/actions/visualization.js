@@ -1,43 +1,46 @@
-import * as types from '../types';
-import axios from 'axios';
+import * as types from "../types";
 
-export function selectSample (sample) {
-  return dispatch => {
-    dispatch ({
+export function selectSample(data) {
+  return (dispatch) => {
+    dispatch({
       type: types.SAMPLE_SELECTED,
-      payload: sample,
+      payload: data,
     });
   };
 }
 
-export function showAMRTable (sample) {
-  return dispatch => {
-    dispatch ({
+export function showAMRTable(sample) {
+  return (dispatch) => {
+    dispatch({
       type: types.SHOW_AMR_TABLE,
       payload: sample,
     });
   };
 }
 
-// export function fetchPackedCircleData(sample) {
-//   return (dispatch) => {
-//     dispatch({
-//       type: types.FETCH_PACKED_CIRCLE_DATA,
-//       payload: sample,
-//     });
-//   };
-// }
+export function dispatchPackedCircleData(data) {
+  return (dispatch) => {
+    dispatch({
+      type: types.FETCH_PACKED_CIRCLE_DATA,
+      payload: data,
+    });
+  };
+}
 
-export async function fetchPackedCircleData (dispatch, getState) {
-  const url = '/api/packed-circle';
-  await axios
-    .get (url)
-    .then (response => {
-      dispatch ({type: types.FETCH_PACKED_CIRCLE_DATA, payload: response.data.result});
-    })
-    .catch (error => {
-      console.error ('Error fetching data: ', error);
-    })
- ;
-  
+export function dispatchDeleteSample(samples) {
+  return (dispatch) => {
+    dispatch({
+      type: types.DELETE_SAMPLE,
+      payload: samples,
+    });
+  };
+}
+
+export function dispatchRestoreSample(samples) {
+  return (dispatch) => {
+    dispatch({
+      type: types.RESTORE_SAMPLE,
+      payload: samples,
+    });
+  };
 }

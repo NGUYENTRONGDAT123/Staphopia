@@ -1,17 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Card, Menu, Input, List, Button } from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { useSelector, useDispatch } from "react-redux";
-import { selectSample } from "../../redux/actions/visualization";
-import axios from "axios";
 
 export default function SampleInfoPanel() {
-  const SampleInfo = useSelector((state) => state.Visualization.sampleInfo);
-  const AMRTable = useSelector((state) => state.Visualization.amrTable);
-  const SampleSelect = useSelector(
-    (state) => state.Visualization.sampleSelection
-  );
-
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
