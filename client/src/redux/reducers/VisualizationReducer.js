@@ -1,4 +1,4 @@
-import * as types from '../types';
+import * as types from "../types";
 const initialState = {
   sampleInfo: null,
   amrStatistic: null,
@@ -7,12 +7,13 @@ const initialState = {
   packedCircleData: null,
 };
 
-export default function Visualization (state = initialState, action) {
+export default function Visualization(state = initialState, action) {
   switch (action.type) {
     case types.SAMPLE_SELECTED:
       return {
         ...state,
-        sampleInfo: action.payload,
+        sampleInfo: action.payload.sampleInfo,
+        amrTable: action.payload.amrTable,
       };
 
     case types.SHOW_AMR_TABLE:

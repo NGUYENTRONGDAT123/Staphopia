@@ -1,10 +1,10 @@
 import * as types from "../types";
 
-export function selectSample(sample) {
+export function selectSample(data) {
   return (dispatch) => {
     dispatch({
       type: types.SAMPLE_SELECTED,
-      payload: sample,
+      payload: data,
     });
   };
 }

@@ -83,3 +83,18 @@ export async function fetchPackedCircleData() {
   const data = await result.json();
   return data.result;
 }
+
+export async function fetchSelectedSample(sampleId) {
+  const amrTableUrl = `http://localhost:8393/api/amr-sample?samples=[${sampleId}]`;
+  const sampleInfoUrl = `http://localhost:8393/api/sample-metadata?samples=[${sampleId}]`;
+
+  const amrResult = await fetch(amrTableUrl);
+  const amrTable = await amrResult.json();
+
+  const sampleResult = await fetch(sampleInfoUrl);
+  const sampleInfo = await sampleResult.json();
+  return {
+    amrTable,
+    sampleInfo,
+  };
+}

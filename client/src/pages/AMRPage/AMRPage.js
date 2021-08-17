@@ -6,8 +6,11 @@ import SampleInfoPanel from "../../components/sample-info-panel";
 // import data from "../../TestingData/data2";
 import "./AMRPage.css";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchPackedCircleData } from "../../api/AMRapi";
-import { dispatchPackedCircleData } from "../../redux/actions/visualization";
+import { fetchPackedCircleData, fetchSelectedSample } from "../../api/AMRapi";
+import {
+  dispatchPackedCircleData,
+  selectSample,
+} from "../../redux/actions/visualization";
 
 export default function AMRPage() {
   const [isLoadingPacked, setIsLoadingPacked] = useState(false);
@@ -20,6 +23,7 @@ export default function AMRPage() {
     (state) => state.Visualization.packedCircleData
   );
   const dispatch = useDispatch();
+
   useEffect(() => {
     async function getPackedData() {
       setIsLoadingPacked(true);
@@ -30,10 +34,17 @@ export default function AMRPage() {
     getPackedData();
   }, []);
 
+  const handleSelectSample = async (sample) => {
+    const data = await fetchSelectedSample(sample);
+    dispatch(selectSample(data));
+  };
   return (
     <Row gutter={[8, 8]} type="flex">
       <Col span={5}>
-        <SearchPanel packedData={PackedCircleData} />
+        <SearchPanel
+          packedData={PackedCircleData}
+          selectSample={handleSelectSample}
+        />
       </Col>
       <Col span={13}>
         <Row gutter={[8, 8]}>

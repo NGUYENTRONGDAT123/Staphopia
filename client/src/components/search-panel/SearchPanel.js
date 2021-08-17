@@ -1,69 +1,51 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Card, Menu, Input, List, Button, Tree } from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { useSelector, useDispatch } from "react-redux";
-import { selectSample } from "../../redux/actions/visualization";
+import { Card, Input, Button, Tree } from "antd";
 const { Search } = Input;
 
-export default function SearchPanel() {
-  const SampleInfo = useSelector((state) => state.Visualization.sampleInfo);
-  const PackedCircleData = useSelector(
-    (state) => state.Visualization.packedCircleData
-  );
-  const AMRTable = useSelector((state) => state.Visualization.amrTable);
-  const SampleSelect = useSelector(
-    (state) => state.Visualization.sampleSelection
-  );
-  const dispatch = useDispatch();
+export default function SearchPanel(props) {
+  const { packedData, selectSample } = props;
 
   const [data, setData] = useState([]);
   const [dataList, setDataList] = useState([]);
   const [restoreData, setRestoreData] = useState([]);
 
   useEffect(() => {
-    console.log("useEffect called");
     var dataTemp = [];
     var dataListTemp = [];
     var restoreDataTemp = [];
-    if (PackedCircleData !== null) {
-      for (let i = 0; i < PackedCircleData.length; i++) {
-        if (PackedCircleData[i].name !== null) {
+    if (packedData !== null) {
+      for (let i = 0; i < packedData.length; i++) {
+        if (packedData[i].name !== null) {
           dataTemp.push({
-            title: PackedCircleData[i].name,
-            key: PackedCircleData[i].name,
+            title: packedData[i].name,
+            key: packedData[i].name,
             children: [],
           });
 
           restoreDataTemp.push({
-            title: PackedCircleData[i].name,
-            key: PackedCircleData[i].name,
+            title: packedData[i].name,
+            key: packedData[i].name,
             children: [],
           });
 
           dataListTemp.push({
-            title: PackedCircleData[i].name,
-            key: PackedCircleData[i].name,
+            title: packedData[i].name,
+            key: packedData[i].name,
           });
-          for (let j = 0; j < PackedCircleData[i].children.length; j++) {
+          for (let j = 0; j < packedData[i].children.length; j++) {
             dataTemp[dataTemp.length - 1].children.push({
-              title: PackedCircleData[i].children[j].name,
-              key: PackedCircleData[i].name.concat(
-                PackedCircleData[i].children[j].name
-              ),
+              title: packedData[i].children[j].name,
+              key: packedData[i].name.concat(packedData[i].children[j].name),
             });
 
             restoreDataTemp[restoreDataTemp.length - 1].children.push({
-              title: PackedCircleData[i].children[j].name,
-              key: PackedCircleData[i].name.concat(
-                PackedCircleData[i].children[j].name
-              ),
+              title: packedData[i].children[j].name,
+              key: packedData[i].name.concat(packedData[i].children[j].name),
             });
 
             dataListTemp.push({
-              title: PackedCircleData[i].children[j].name,
-              key: PackedCircleData[i].name.concat(
-                PackedCircleData[i].children[j].name
-              ),
+              title: packedData[i].children[j].name,
+              key: packedData[i].name.concat(packedData[i].children[j].name),
             });
           }
         }
@@ -72,7 +54,7 @@ export default function SearchPanel() {
     setDataList(dataListTemp);
     setData(dataTemp);
     setRestoreData(restoreDataTemp);
-  }, [PackedCircleData]);
+  }, [packedData]);
 
   const [expandedKeys, setExpandedKeys] = useState([]);
   const [checkedKeys, setCheckedKeys] = useState([]);
@@ -146,7 +128,7 @@ export default function SearchPanel() {
     var matches = selectedKeysValue[0].match(/(\d+)/);
 
     if (matches) {
-      dispatch(selectSample(matches[0]));
+      selectSample(matches[0]);
     }
   };
 
