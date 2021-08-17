@@ -1,40 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from 'react';
 
-export default function SampleInfoPanel() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+export default function SampleInfoPanel (props) {
+  const {sampleMetadata} = props;
 
-  useEffect(() => {
-    getData();
-  }, []);
+  const [sampleId, setSampleId] = useState (null);
+  const [collectionDate, setCollectionDate] = useState (null);
+  const [location, setLocation] = useState (null);
+  const [experimentTitle, setExperimentTitle] = useState (null);
+  const [host, setHost] = useState (null);
+  const [isolationSource, setIsolationSource] = useState (null);
+  const [strain, setStrain] = useState (null);
 
-  async function getData() {
-    // const url = 'https://staphopia.emory.edu/api/sample/500/';
-    // const token = '7641a07e816112f899be1388e7df87526fb0b04e';
-    // await axios
-    //   .get (url, {
-    //     headers: {
-    //       'Authorization': `Token ${token}`,
-    //     }
-    //   })
-    //   .then (response => {
-    //     setData (response.data);
-    //   })
-    //   .catch (error => {
-    //     console.error ('Error fetching data: ', error);
-    //     setError (error);
-    //   })
-    //   .finally (() => {
-    //     setLoading (false);
-    //   });
-  }
+  useEffect (
+    () => {
+      setSampleId (sampleMetadata[0].sample_id);
+      setCollectionDate (sampleMetadata[0].collection_date);
+      setLocation (sampleMetadata[0].location);
+      setExperimentTitle (sampleMetadata[0].experiment_title);
+      setHost (sampleMetadata[0].host);
+      setIsolationSource (sampleMetadata[0].isolation_source);
+      setStrain (sampleMetadata[0].strain);
+    },
+    [sampleMetadata]
+  );
 
-  if (loading) return <div>Loading ...</div>;
-  if (error) return <div>Error</div>;
+  return(
+    <div>
+      <div>Sample ID: {sampleId}</div>
+      <div>Collection Date: {collectionDate}</div>
+      <div>Location: {location}</div>
+      <div>Experiment Title: {experimentTitle}</div>
+      <div>Host: {host}</div>
+      <div>Isolation Source: {isolationSource}</div>
+      <div>Strain: {strain}</div>
 
-  // console.log(data);
-
-  // 7641a07e816112f899be1388e7df87526fb0b04e
-  return <div>ok</div>;
+    </div>
+  )
+    
 }
