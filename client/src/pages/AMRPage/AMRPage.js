@@ -3,7 +3,6 @@ import {Row, Col, Card, Menu, Input, List, Button} from 'antd';
 import BubbleChart from '../../components/bubble-chart';
 import SearchPanel from '../../components/search-panel';
 import SampleInfoPanel from '../../components/sample-info-panel';
-import data from '../../TestingData/data2';
 import './AMRPage.css';
 import {useSelector, useDispatch} from 'react-redux';
 import {PackedCircleData} from '../../api/AMRapi';
