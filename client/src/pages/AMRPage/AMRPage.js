@@ -33,7 +33,7 @@ export default function AMRPage() {
   return (
     <Row gutter={[8, 8]} type="flex">
       <Col span={5}>
-        <SearchPanel />
+        <SearchPanel packedData={PackedCircleData} />
       </Col>
       <Col span={13}>
         <Row gutter={[8, 8]}>
