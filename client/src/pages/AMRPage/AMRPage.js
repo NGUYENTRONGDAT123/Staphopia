@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Card, Menu, Input, List, Button } from "antd";
+import { Card, Menu, Input, List, Button, Empty } from "antd";
+import { Row, Col } from "react-bootstrap";
 import BubbleChart from "../../components/bubble-chart";
 import SearchPanel from "../../components/search-panel";
 import SampleInfoPanel from "../../components/sample-info-panel";
@@ -15,12 +16,14 @@ import {
   selectSample,
 } from "../../redux/actions/visualization";
 import AmrTable from "../../components/amr-table";
+import AmrStatisticPanel from "../../components/AmrStatisticPanel";
 
 export default function AMRPage() {
   const [isLoadingSelect, setIsLoadingSelect] = useState(false);
   const [isLoadingPacked, setIsLoadingPacked] = useState(false);
   const SampleInfoData = useSelector((state) => state.Visualization.sampleInfo);
   const AMRTableData = useSelector((state) => state.Visualization.amrTable);
+  const [AMRStatisticData, setAMRStatisticData] = useState(null);
   const SampleSelectData = useSelector(
     (state) => state.Visualization.sampleSelection
   );
@@ -63,8 +66,8 @@ export default function AMRPage() {
   //   dispatch(selectSample(samples));
   // };
   return (
-    <Row gutter={[8, 8]} type="flex">
-      <Col span={5}>
+    <Row>
+      <Col lg={3}>
         {PackedCircleData !== null && PackedCircleRestoreData !== null ? (
           <SearchPanel
             packedData={PackedCircleData}
@@ -77,31 +80,20 @@ export default function AMRPage() {
           <div />
         )}
       </Col>
-      <Col span={13}>
-        <Row gutter={[8, 8]}>
-          <Col key="Bubble-chart" span={24}>
+      <Col lg={9}>
+        <Row>
+          <Col key="Bubble-chart">
             <Card title="AMR Visualisations">
               <BubbleChart
                 width="900"
-                height="600"
+                height="510"
                 data={PackedCircleData}
                 isLoading={isLoadingPacked}
                 selectSample={handleSelectSample}
               />
             </Card>
           </Col>
-        </Row>
-        <Row gutter={[8, 8]}>
-          <Col key="AMR-Table" span={24}>
-            <Card title="AMR Table">
-              <AmrTable data={AMRTableData} />
-            </Card>
-          </Col>
-        </Row>
-      </Col>
-      <Col span={6}>
-        <Row gutter={[8, 8]}>
-          <Col key="Sample-Info" span={24}>
+          <Col className="d-flex flex-column justify-content-between">
             <Card title="Sample Information">
               {SampleInfoData !== null ? (
                 <SampleInfoPanel
@@ -109,14 +101,29 @@ export default function AMRPage() {
                   isLoading={isLoadingSelect}
                 />
               ) : (
-                <div />
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description={<span>Please select sample</span>}
+                />
+              )}
+            </Card>
+            <Card title="AMR Statistic">
+              {AMRStatisticData !== null ? (
+                <AmrStatisticPanel />
+              ) : (
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description={<span>Please select sample</span>}
+                />
               )}
             </Card>
           </Col>
         </Row>
-        <Row gutter={[8, 8]}>
-          <Col key="AMR-Statistic" span={24}>
-            <Card title="AMR Statistic" />
+        <Row>
+          <Col key="AMR-Table">
+            <Card title="AMR Table">
+              <AmrTable data={AMRTableData} />
+            </Card>
           </Col>
         </Row>
       </Col>
