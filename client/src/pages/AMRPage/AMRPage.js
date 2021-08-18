@@ -103,7 +103,7 @@ export default function AMRPage () {
                     description={<span>Please select sample</span>}
                   />}
             </Card>
-            <Card title="AMR Statistic" style={{height: '30vh'}}>
+            <Card title="Antibiotic Information" style={{height: '30vh'}}>
               {AMRStatisticData !== null
                 ? <AmrStatisticPanel />
                 : <Empty
