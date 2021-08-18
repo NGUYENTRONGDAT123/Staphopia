@@ -161,7 +161,7 @@ const tableData = [
 ];
 
 export default function AmrTable({ data }) {
-  return <Table dataSource={tableData} columns={columns} />;
+  return <Table dataSource={data} columns={columns} />;
 }
 
 // Class, sub-class, contig start, contig end, length, gene symbol

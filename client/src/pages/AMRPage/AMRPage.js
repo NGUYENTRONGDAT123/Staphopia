@@ -17,6 +17,7 @@ import {
 import AmrTable from "../../components/amr-table";
 
 export default function AMRPage() {
+  const [isLoadingSelect, setIsLoadingSelect] = useState(false);
   const [isLoadingPacked, setIsLoadingPacked] = useState(false);
   const SampleInfoData = useSelector((state) => state.Visualization.sampleInfo);
   const AMRTableData = useSelector((state) => state.Visualization.amrTable);
@@ -44,8 +45,10 @@ export default function AMRPage() {
   }, []);
 
   const handleSelectSample = async (sample) => {
+    setIsLoadingSelect(true);
     const data = await fetchSelectedSample(sample);
     dispatch(selectSample(data));
+    setIsLoadingSelect(false);
   };
 
   const handleDeleteSample = (samples) => {
@@ -80,7 +83,7 @@ export default function AMRPage() {
             <Card title="AMR Visualisations">
               <BubbleChart
                 width="900"
-                height="900"
+                height="600"
                 data={PackedCircleData}
                 isLoading={isLoadingPacked}
                 selectSample={handleSelectSample}
@@ -91,7 +94,7 @@ export default function AMRPage() {
         <Row gutter={[8, 8]}>
           <Col key="AMR-Table" span={24}>
             <Card title="AMR Table">
-              <AmrTable />
+              <AmrTable data={AMRTableData} />
             </Card>
           </Col>
         </Row>
@@ -101,7 +104,10 @@ export default function AMRPage() {
           <Col key="Sample-Info" span={24}>
             <Card title="Sample Information">
               {SampleInfoData !== null ? (
-                <SampleInfoPanel sampleMetadata={SampleInfoData} />
+                <SampleInfoPanel
+                  sampleMetadata={SampleInfoData}
+                  isLoading={isLoadingSelect}
+                />
               ) : (
                 <div />
               )}

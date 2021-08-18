@@ -256,8 +256,8 @@ export default function BubbleChart(props) {
 
   return (
     <div>
-      <h2>Bubble Chart</h2>
-      <p>
+      {/* <>Bubble Chart</  h2> */}
+      {/* <p>
         Each dark green circle represents one type of Antibiotic, each smaller
         white circle represents one sample that has contigs resist to the
         Antibiotics. The size of the Antibiotic circle would be proportional to
@@ -267,8 +267,8 @@ export default function BubbleChart(props) {
         circle would be highlighted and when users zoom in the circle bucket,
         more information would be displayed such as details about antibiotics
         and samples.
-      </p>
-      <svg ref={ref} width={"100%"} height={width} />
+      </p> */}
+      <svg ref={ref} width={width} height={height} />
       {/* <Button onClick={setData(data2)}>Hello</Button> */}
     </div>
   );
