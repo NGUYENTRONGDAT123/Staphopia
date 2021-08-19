@@ -107,6 +107,7 @@ export default function AMRPage () {
                 data={PackedCircleData}
                 isLoading={isLoadingPacked}
                 selectSample={handleSelectSample}
+                selectAntibiotic={handleSelectAntibiotic}
               />
             </Card>
           </Col>

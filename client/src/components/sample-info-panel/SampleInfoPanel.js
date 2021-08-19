@@ -41,7 +41,7 @@ export default function SampleInfoPanel(props) {
       <div>
         <strong>Location:</strong> {location}
       </div>
-      <div>
+      <div style={{textAlign: 'center'}}>
         <strong>Experiment Title:</strong> {experimentTitle}
       </div>
       {host ? (

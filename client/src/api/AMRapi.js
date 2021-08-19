@@ -100,7 +100,7 @@ export async function fetchSelectedSample(sampleId) {
 }
 
 export async function fetchSelectedAntibiotic(antibiotic) {
-  const antibioticUrl = `/api/antibiotic?antibiotics=[${antibiotic}]`;
+  const antibioticUrl = `http://localhost:8393/api/antibiotics-info?antibiotics=["${antibiotic}"]`;
 
   const antibioticResult = await fetch(antibioticUrl);
   const data = await antibioticResult.json();

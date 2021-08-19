@@ -35,14 +35,14 @@ export default function SearchPanel(props) {
           });
           for (let j = 0; j < packedData[i].children.length; j++) {
             dataTemp[dataTemp.length - 1].children.push({
-              title: packedData[i].children[j].name,
-              key: packedData[i].name.concat(packedData[i].children[j].name),
+              title: packedData[i].children[j].name.replace ('.csv', ''),
+              key: packedData[i].name.concat(packedData[i].children[j].name.replace ('.csv', '')),
               value: packedData[i].children[j].value,
             });
 
             dataListTemp.push({
-              title: packedData[i].children[j].name,
-              key: packedData[i].name.concat(packedData[i].children[j].name),
+              title: packedData[i].children[j].name.replace ('.csv', ''),
+              key: packedData[i].name.concat(packedData[i].children[j].name.replace ('.csv', '')),
             });
           }
         }
@@ -58,9 +58,9 @@ export default function SearchPanel(props) {
 
           for (let j = 0; j < restorePoint[i].children.length; j++) {
             restoreDataTemp[restoreDataTemp.length - 1].children.push({
-              title: restorePoint[i].children[j].name,
+              title: restorePoint[i].children[j].name.replace ('.csv', ''),
               key: restorePoint[i].name.concat(
-                restorePoint[i].children[j].name
+                restorePoint[i].children[j].name.replace ('.csv', '')
               ),
               value: restorePoint[i].children[j].value,
             });
