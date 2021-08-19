@@ -129,16 +129,20 @@ export default function BubbleChart(props) {
     node
       .on("mouseover", function (event, d) {
         tooltip
-          .html(
-            !d.children
-              ? "ID: " +
-                  d.data.name.replace(".csv", "") +
-                  "<br>" +
-                  "Number of AMR sequences: " +
-                  d.data.value
-              : "Name: " + d.data.name
-          )
-          .style("visibility", "visible");
+          .html(() => {
+            if (!d.children) {
+              return (
+                "ID: " +
+                d.data.name.replace(".csv", "") +
+                "<br>" +
+                "Number of AMR sequences: " +
+                d.data.value
+              );
+            } else if (d.depth !== 0) {
+              return "Name: " + d.data.name;
+            }
+          })
+          .style("visibility", d.depth === 0 ? "hidden" : "visible");
         if (!d.children) {
           d3.selectAll("._" + d.data.name.replace(".csv", ""))
             .attr("stroke", "#000")
@@ -155,11 +159,12 @@ export default function BubbleChart(props) {
         }
       })
       .on("click", (event, d) => {
-        if (focus !== d && d.depth !== 2) {
+        console.log(d);
+        if (focus !== d && typeof d.children !== "undefined") {
           zoom(event, d);
           event.stopPropagation();
         }
-        if (d.depth === 2) {
+        if (!d.children) {
           selectSample(d.data.name.replace(".csv", ""));
           if (preClick !== null) {
             d3.selectAll("._" + preClick).attr(
@@ -187,6 +192,7 @@ export default function BubbleChart(props) {
       .data(root.descendants())
       .join("text")
       .style("fill-opacity", (d) => (d.parent === root ? 1 : 0))
+      .attr("text-anchor", "middle")
       .style("display", (d) => (d.parent === root ? "inline" : "none"))
       .text((d) =>
         !d.children ? d.data.name.replace(".csv", "") : d.data.name
@@ -268,7 +274,7 @@ export default function BubbleChart(props) {
         more information would be displayed such as details about antibiotics
         and samples.
       </p> */}
-      <svg ref={ref} width={width} height={height} />
+      <svg ref={ref} width={"100%"} height={"50vh"} />
       {/* <Button onClick={setData(data2)}>Hello</Button> */}
     </div>
   );
