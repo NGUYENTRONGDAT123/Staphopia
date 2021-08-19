@@ -1,5 +1,5 @@
 import React from "react";
 
-export default function AmrStatisticPanel({ amr }) {
+export default function AmrStatisticPanel({}) {
   return <div></div>;
 }
