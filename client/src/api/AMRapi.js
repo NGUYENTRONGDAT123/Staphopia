@@ -98,3 +98,12 @@ export async function fetchSelectedSample(sampleId) {
     sampleInfo: sampleInfo.result,
   };
 }
+
+export async function fetchSelectedAntibiotic(antibiotic) {
+  const antibioticUrl = `http://localhost:8393/api/antibiotics-info?antibiotics=["${antibiotic}"]`;
+
+  const antibioticResult = await fetch(antibioticUrl);
+  const data = await antibioticResult.json();
+
+  return data.result;
+}

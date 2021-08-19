@@ -9,6 +9,15 @@ export function selectSample(data) {
   };
 }
 
+export function selectAntibiotic(data) {
+  return (dispatch) => {
+    dispatch({
+      type: types.ANTIBIOTIC_SELECTED,
+      payload: data,
+    });
+  };
+}
+
 export function showAMRTable(sample) {
   return (dispatch) => {
     dispatch({
