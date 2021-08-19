@@ -49,23 +49,28 @@ export default function BubbleChart(props) {
     .style("background", "white")
     .style("cursor", "pointer");
 
+  // design the tooltip
+  const tooltip = d3
+    .select("body")
+    .append("div")
+    .style("position", "absolute")
+    .style("z-index", "10")
+    .style("visibility", "hidden")
+    .style("background-color", "black")
+    .style("border-radius", "5px")
+    .style("padding", "10px")
+    .style("color", "white");
+
+  //design the legend
+  // const legend = svg.selectAll(".legendItem");
+
   const drawChart = useCallback(() => {
-    let preClick = null;
-    svg.selectAll(".node").remove();
-
-    svg.on("click", (event) => zoom(event, root));
-    // design the tooltip
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("z-index", "10")
-      .style("visibility", "hidden")
-      .style("background-color", "black")
-      .style("border-radius", "5px")
-      .style("padding", "10px")
-      .style("color", "white");
-
+    // legend
+    //   .append("circle")
+    //   .attr("cx", width / 2)
+    //   .attr("cy", height / 2)
+    //   .attr("r", "100px")
+    //   .style("fill", "#69b3a2");
     //design the node
     const node = svg
       .selectAll("circle")
@@ -126,6 +131,7 @@ export default function BubbleChart(props) {
       .attr("fill", (d) => (d.children ? color(d.depth) : "white"));
 
     //mouse events
+    let preClick = null;
     node
       .on("mouseover", function (event, d) {
         tooltip
@@ -159,12 +165,11 @@ export default function BubbleChart(props) {
         }
       })
       .on("click", (event, d) => {
-        console.log(d);
-        if (focus !== d && typeof d.children !== "undefined") {
+        if (focus !== d && d.depth !== 2) {
           zoom(event, d);
           event.stopPropagation();
         }
-        if (!d.children) {
+        if (d.depth === 2) {
           selectSample(d.data.name.replace(".csv", ""));
           if (preClick !== null) {
             d3.selectAll("._" + preClick).attr(
@@ -185,6 +190,7 @@ export default function BubbleChart(props) {
           .style("top", event.pageY - 50 + "px");
       });
 
+    console.log(root.descendants());
     //label
     const label = svg
       .append("g")
@@ -193,10 +199,22 @@ export default function BubbleChart(props) {
       .join("text")
       .style("fill-opacity", (d) => (d.parent === root ? 1 : 0))
       .attr("text-anchor", "middle")
-      .style("display", (d) => (d.parent === root ? "inline" : "none"))
+      .style("display", (d) =>
+        //  (d.parent === root ? "inline" : "none")
+        {
+          if (d.depth === 1 && d.data.children.length === 0) {
+            return "none";
+          } else if (d.parent === root) {
+            return "inline";
+          } else {
+            return "none";
+          }
+        }
+      )
       .text((d) =>
         !d.children ? d.data.name.replace(".csv", "") : d.data.name
       );
+    label.exit().remove();
 
     zoomTo([root.x, root.y, root.r * 2]);
 

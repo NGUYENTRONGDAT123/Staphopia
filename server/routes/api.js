@@ -341,7 +341,7 @@ router.get("/packed-circle", async (req, res, next) => {
     {
       $group: {
         _id: {
-          class: "$Class",
+          class: "$Subclass",
           name: "$Name",
         },
         value: { $sum: 1 },
@@ -397,6 +397,7 @@ router.get("/packed-circle", async (req, res, next) => {
     });
 });
 
+//get the sample metadata
 router.get("/sample-metadata", async (req, res, next) => {
   const AMR = req.app.mongodb.db("AMR");
   let samples = null;
@@ -435,6 +436,64 @@ router.get("/sample-metadata", async (req, res, next) => {
       } else {
         // return data from mongodb
         return AMR.collection("Metadata").aggregate(pipeline).toArray();
+      }
+    })
+    .then(async (result) => {
+      // store the result from mongodb to redis
+      redis_client.setex(
+        key,
+        28800,
+        JSON.stringify({ source: "Redis Cache", result: result })
+      );
+
+      // send the result back to client
+      return res.send({ source: "Mongodb", result: result });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+//get antibiotics info
+router.get("/antibiotics-info", async (req, res, next) => {
+  const AMR = req.app.mongodb.db("AMR");
+  let antibiotics = null;
+  let key = null;
+  let pipeline;
+
+  // Get all data if query not found
+  // try {
+  if (req.query.antibiotics === undefined) {
+    key = "antibiotics-info";
+    pipeline = [
+      {
+        $match: { Subclass: { $exists: true } },
+      },
+    ];
+  } else {
+    antibiotics = JSON.parse(req.query.antibiotics.toString());
+    key = "antibiotics-info".concat(antibiotics.join("-"));
+    pipeline = [
+      {
+        $match: { Subclass: { $in: antibiotics } },
+      },
+    ];
+  }
+
+  // }catch (err) {
+  //   next(err);
+  //   // res.status(400).send({ error: true, message: "Bad request!" });
+  // }
+
+  // try to get data from redis
+  redis_get(key)
+    .then(async (result) => {
+      if (result) {
+        res.status(200).json(JSON.parse(result));
+        throw `Caught '${key}' in cache`;
+      } else {
+        // return data from mongodb
+        return AMR.collection("Antibiotics").aggregate(pipeline).toArray();
       }
     })
     .then(async (result) => {
