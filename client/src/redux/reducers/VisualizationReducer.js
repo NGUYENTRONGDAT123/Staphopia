@@ -1,6 +1,7 @@
 import * as types from '../types';
 const initialState = {
   sampleInfo: null,
+  antibioticInfo: null,
   amrStatistic: null,
   sampleSelection: null,
   amrTable: null,
@@ -15,6 +16,12 @@ export default function Visualization (state = initialState, action) {
         ...state,
         sampleInfo: action.payload.sampleInfo,
         amrTable: action.payload.amrTable,
+      };
+
+    case types.ANTIBIOTIC_SELECTED:
+      return {
+        ...state,
+        antibioticInfo: action.payload,
       };
 
     case types.SHOW_AMR_TABLE:
