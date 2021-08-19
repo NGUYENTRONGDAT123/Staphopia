@@ -7,21 +7,32 @@ import SampleInfoPanel from '../../components/sample-info-panel';
 // import data from "../../TestingData/data2";
 import './AMRPage.css';
 import {useSelector, useDispatch} from 'react-redux';
-import {fetchPackedCircleData, fetchSelectedSample} from '../../api/AMRapi';
+import {
+  fetchPackedCircleData,
+  fetchSelectedSample,
+  fetchSelectedAntibiotic,
+} from '../../api/AMRapi';
 import {
   dispatchDeleteSample,
   dispatchPackedCircleData,
   dispatchRestoreSample,
   dispatchPackedCircleRestoreData,
   selectSample,
+  selectAntibiotic,
 } from '../../redux/actions/visualization';
 import AmrTable from '../../components/amr-table';
-import AmrStatisticPanel from '../../components/AmrStatisticPanel';
+import AntibioticInfoPanel from '../../components/antibiotic-info-panel';
 
 export default function AMRPage () {
   const [isLoadingSelect, setIsLoadingSelect] = useState (false);
   const [isLoadingPacked, setIsLoadingPacked] = useState (false);
+  const [isLoadingAntibiotic, setIsLoadingAntibiotic] = useState (false);
+
   const SampleInfoData = useSelector (state => state.Visualization.sampleInfo);
+  const AntibioticInfoData = useSelector (
+    state => state.Visualization.antibioticInfo
+  );
+
   const AMRTableData = useSelector (state => state.Visualization.amrTable);
   const [AMRStatisticData, setAMRStatisticData] = useState (null);
   const SampleSelectData = useSelector (
@@ -54,6 +65,13 @@ export default function AMRPage () {
     setIsLoadingSelect (false);
   };
 
+  const handleSelectAntibiotic = async antibiotic => {
+    setIsLoadingAntibiotic (true);
+    const data = await fetchSelectedAntibiotic (antibiotic);
+    dispatch (selectAntibiotic (data));
+    setIsLoadingAntibiotic (false);
+  };
+
   const handleDeleteSample = samples => {
     dispatch (dispatchDeleteSample (samples));
   };
@@ -73,6 +91,7 @@ export default function AMRPage () {
                 selectSample={handleSelectSample}
                 deleteSample={handleDeleteSample}
                 restoreSample={handleRestoreSample}
+                selectAntibiotic={handleSelectAntibiotic}
               />
             : <div />}
         </Card>
@@ -104,8 +123,11 @@ export default function AMRPage () {
                   />}
             </Card>
             <Card title="Antibiotic Information" style={{height: '30vh'}}>
-              {AMRStatisticData !== null
-                ? <AmrStatisticPanel />
+              {AntibioticInfoData !== null
+                ? <AntibioticInfoPanel
+                    antibioticData={AntibioticInfoData}
+                    isLoading={isLoadingAntibiotic}
+                  />
                 : <Empty
                     image={Empty.PRESENTED_IMAGE_SIMPLE}
                     description={<span>Please select sample</span>}

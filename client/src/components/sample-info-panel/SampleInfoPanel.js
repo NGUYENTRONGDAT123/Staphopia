@@ -22,7 +22,6 @@ export default function SampleInfoPanel(props) {
     setStrain(sampleMetadata[0].strain);
   }, [sampleMetadata]);
 
-  const MainContent = () => {};
 
   if (props.isLoading)
     return (

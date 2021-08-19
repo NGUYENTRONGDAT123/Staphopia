@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {Card, Input, Button, Tree} from 'antd';
+import {select} from 'd3';
 const {Search} = Input;
 
 export default function SearchPanel (props) {
@@ -9,6 +10,7 @@ export default function SearchPanel (props) {
     deleteSample,
     restoreSample,
     restorePoint,
+    selectAntibiotic,
   } = props;
   const [data, setData] = useState ([]);
   const [dataList, setDataList] = useState ([]);
@@ -124,38 +126,6 @@ export default function SearchPanel (props) {
       setAutoExpandParent (true);
     }
   };
-  const onChange = e => {
-    const {value} = e.target;
-    if (value !== '') {
-      const expandedKeys = dataList
-        .map (item => {
-          if (item.title.indexOf (value) > -1) {
-            return getParentKey (item.key, data);
-          }
-          return null;
-        })
-        .filter ((item, i, self) => item && self.indexOf (item) === i);
-
-      const checkedKeys = dataList
-        .map (item => {
-          if (item.key.indexOf (value) > -1) {
-            return item.key;
-          }
-          return null;
-        })
-        .filter ((item, i, self) => item && self.indexOf (item) === i);
-
-      setExpandedKeys (expandedKeys);
-      setCheckedKeys (checkedKeys);
-      setSearchValue (value);
-      setAutoExpandParent (true);
-    } else {
-      setExpandedKeys ([]);
-      setCheckedKeys ([]);
-      setSearchValue (value);
-      setAutoExpandParent (true);
-    }
-  };
 
   const getParentKey = (key, tree) => {
     let parentKey;
@@ -185,12 +155,17 @@ export default function SearchPanel (props) {
   };
 
   const onSelect = (selectedKeysValue, info) => {
-    console.log ('onSelect', selectedKeysValue);
-    setSelectedKeys (selectedKeysValue);
-    var matches = selectedKeysValue[0].match (/(\d+)/);
-
-    if (matches) {
-      selectSample (matches[0]);
+    if (selectedKeysValue.length > 0) {
+      console.log ('onSelect', selectedKeysValue);
+      setSelectedKeys (selectedKeysValue);
+      var matches = selectedKeysValue[0].match (/(\d+)/);
+      if (matches) {
+        selectSample (matches[0]);
+        let splitString = selectedKeysValue[0].split (/([0-9]+)/);
+        selectAntibiotic (splitString[0]);
+      } else {
+        selectAntibiotic (selectedKeysValue[0]);
+      }
     }
   };
 
@@ -278,7 +253,7 @@ export default function SearchPanel (props) {
         selectedKeys={selectedKeys}
         treeData={loop (data)}
       />
-      <br></br>
+      <br />
       <Button
         onClick={e => {
           e.stopPropagation ();
