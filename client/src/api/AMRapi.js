@@ -3,7 +3,7 @@ const axios = require("axios").default;
 
 //get all AMR data
 export function AllAMRGenes() {
-  const url = "http://localhost:8393/api/amr-sample";
+  const url = "/api/amr-sample";
   const [repo, setRepo] = React.useState([]);
 
   const getRepo = async () => {
@@ -28,7 +28,7 @@ export function AllAMRGenes() {
 
 //fetch data based on sample id
 export function AMRGene(sample) {
-  const url = `http://localhost:8393/api/amr-sample?samples=[${sample}]`;
+  const url = `/api/amr-sample?samples=[${sample}]`;
   const [repo, setRepo] = React.useState([]);
 
   React.useEffect(() => {
@@ -53,7 +53,7 @@ export function AMRGene(sample) {
 
 // a function for fetching data from API for Packed Circle Graph
 export function PackedCircleData() {
-  const url = "http://localhost:8393/api/packed-circle";
+  const url = "/api/packed-circle";
   const [repo, setRepo] = React.useState([]);
   const [isLoading, setLoading] = React.useState(true);
   React.useEffect(() => {
@@ -78,15 +78,15 @@ export function PackedCircleData() {
 }
 
 export async function fetchPackedCircleData() {
-  const url = "http://localhost:8393/api/packed-circle";
+  const url = "/api/packed-circle";
   const result = await fetch(url);
   const data = await result.json();
   return data.result;
 }
 
 export async function fetchSelectedSample(sampleId) {
-  const amrTableUrl = `http://localhost:8393/api/amr-sample?samples=[${sampleId}]`;
-  const sampleInfoUrl = `http://localhost:8393/api/sample-metadata?samples=[${sampleId}]`;
+  const amrTableUrl = `/api/amr-sample?samples=[${sampleId}]`;
+  const sampleInfoUrl = `/api/sample-metadata?samples=[${sampleId}]`;
 
   const amrResult = await fetch(amrTableUrl);
   const amrTable = await amrResult.json();
