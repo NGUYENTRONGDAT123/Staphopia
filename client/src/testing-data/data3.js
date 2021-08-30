@@ -1,1 +1,1 @@
-export const data3 = require("./miserable.json");
+export const data3 = require("./company.json");

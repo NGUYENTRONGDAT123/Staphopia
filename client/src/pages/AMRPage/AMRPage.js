@@ -22,6 +22,7 @@ import {
 import AmrTable from "../../components/amr-table";
 import AntibioticInfoPanel from "../../components/antibiotic-info-panel";
 import NodeNetworkChart from "../../components/node-network-chart/NodeNetworkChart";
+import * as d3 from "d3";
 
 export default function AMRPage() {
   const [isLoadingSelect, setIsLoadingSelect] = useState(false);
@@ -101,7 +102,11 @@ export default function AMRPage() {
       <Col span={19}>
         <Row gutter={[8, 8]} type="flex">
           <Col span={19}>
-            <Card title="AMR Visualizations" style={{ height: "60vh" }}>
+            <Card
+              id="AMR-graph"
+              title="AMR Visualizations"
+              style={{ height: "60vh" }}
+            >
               {/* <BubbleChart
                 width="500"
                 height="500"
@@ -110,7 +115,7 @@ export default function AMRPage() {
                 selectSample={handleSelectSample}
                 selectAntibiotic={handleSelectAntibiotic}
               /> */}
-              <NodeNetworkChart />
+              <NodeNetworkChart height="400" width="1000" />
             </Card>
           </Col>
           <Col span={5}>
