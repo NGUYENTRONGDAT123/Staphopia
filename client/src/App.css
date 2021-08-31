@@ -1,7 +1,7 @@
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
-  background: #3AA2FB;
+  background: #3aa2fb;
 }
 
 /* Track */
@@ -11,15 +11,19 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #3AA2FB;
+  background: #3aa2fb;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #3AA2FB;
+  background: #3aa2fb;
 }
 
-html{
-  overflow-x: hidden; 
+html {
+  overflow-x: hidden;
 }
 
+#IFRAME_ID {
+  width: 100% !important;
+  height: 100% !important;
+}

@@ -107,15 +107,15 @@ export default function AMRPage() {
               title="AMR Visualizations"
               style={{ height: "60vh" }}
             >
-              {/* <BubbleChart
+              <BubbleChart
                 width="500"
                 height="500"
                 data={PackedCircleData}
                 isLoading={isLoadingPacked}
                 selectSample={handleSelectSample}
                 selectAntibiotic={handleSelectAntibiotic}
-              /> */}
-              <NodeNetworkChart height="400" width="1000" />
+              />
+              {/* <NodeNetworkChart height="400" width="1000" /> */}
             </Card>
           </Col>
           <Col span={5}>
