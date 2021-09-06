@@ -27,7 +27,6 @@
 }
 
 .notfound .notfound-404 h1 {
-  font-family: 'Titillium Web', sans-serif;
   font-size: 186px;
   font-weight: 900;
   margin: 0px;
@@ -40,14 +39,13 @@
 }
 
 .notfound h2 {
-  font-family: 'Titillium Web', sans-serif;
   font-size: 26px;
   font-weight: 700;
   margin: 0;
+  margin-top: 5rem;
 }
 
 .notfound p {
-  font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 0px;
@@ -55,7 +53,6 @@
 }
 
 .notfound a {
-  font-family: 'Titillium Web', sans-serif;
   display: inline-block;
   text-transform: uppercase;
   color: #fff;
@@ -70,6 +67,7 @@
   -webkit-transition: 0.2s all;
   transition: 0.2s all;
 }
+
 
 .notfound a:hover {
   opacity: 0.8;
