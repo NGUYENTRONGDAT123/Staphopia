@@ -2,8 +2,15 @@ import React, {useState, useEffect} from 'react';
 import {Row, Col, Card, Menu, Input, List, Button, Empty} from 'antd';
 // import { Row, Col } from "react-bootstrap";
 import BubbleChart from '../../components/bubble-chart';
+import NetworkChart from '../../components/network-chart/NetworkChart';
 import SearchPanel from '../../components/search-panel';
 import SampleInfoPanel from '../../components/sample-info-panel';
+import {
+  DataSet,
+  Network,
+  parseGephiNetwork,
+} from 'vis-network/standalone/esm/vis-network';
+
 // import data from "../../TestingData/data2";
 import './AMRPage.css';
 import {useSelector, useDispatch} from 'react-redux';
@@ -27,11 +34,41 @@ export default function AMRPage () {
   const [isLoadingSelect, setIsLoadingSelect] = useState (false);
   const [isLoadingPacked, setIsLoadingPacked] = useState (false);
   const [isLoadingAntibiotic, setIsLoadingAntibiotic] = useState (false);
+  const [tabKey, setTabKey] = useState ('bubbleGraph');
 
   const SampleInfoData = useSelector (state => state.Visualization.sampleInfo);
   const AntibioticInfoData = useSelector (
     state => state.Visualization.antibioticInfo
   );
+
+  // load the JSON file containing the Gephi network.
+  var gephiJSON = require ('./filtered.json'); // code in importing_from_gephi.
+
+  // you can customize the result like with these options. These are explained below.
+  // These are the default options.
+  var parserOptions = {
+    edges: {
+      inheritColor: false,
+    },
+    nodes: {
+      fixed: true,
+      parseColor: false,
+    },
+  };
+
+  // parse the gephi file to receive an object
+  // containing nodes and edges in vis format.
+  var parsed = parseGephiNetwork (gephiJSON, parserOptions);
+
+  const nodes = new DataSet (parsed.nodes);
+  const edges = new DataSet (parsed.edges);
+
+  console.log(parsed.nodes);
+
+  const networkData = {
+    nodes,
+    edges,
+  };
 
   const AMRTableData = useSelector (state => state.Visualization.amrTable);
   const [AMRStatisticData, setAMRStatisticData] = useState (null);
@@ -47,16 +84,19 @@ export default function AMRPage () {
   );
   const dispatch = useDispatch ();
 
-  useEffect (() => {
-    async function getPackedData () {
-      setIsLoadingPacked (true);
-      const result = await fetchPackedCircleData ();
-      dispatch (dispatchPackedCircleData (result));
-      dispatch (dispatchPackedCircleRestoreData (result));
-      setIsLoadingPacked (false);
-    }
-    getPackedData ();
-  }, []);
+  useEffect (
+    () => {
+      async function getPackedData () {
+        setIsLoadingPacked (true);
+        const result = await fetchPackedCircleData ();
+        dispatch (dispatchPackedCircleData (result));
+        dispatch (dispatchPackedCircleRestoreData (result));
+        setIsLoadingPacked (false);
+      }
+      getPackedData ();
+    },
+    [tabKey]
+  );
 
   const handleSelectSample = async sample => {
     setIsLoadingSelect (true);
@@ -80,6 +120,36 @@ export default function AMRPage () {
     dispatch (dispatchRestoreSample (samples));
   };
 
+  const tabList = [
+    {
+      key: 'bubbleGraph',
+      tab: 'AMR Bubble Graph',
+    },
+    {
+      key: 'networkGraph',
+      tab: 'AMR Network Graph',
+    },
+  ];
+
+  const contentListNoTitle = {
+    bubbleGraph: (
+      <BubbleChart
+        width="500"
+        height="500"
+        data={PackedCircleData}
+        isLoading={isLoadingPacked}
+        selectSample={handleSelectSample}
+        selectAntibiotic={handleSelectAntibiotic}
+      />
+    ),
+    networkGraph: <p>app content</p>,
+  };
+
+  const onTabChange = key => {
+    console.log (key);
+    setTabKey (key);
+  };
+
   return (
     <Row gutter={[8, 8]} type="flex">
       <Col span={5}>
@@ -100,7 +170,7 @@ export default function AMRPage () {
       <Col span={19}>
         <Row gutter={[8, 8]} type="flex">
           <Col span={19}>
-            <Card title="AMR Visualizations" style={{height: '60vh'}}>
+            {/* <Card title="AMR Visualizations" style={{height: '60vh'}}>
               <BubbleChart
                 width="500"
                 height="500"
@@ -109,7 +179,27 @@ export default function AMRPage () {
                 selectSample={handleSelectSample}
                 selectAntibiotic={handleSelectAntibiotic}
               />
+            </Card> */}
+            <Card
+              style={{height: '60vh'}}
+              tabList={tabList}
+              activeTabKey={tabKey}
+              onTabChange={key => {
+                onTabChange (key);
+              }}
+            >
+              {tabKey === 'bubbleGraph'
+                ? <BubbleChart
+                    width="500"
+                    height="500"
+                    data={PackedCircleData}
+                    isLoading={isLoadingPacked}
+                    selectSample={handleSelectSample}
+                    selectAntibiotic={handleSelectAntibiotic}
+                  />
+                : <NetworkChart data={networkData} />}
             </Card>
+
           </Col>
           <Col span={5}>
             <Card title="Sample Information" style={{height: '30vh'}}>
