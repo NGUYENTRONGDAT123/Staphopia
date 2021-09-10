@@ -64,46 +64,45 @@ function App() {
     //   <Footer style={{textAlign: 'center'}}>WebScape Team</Footer>
     // </Layout>
 
-    // (
-    //   <Router>
-    //     <Layout style={{minHeight: '100vh'}}>
-    //       <Header>
-    //         <Menu theme="dark" mode="horizontal">
-    //           <Menu.Item key="1">
-    //             <span>Home</span>
-    //             <Link to="/" />
-    //           </Menu.Item>
-    //           <Menu.Item key="2">
-    //             <span>AMR</span>
-    //             <Link to="/AMR" />
-    //           </Menu.Item>
-    //         </Menu>
-    //       </Header>
-    //       <Content
-    //         style={{
-    //           margin: '8px 8px',
-    //           background: '#fff',
-    //           minHeight: 280,
-    //         }}
-    //       >
-    //         <Route exact path="/" component={HomePage} />
-    //         <Route path="/AMR" component={AMRPage} />
-    //       </Content>
-    //       <Footer style={{textAlign: 'center', margin: '0px 0px 0px 0px'}}>
-    //         WebScape Team ©2021 StaphBook
-    //       </Footer>
-
-    //     </Layout>
-    //   </Router>
-    // )
-    //<iframe frameborder="0" id="IFRAME_ID" src="http://127.0.0.1:3001" />
-    <Iframe
-      url="http://127.0.0.1:3001"
-      position="absolute"
-      width="100%"
-      height="100%"
-    />
+    <Router>
+      <Layout style={{ minHeight: "100vh" }}>
+        <Header>
+          <Menu theme="dark" mode="horizontal">
+            <Menu.Item key="1">
+              <span>Home</span>
+              <Link to="/" />
+            </Menu.Item>
+            <Menu.Item key="2">
+              <span>AMR</span>
+              <Link to="/AMR" />
+            </Menu.Item>
+          </Menu>
+        </Header>
+        <Content
+          style={{
+            margin: "8px 8px",
+            background: "#fff",
+            minHeight: 280,
+          }}
+        >
+          <Route exact path="/" component={HomePage} />
+          <Route path="/AMR" component={AMRPage} />
+        </Content>
+        <Footer style={{ textAlign: "center", margin: "0px 0px 0px 0px" }}>
+          WebScape Team ©2021 StaphBook
+        </Footer>
+      </Layout>
+    </Router>
+    // <Iframe
+    //   url="http://127.0.0.1:3001"
+    //   position="absolute"
+    //   width="100%"
+    //   height="100%"
+    //   sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-top-navigation allow-downloads"
+    // />
   );
 }
 
 export default App;
+
+//<iframe frameborder="0" id="IFRAME_ID" src="http://127.0.0.1:3001" />

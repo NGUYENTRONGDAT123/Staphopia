@@ -1,31 +1,30 @@
-import React from 'react';
-import './HomePage.css';
-import {Panel} from 'rsuite';
-import {Container, Row, Col} from 'react-bootstrap';
-import BubbleGraph from '../../image/BubbleGraph.png';
-import CircleGraph from '../../image/CircleGraph.png';
-import NodeNetwork from '../../image/NodeNetwork.png';
+import React from "react";
+import "./HomePage.css";
+import { Panel } from "rsuite";
+import { Container, Row, Col } from "react-bootstrap";
+import BubbleGraph from "../../image/BubbleGraph.png";
+import CircleGraph from "../../image/CircleGraph.png";
+import NodeNetwork from "../../image/NodeNetwork.png";
 
-export default function HomePage () {
-
-
+export default function HomePage() {
   let numbers = [10, 6, 2, 3, 7, 1, 2];
   let array = [];
   let sum = 0;
   for (let i = 0; i < numbers.length; i++) {
     let numberToInsert = numbers[i];
-    let index = sortedIndex (array, numberToInsert);
+    let index = sortedIndex(array, numberToInsert);
     array.splice(index, 0, numberToInsert);
 
     if (index >= array.length / 2) {
-      sum = sum + (array.length - 1 - index + 2)
+      sum = sum + (array.length - 1 - index + 2);
     } else {
-      sum = sum + (index + index + 1)
+      sum = sum + (index + index + 1);
     }
   }
 
-  function sortedIndex (array, value) {
-    var low = 0, high = array.length;
+  function sortedIndex(array, value) {
+    var low = 0,
+      high = array.length;
 
     while (low < high) {
       var mid = (low + high) >>> 1;
