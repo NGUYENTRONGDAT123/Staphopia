@@ -7,6 +7,8 @@ const initialState = {
   amrTable: null,
   packedCircleData: null,
   packedCircleRestoreData: null,
+  networkData: null,
+  networkRestoreData: null,
 };
 
 export default function Visualization (state = initialState, action) {
@@ -28,6 +30,18 @@ export default function Visualization (state = initialState, action) {
       return {
         ...state,
         amrTable: action.payload,
+      };
+
+    case types.FETCH_NETWORK_DATA:
+      return {
+        ...state,
+        networkData: action.payload,
+      };
+
+    case types.FETCH_NETWORK_RESTORE_DATA:
+      return {
+        ...state,
+        networkRestoreData: action.payload,
       };
 
     case types.FETCH_PACKED_CIRCLE_DATA:
@@ -53,6 +67,19 @@ export default function Visualization (state = initialState, action) {
         ...state,
         packedCircleData: action.payload,
       };
+
+    case types.DELETE_ANTIBIOTIC:
+      return {
+        ...state,
+        networkData: action.payload,
+      };
+
+    case types.RESTORE_ANTIBIOTIC:
+      return {
+        ...state,
+        networkData: action.payload,
+      };
+
     default:
       return initialState;
   }

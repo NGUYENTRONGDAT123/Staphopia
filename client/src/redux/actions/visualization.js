@@ -27,6 +27,25 @@ export function showAMRTable(sample) {
   };
 }
 
+export function dispatchNetworkData(data) {
+  return (dispatch) => {
+    dispatch({
+      type: types.FETCH_NETWORK_DATA,
+      payload: data,
+    });
+  };
+}
+
+export function dispatchNetworkRestoreData(data) {
+  return (dispatch) => {
+    dispatch({
+      type: types.FETCH_NETWORK_RESTORE_DATA,
+      payload: data,
+    });
+  };
+}
+
+
 export function dispatchPackedCircleData(data) {
   return (dispatch) => {
     dispatch({
@@ -59,6 +78,24 @@ export function dispatchRestoreSample(samples) {
     dispatch({
       type: types.RESTORE_SAMPLE,
       payload: samples,
+    });
+  };
+}
+
+export function dispatchDeleteAntibiotic(antibiotics) {
+  return (dispatch) => {
+    dispatch({
+      type: types.DELETE_ANTIBIOTIC,
+      payload: antibiotics,
+    });
+  };
+}
+
+export function dispatchRestoreAntibiotic(antibiotics) {
+  return (dispatch) => {
+    dispatch({
+      type: types.RESTORE_ANTIBIOTIC,
+      payload: antibiotics,
     });
   };
 }

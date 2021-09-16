@@ -190,7 +190,6 @@ export default function BubbleChart (props) {
             .style ('top', event.pageY - 50 + 'px');
         });
 
-      console.log (root.descendants ());
       //label
       const label = svg
         .append ('g')

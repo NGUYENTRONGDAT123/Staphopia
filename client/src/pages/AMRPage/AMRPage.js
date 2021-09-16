@@ -4,6 +4,7 @@ import {Row, Col, Card, Menu, Input, List, Button, Empty} from 'antd';
 import BubbleChart from '../../components/bubble-chart';
 import NetworkChart from '../../components/network-chart/NetworkChart';
 import SearchPanel from '../../components/search-panel';
+import FilterPanel from '../../components/filter-panel/FilterPanel';
 import SampleInfoPanel from '../../components/sample-info-panel';
 import {
   DataSet,
@@ -18,12 +19,17 @@ import {
   fetchPackedCircleData,
   fetchSelectedSample,
   fetchSelectedAntibiotic,
+  fetchNetworkData,
 } from '../../api/AMRapi';
 import {
   dispatchDeleteSample,
-  dispatchPackedCircleData,
   dispatchRestoreSample,
+  dispatchPackedCircleData,
   dispatchPackedCircleRestoreData,
+  dispatchDeleteAntibiotic,
+  dispatchRestoreAntibiotic,
+  dispatchNetworkData,
+  dispatchNetworkRestoreData,
   selectSample,
   selectAntibiotic,
 } from '../../redux/actions/visualization';
@@ -33,6 +39,7 @@ import AntibioticInfoPanel from '../../components/antibiotic-info-panel';
 export default function AMRPage () {
   const [isLoadingSelect, setIsLoadingSelect] = useState (false);
   const [isLoadingPacked, setIsLoadingPacked] = useState (false);
+  const [isLoadingNetwork, setIsLoadingNetwork] = useState (false);
   const [isLoadingAntibiotic, setIsLoadingAntibiotic] = useState (false);
   const [tabKey, setTabKey] = useState ('bubbleGraph');
 
@@ -43,6 +50,8 @@ export default function AMRPage () {
 
   // load the JSON file containing the Gephi network.
   var gephiJSON = require ('./filtered.json'); // code in importing_from_gephi.
+
+  var subclassData = require ('./../../testing-data/subclass-sample.json');
 
   // you can customize the result like with these options. These are explained below.
   // These are the default options.
@@ -63,8 +72,6 @@ export default function AMRPage () {
   const nodes = new DataSet (parsed.nodes);
   const edges = new DataSet (parsed.edges);
 
-  console.log(parsed.nodes);
-
   const networkData = {
     nodes,
     edges,
@@ -82,6 +89,13 @@ export default function AMRPage () {
   const PackedCircleRestoreData = useSelector (
     state => state.Visualization.packedCircleRestoreData
   );
+
+  const NetworkData = useSelector (state => state.Visualization.networkData);
+
+  const NetworkRestoreData = useSelector (
+    state => state.Visualization.networkRestoreData
+  );
+
   const dispatch = useDispatch ();
 
   useEffect (
@@ -94,8 +108,17 @@ export default function AMRPage () {
         setIsLoadingPacked (false);
       }
       getPackedData ();
+
+      async function getNetworkData () {
+        setIsLoadingNetwork (true);
+        const result = await fetchNetworkData ();
+        dispatch (dispatchNetworkData (result));
+        dispatch (dispatchNetworkRestoreData (result));
+        setIsLoadingNetwork (false);
+      }
+      getNetworkData ();
     },
-    [tabKey]
+    [tabKey, dispatch]
   );
 
   const handleSelectSample = async sample => {
@@ -118,6 +141,14 @@ export default function AMRPage () {
 
   const handleRestoreSample = samples => {
     dispatch (dispatchRestoreSample (samples));
+  };
+
+  const handleDeleteAntibiotic = antibiotics => {
+    dispatch (dispatchDeleteAntibiotic (antibiotics));
+  };
+
+  const handleRestoreAntibiotic = antibiotics => {
+    dispatch (dispatchRestoreAntibiotic (antibiotics));
   };
 
   const tabList = [
@@ -150,20 +181,42 @@ export default function AMRPage () {
     setTabKey (key);
   };
 
+  let searchPanel;
+  if (tabKey === 'bubbleGraph') {
+    if (PackedCircleData !== null && PackedCircleRestoreData !== null) {
+      searchPanel = (
+        <SearchPanel
+          packedData={PackedCircleData}
+          restorePoint={PackedCircleRestoreData}
+          selectSample={handleSelectSample}
+          deleteSample={handleDeleteSample}
+          restoreSample={handleRestoreSample}
+          selectAntibiotic={handleSelectAntibiotic}
+        />
+      );
+    } else {
+      searchPanel = <div>Loading</div>;
+    }
+  } else if (tabKey === 'networkGraph') {
+    if (NetworkData !== null && NetworkRestoreData !== null) {
+      searchPanel = (
+        // <FilterPanel
+        //   networkData={NetworkData}
+        //   restorePoint={NetworkRestoreData}
+        //   deleteAntibiotic={handleDeleteAntibiotic}
+        //   restoreAntibiotic={handleRestoreAntibiotic}
+        // />
+        <div>Filter Panel</div>
+      );
+    } else {
+      searchPanel = <div>Loading</div>;
+    }
+  }
   return (
     <Row gutter={[8, 8]} type="flex">
       <Col span={5}>
         <Card title="Search Sample" style={{height: '100vh'}}>
-          {PackedCircleData !== null && PackedCircleRestoreData !== null
-            ? <SearchPanel
-                packedData={PackedCircleData}
-                restorePoint={PackedCircleRestoreData}
-                selectSample={handleSelectSample}
-                deleteSample={handleDeleteSample}
-                restoreSample={handleRestoreSample}
-                selectAntibiotic={handleSelectAntibiotic}
-              />
-            : <div />}
+          {searchPanel}
         </Card>
 
       </Col>
@@ -197,7 +250,7 @@ export default function AMRPage () {
                     selectSample={handleSelectSample}
                     selectAntibiotic={handleSelectAntibiotic}
                   />
-                : <NetworkChart data={networkData} />}
+                : <NetworkChart data={NetworkData} />}
             </Card>
 
           </Col>
