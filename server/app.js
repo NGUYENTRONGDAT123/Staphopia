@@ -7,7 +7,8 @@ var bodyParser = require ('body-parser');
 var cors = require ('cors');
 var {MongoClient} = require ('mongodb');
 var apiRouter = require ('./routes/api');
-var swaggerJSDoc = require('swagger-jsdoc');
+var swaggerJSDoc = require ('swagger-jsdoc');
+var swaggerUi = require('swagger-ui-express');
 
 var app = express ();
 
@@ -32,9 +33,16 @@ app.use (cors ());
 const swaggerDefinition = {
   openapi: '3.0.0',
   info: {
-    title: 'Express API for JSONPlaceholder',
+    title: 'Express API for WebScape Capstone Project',
     version: '1.0.0',
+    description: 'This is a REST API application made with Express. It retrieves AMR data.',
   },
+  servers: [
+    {
+      url: 'http://localhost:8393',
+      description: 'Development server',
+    },
+  ],
 };
 
 // Setup swagger
@@ -44,9 +52,7 @@ const options = {
   apis: ['./routes/*.js'],
 };
 
-const swaggerSpec = swaggerJSDoc(options);
-
-
+const swaggerSpec = swaggerJSDoc (options);
 
 // connect to the Database
 // covid 19 MongoDB
@@ -61,9 +67,10 @@ MongoClient.connect (DATABASE_URL, {
     app.mongodb = db;
     app.emit ('ready');
     app.use ('/api', apiRouter);
+    app.use ('/docs', swaggerUi.serve, swaggerUi.setup (swaggerSpec));
     if (process.env.NODE_ENV === 'production') {
-      app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname + '/../client/build/index.html'));
+      app.get ('*', (req, res) => {
+        res.sendFile (path.join (__dirname + '/../client/build/index.html'));
       });
     }
     // catch 404 and forward to error handler
