@@ -71,7 +71,6 @@ export default function SearchPanel(props) {
     setDataList(dataListTemp);
     setData(dataTemp);
     setRestoreData(restoreDataTemp);
-    // console.log (restoreDataTemp);
   }, [packedData, restorePoint]);
 
   const [expandedKeys, setExpandedKeys] = useState([]);
@@ -237,7 +236,6 @@ export default function SearchPanel(props) {
       <Search
         style={{ marginBottom: 8 }}
         placeholder="Search"
-        // onChange={onChange}
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
       />

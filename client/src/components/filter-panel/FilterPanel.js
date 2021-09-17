@@ -14,8 +14,52 @@ export default function FilterPanel (props) {
   const [dataList, setDataList] = useState ([]);
   const [restoreData, setRestoreData] = useState ([]);
 
-  //TODO: Add data
-  useEffect (() => {}, [networkData, restorePoint]);
+  useEffect (
+    () => {
+      let dataTemp = [];
+      let dataListTemp = [];
+      let restoreDataTemp = [];
+
+      if (networkData !== null) {
+        let listAntibiotics = networkData
+          .map (a => a.subclasses)
+          .flat (1)
+          .filter ((v, i, a) => a.indexOf (v) === i)
+          .sort ();
+
+        let listRestoreAntibiotics = restorePoint
+          .map (a => a.subclasses)
+          .flat (1)
+          .filter ((v, i, a) => a.indexOf (v) === i)
+          .sort ();
+
+        for (let i = 0; i < listAntibiotics.length; i++) {
+          dataTemp.push ({
+            title: listAntibiotics[i],
+            key: listAntibiotics[i],
+            children: [],
+          });
+
+          dataListTemp.push ({
+            title: listAntibiotics[i],
+            key: listAntibiotics[i],
+          });
+        }
+
+        for (let i = 0; i < listRestoreAntibiotics.length; i++) {
+          restoreDataTemp.push ({
+            title: listRestoreAntibiotics[i],
+            key: listRestoreAntibiotics[i],
+            children: [],
+          });
+        }
+        setDataList (dataListTemp);
+        setData (dataTemp);
+        setRestoreData (restoreDataTemp);
+      }
+    },
+    [networkData, restorePoint]
+  );
 
   const [expandedKeys, setExpandedKeys] = useState ([]);
   const [checkedKeys, setCheckedKeys] = useState ([]);
@@ -35,8 +79,9 @@ export default function FilterPanel (props) {
   };
 
   const triggerSearch = e => {
-    const {value} = e.target;
+    let {value} = e.target;
     if (value !== '') {
+      value = value.toUpperCase();
       const expandedKeys = dataList
         .map (item => {
           if (item.title.indexOf (value) > -1) {
@@ -83,47 +128,47 @@ export default function FilterPanel (props) {
   };
 
   const onExpand = expandedKeysValue => {
-    //console.log ('onExpand', expandedKeysValue); // if not set autoExpandParent to false, if children expanded, parent can not collapse.
-
     setExpandedKeys (expandedKeysValue);
     setAutoExpandParent (false);
   };
 
   const onCheck = checkedKeysValue => {
-    //console.log ('onCheck', checkedKeysValue);
     setCheckedKeys (checkedKeysValue);
   };
 
+  const handleDeleteSelected = value => {
+    let antibioticToDelete = checkedKeys;
+    let filtered = data.filter (function (item) {
+      return antibioticToDelete.indexOf (item.key) <= -1;
+    });
 
+    let newNetworkData = JSON.parse (JSON.stringify (networkData));
 
-  //TODO
-//   const handleDeleteSelected = value => {
-//     let sampleToDelete = checkedKeys;
-//     let dataTemp = [...data];
-//     for (let i = 0; i < data.length; i++) {
-//       if (data[i] !== undefined) {
-//         var filtered = data[i].children.filter (function (item) {
-//           return sampleToDelete.indexOf (item.key) <= -1;
-//         });
-//         dataTemp[i].children = filtered;
-//       }
-//     }
+    for (let i = 0; i < newNetworkData.length; i++) {
+      newNetworkData[i].subclasses = newNetworkData[
+        i
+      ].subclasses.filter (function (item) {
+        var valid = true;
+        for (var i = 0; i < antibioticToDelete.length; i++) {
+          if (item.indexOf (antibioticToDelete[i]) > -1) {
+            valid = false;
+          }
+        }
 
-//     let newPackedData = formatData (dataTemp);
-//     deleteSample (newPackedData);
-//     setData (dataTemp);
-//     //console.log (restoreData);
-//   };
+        return valid;
+      });
+    }
 
+    deleteAntibiotic (newNetworkData);
+    setData (filtered);
+  };
 
-
-  //TODO
-//   const handleRestore = value => {
-//     let dataTemp2 = JSON.parse (JSON.stringify (restoreData));
-//     let newPackedData = formatData (dataTemp2);
-//     restoreSample (newPackedData);
-//     setData (dataTemp2);
-//   };
+  const handleRestore = value => {
+    let dataTemp2 = JSON.parse (JSON.stringify (restoreData));
+    let newNetworkData = JSON.parse (JSON.stringify (restorePoint));
+    restoreAntibiotic (newNetworkData);
+    setData (dataTemp2);
+  };
 
   const loop = data =>
     data.map (item => {
@@ -170,7 +215,7 @@ export default function FilterPanel (props) {
       <Button
         onClick={e => {
           e.stopPropagation ();
-        //   handleRestore ();
+          handleRestore ();
         }}
       >
         Restore
@@ -178,7 +223,7 @@ export default function FilterPanel (props) {
       <Button
         onClick={e => {
           e.stopPropagation ();
-        //   handleDeleteSelected ();
+          handleDeleteSelected ();
         }}
       >
         Delete Selected

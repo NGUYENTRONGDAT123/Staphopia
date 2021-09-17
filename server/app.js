@@ -7,6 +7,7 @@ var bodyParser = require ('body-parser');
 var cors = require ('cors');
 var {MongoClient} = require ('mongodb');
 var apiRouter = require ('./routes/api');
+var swaggerJSDoc = require('swagger-jsdoc');
 
 var app = express ();
 
@@ -28,7 +29,22 @@ app.use (cors ());
 //   res.sendFile(path.join(__dirname + '/../client/build/index.html'));
 // });
 
+const swaggerDefinition = {
+  openapi: '3.0.0',
+  info: {
+    title: 'Express API for JSONPlaceholder',
+    version: '1.0.0',
+  },
+};
 
+// Setup swagger
+const options = {
+  swaggerDefinition,
+  // Paths to files containing OpenAPI definitions
+  apis: ['./routes/*.js'],
+};
+
+const swaggerSpec = swaggerJSDoc(options);
 
 
 

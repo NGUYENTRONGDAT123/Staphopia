@@ -13,6 +13,9 @@ redis_client.flushdb (function (err, succeeded) {
   else console.log ('Fail to clear Redis cache');
 });
 
+
+// e.g. localhost:8393/api/amr-sample?subclasses=FOSFOMYCIN,QUATERNARY AMMONIUM
+// e.g. localhost:8393/api/sample-subclass
 router.get ('/amr-sample', async (req, res, next) => {
   const AMR = req.app.mongodb.db ('AMR');
   let samples = null;

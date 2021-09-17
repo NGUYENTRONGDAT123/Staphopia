@@ -195,21 +195,31 @@ export default function AMRPage () {
         />
       );
     } else {
-      searchPanel = <div>Loading</div>;
+      searchPanel = (
+        <Empty
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          description={<span>Loading sample data</span>}
+        />
+      );
     }
   } else if (tabKey === 'networkGraph') {
     if (NetworkData !== null && NetworkRestoreData !== null) {
       searchPanel = (
-        // <FilterPanel
-        //   networkData={NetworkData}
-        //   restorePoint={NetworkRestoreData}
-        //   deleteAntibiotic={handleDeleteAntibiotic}
-        //   restoreAntibiotic={handleRestoreAntibiotic}
-        // />
-        <div>Filter Panel</div>
+        <FilterPanel
+          networkData={NetworkData}
+          restorePoint={NetworkRestoreData}
+          deleteAntibiotic={handleDeleteAntibiotic}
+          restoreAntibiotic={handleRestoreAntibiotic}
+        />
       );
+      // <div>Filter Panel</div>
     } else {
-      searchPanel = <div>Loading</div>;
+      searchPanel = (
+        <Empty
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          description={<span>Loading network data</span>}
+        />
+      );
     }
   }
   return (

@@ -101,29 +101,14 @@ export default function NetworkChart (props) {
 
   useEffect (
     () => {
-      console.log (data);
       let networkData = data;
       let labels = [];
       let threshold = 0.7;
-      let availableSubclasses = [
-        'AMIKACIN',
-        'BETA-LACTAM',
-        'BLEOMYCIN',
-        'CHLORAMPHENICOL',
-        'FOSFOMYCIN',
-        'FUSIDIC ACID',
-        'KANAMYCIN',
-        'LINCOSAMIDE',
-        'MACROLIDE',
-        'METHICILLIN',
-        'MUPIROCIN',
-        'QUATERNARY AMMONIUM',
-        'QUINOLONE',
-        'SPECTINOMYCIN',
-        'STREPTOMYCIN',
-        'TETRACYCLINE',
-        'TRIMETHOPRIM',
-      ];
+      let availableSubclasses = networkData
+        .map (a => a.subclasses)
+        .flat (1)
+        .filter ((v, i, a) => a.indexOf (v) === i)
+        .sort ();
 
       for (let i = 0; i < networkData.length; i++) {
         labels.push (networkData[i]._id.replace ('.csv', ''));
@@ -177,7 +162,7 @@ export default function NetworkChart (props) {
               target: j + 1,
               weight: networkMatrix[i][j],
               id: index,
-              description: [...new Set(descriptionMatrix[i][j])].sort(),
+              description: [...new Set (descriptionMatrix[i][j])].sort (),
             });
           }
         }
@@ -191,8 +176,6 @@ export default function NetworkChart (props) {
       let edge_data = finalData.links.map (function (d) {
         return [d.source, d.target, d.weight];
       });
-      console.log (node_data);
-      console.log (edge_data);
 
       //var G = new jsnx.cycleGraph();
       var G = new jsnx.Graph ();

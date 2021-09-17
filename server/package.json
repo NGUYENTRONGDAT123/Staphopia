@@ -23,6 +23,8 @@
     "nodemon": "^2.0.12",
     "prefix": "^1.0.0",
     "redis": "^3.0.2",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.1.6",
     "test": "^0.6.0",
     "util": "^0.12.3"
   }
