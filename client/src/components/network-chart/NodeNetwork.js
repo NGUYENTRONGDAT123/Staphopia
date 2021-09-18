@@ -18,9 +18,11 @@ export default function Network(props) {
     xOffset,
   } = props;
 
+  //get the edges and links
   const nodes = data.nodes;
   const links = data.links;
 
+  //pan and zoom event
   let zoom = d3
     .zoom()
     .scaleExtent([1, 8])
@@ -28,15 +30,31 @@ export default function Network(props) {
       d3.selectAll(`g`).attr("transform", e.transform);
     });
 
+  // design the tooltip
+  const tooltip = d3
+    .select("body")
+    .append("div")
+    .style("position", "absolute")
+    .style("z-index", "10")
+    .style("visibility", "hidden")
+    .style("background-color", "black")
+    .style("border-radius", "5px")
+    .style("padding", "10px")
+    .style("color", "white");
+
   const drawChart = () => {
+    //setting width and height
     const width = width1;
     const height = height1;
+
+    //create svg (every elements is in svg) a.k.a container
     const svg = d3
       .select(`.${name}`)
       .attr("width", width)
       .attr("height", height)
-      .call(zoom);
+      .call(zoom); //allow pan and zoom within svg
 
+    //design simulation
     const simulation = d3
       .forceSimulation(nodes)
       .force(
@@ -58,8 +76,7 @@ export default function Network(props) {
         d3.forceCollide().radius((d) => d.size)
       );
 
-    //gravity
-
+    //dragging event
     const drag = (simulation) => {
       function dragstarted(event) {
         if (!event.active) simulation.alphaTarget(0.3).restart();
@@ -84,6 +101,7 @@ export default function Network(props) {
         .on("end", dragended);
     };
 
+    //design links
     const linkElements = svg
       .append("g")
       .selectAll("line")
@@ -92,7 +110,11 @@ export default function Network(props) {
         (enter) => {
           return enter
             .append("line")
-            .attr("class", `${lineName}`)
+            .attr(
+              "class",
+              (d) =>
+                `${lineName} source-${d.source.label} target-${d.target.label}`
+            )
             .attr("position", "absolute")
             .attr("z-index", 0)
             .attr("stroke-width", 0.5)
@@ -101,7 +123,11 @@ export default function Network(props) {
         (update) =>
           update
             .append("line")
-            .attr("class", `${lineName}`)
+            .attr(
+              "class",
+              (d) =>
+                `${lineName} source-${d.source.label} target-${d.target.label}`
+            )
             .attr("position", "absolute")
             .attr("z-index", 0)
             .attr("stroke-width", 0.5)
@@ -112,6 +138,7 @@ export default function Network(props) {
             .remove()
       );
 
+    //design node
     const nodeElements = svg
       .append("g")
       .selectAll("circle")
@@ -120,8 +147,9 @@ export default function Network(props) {
         (enter) => {
           return enter
             .append("circle")
-            .attr("class", `${nodeName}`)
+            .attr("class", (d) => `${nodeName} ${d.label}`)
             .attr("fill", (d) => d.color)
+            .attr("fill-opacity", 1)
             .attr("r", (d) => d.size * nodeRatio)
             .attr("stroke-width", 1)
             .style("stroke", "black")
@@ -138,7 +166,7 @@ export default function Network(props) {
         (update) =>
           update
             .append("circle")
-            .attr("class", `${nodeName}`)
+            .attr("class", (d) => `${nodeName} ${d.label}`)
             .attr("fill", (d) => d.color)
             .attr("r", (d) => d.size * nodeRatio)
             .attr("stroke-width", 1)
@@ -153,6 +181,68 @@ export default function Network(props) {
             .remove()
       );
 
+    //mouse events
+    //a list to know which node is connecting to which
+    const linkedByIndex = {};
+    links.forEach((d) => {
+      linkedByIndex[`${d.source.label},${d.target.label}`] = 1;
+    });
+
+    // boolean function. It returns true if nodes are connected to each other
+    function isConnected(a, b) {
+      return (
+        linkedByIndex[`${a.label},${b.label}`] ||
+        linkedByIndex[`${b.label},${a.label}`] ||
+        a.label === b.label
+      );
+    }
+
+    // if the nodes connected, highlight them and fade the others
+    function fade(opacity) {
+      return (event, d) => {};
+    }
+
+    // unfade all the nodes
+    function unfade() {
+      return (event, d) => {};
+    }
+
+    //initiating mouse events
+    nodeElements
+      .on("mouseover", (event, d) => {
+        tooltip
+          .html(() => {
+            return `Label: ${d.label}`;
+          })
+          .style("visibility", "visible");
+        nodeElements
+          .style("stroke-opacity", function (o) {
+            const thisOpacity = isConnected(d, o) ? 1 : 0.1;
+            return thisOpacity;
+          })
+          .style("fill-opacity", function (o) {
+            const thisOpacity = isConnected(d, o) ? 1 : 0.1;
+            return thisOpacity;
+          });
+
+        linkElements.style("stroke-width", (o) => {
+          return o.source.label === d.label || o.target.label === d.label
+            ? 2
+            : 0.5;
+        });
+      })
+      .on("mouseout", () => {
+        tooltip.style("visibility", "hidden");
+        nodeElements.style("stroke-opacity", 1).style("fill-opacity", 1);
+        linkElements.style("stoke-width", 0.5);
+      })
+      .on("mousemove", (event) => {
+        return tooltip
+          .style("left", event.pageX + 10 + "px")
+          .style("top", event.pageY - 50 + "px");
+      });
+
+    //design lable
     const lableElements = svg
       .append("g")
       .selectAll("text")
@@ -177,6 +267,7 @@ export default function Network(props) {
             .remove()
       );
 
+    //initiate the simulation
     const ticked = () => {
       lableElements
         .attr("x", (node) => {
@@ -202,12 +293,13 @@ export default function Network(props) {
         .attr("x2", (link) => link.target.x)
         .attr("y2", (link) => link.target.y);
     };
-
     simulation.on("tick", ticked);
+
     return svg.node();
   };
 
   useEffect(() => {
+    //remove all elements to redraw again
     d3.selectAll(`.${nodeName}`).remove();
     d3.selectAll(`.${lineName}`).remove();
     d3.selectAll(`.node-text`).remove();

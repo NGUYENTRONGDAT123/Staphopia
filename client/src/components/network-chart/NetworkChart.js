@@ -136,9 +136,9 @@ export default function NetworkChart(props) {
         distance={70}
         strength={-600}
         maxDistance={100}
-        name={"currency-network"}
-        nodeName={"currency-node"}
-        lineName={"currency-line"}
+        name={"node-network"}
+        nodeName={"node"}
+        lineName={"line"}
         nodeRatio={0.6}
         width1={1500}
         height1={500}
