@@ -30,6 +30,7 @@ import {
   dispatchRestoreAntibiotic,
   dispatchNetworkData,
   dispatchNetworkRestoreData,
+  dispatchSelectMst,
   selectSample,
   selectAntibiotic,
 } from '../../redux/actions/visualization';
@@ -119,6 +120,10 @@ export default function AMRPage () {
     dispatch (dispatchRestoreAntibiotic (antibiotics));
   };
 
+  const handleSelectMst = value => {
+    dispatch (dispatchSelectMst (value));
+  };
+
   const tabList = [
     {
       key: 'bubbleGraph',
@@ -164,6 +169,7 @@ export default function AMRPage () {
           restorePoint={NetworkRestoreData}
           deleteAntibiotic={handleDeleteAntibiotic}
           restoreAntibiotic={handleRestoreAntibiotic}
+          selectMst={handleSelectMst}
         />
       );
       // <div>Filter Panel</div>
@@ -239,7 +245,7 @@ export default function AMRPage () {
                     data={NetworkData}
                     isLoading={isLoadingNetwork}
                   />
-                  // <ProcessNode data={NetworkData} />
+              // <ProcessNode data={NetworkData} />
               }
             </Card>
           </Col>

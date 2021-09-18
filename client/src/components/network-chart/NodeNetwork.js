@@ -81,7 +81,7 @@ export default function Network (props) {
           .attr ('position', 'absolute')
           .attr ('z-index', 0)
           .attr ('stroke-width', 0.5)
-          .attr ('stroke', 'grey');
+          .attr ('stroke', d => d.color);
       },
       update =>
         update
@@ -90,7 +90,7 @@ export default function Network (props) {
           .attr ('position', 'absolute')
           .attr ('z-index', 0)
           .attr ('stroke-width', 0.5)
-          .attr ('stroke', 'grey'),
+          .attr ('stroke', d => d.color),
       exit =>
         exit
           .call (exit => exit.transition ().duration ((d, i) => i * 2))
@@ -194,13 +194,20 @@ export default function Network (props) {
 
   useEffect (
     () => {
-      d3.selectAll (`.${nodeName}`).remove ();
-      d3.selectAll (`.${lineName}`).remove ();
-      d3.selectAll (`.node-text`).remove ();
-      drawChart ();
+      console.log (data);
+      if (data !== []) {
+        d3.selectAll (`.${nodeName}`).remove ();
+        d3.selectAll (`.${lineName}`).remove ();
+        d3.selectAll (`.node-text`).remove ();
+        drawChart ();
+      }
     },
     [data]
   );
 
-  return <svg className={name} width={'100%'} height={'1500'} />;
+  if (data !== []) {
+    return <svg className={name} width={'100%'} height={'1500'} />;
+  } else {
+    return <h1>Error</h1>;
+  }
 }

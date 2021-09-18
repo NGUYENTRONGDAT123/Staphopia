@@ -19,6 +19,7 @@
     "j-louvain": "git+https://github.com/sirisacademic/jLouvain.git",
     "jlouvain": "^2.0.0",
     "jsnetworkx": "^0.3.4",
+    "kruskal-mst": "^1.0.0",
     "mathjs": "^9.4.5",
     "pdfmake": "^0.2.2",
     "react": "^17.0.2",

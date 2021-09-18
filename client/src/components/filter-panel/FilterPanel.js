@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {Card, Input, Button, Tree} from 'antd';
+import {Checkbox, Input, Button, Tree, Col, Row} from 'antd';
 import {select} from 'd3';
 const {Search} = Input;
 
@@ -8,6 +8,7 @@ export default function FilterPanel (props) {
     networkData,
     deleteAntibiotic,
     restoreAntibiotic,
+    selectMst,
     restorePoint,
   } = props;
   const [data, setData] = useState ([]);
@@ -81,7 +82,7 @@ export default function FilterPanel (props) {
   const triggerSearch = e => {
     let {value} = e.target;
     if (value !== '') {
-      value = value.toUpperCase();
+      value = value.toUpperCase ();
       const expandedKeys = dataList
         .map (item => {
           if (item.title.indexOf (value) > -1) {
@@ -170,6 +171,10 @@ export default function FilterPanel (props) {
     setData (dataTemp2);
   };
 
+  const handleCheckbox = value => {
+    selectMst (value);
+  };
+
   const loop = data =>
     data.map (item => {
       const index = item.title.indexOf (searchValue);
@@ -193,41 +198,66 @@ export default function FilterPanel (props) {
     });
   return (
     <div>
-      <Search
-        style={{marginBottom: 8}}
-        placeholder="Search"
-        // onChange={onChange}
-        onKeyDown={onKeyDown}
-        onKeyUp={onKeyUp}
-      />
-      <Tree
-        checkable
-        style={{overflow: 'auto', height: '72vh'}}
-        onExpand={onExpand}
-        expandedKeys={expandedKeys}
-        autoExpandParent={autoExpandParent}
-        onCheck={onCheck}
-        checkedKeys={checkedKeys}
-        selectedKeys={selectedKeys}
-        treeData={loop (data)}
-      />
-      <br />
-      <Button
-        onClick={e => {
-          e.stopPropagation ();
-          handleRestore ();
-        }}
-      >
-        Restore
-      </Button>
-      <Button
-        onClick={e => {
-          e.stopPropagation ();
-          handleDeleteSelected ();
-        }}
-      >
-        Delete Selected
-      </Button>
+      {/* <Row align="center"> */}
+        <Search
+          style={{marginBottom: 8}}
+          placeholder="Search"
+          // onChange={onChange}
+          onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
+        />
+        <Tree
+          checkable
+          style={{overflow: 'auto', height: '32vh', marginBottom: 20}}
+          onExpand={onExpand}
+          expandedKeys={expandedKeys}
+          autoExpandParent={autoExpandParent}
+          onCheck={onCheck}
+          checkedKeys={checkedKeys}
+          selectedKeys={selectedKeys}
+          treeData={loop (data)}
+        />
+
+      {/* </Row> */}
+
+      <Row align="center">
+        <Col>
+          <Button
+            onClick={e => {
+              e.stopPropagation ();
+              handleRestore ();
+            }}
+            style={{marginRight: 30}}
+            type="primary"
+          >
+            Restore
+          </Button>
+        </Col>
+        <Col>
+          <Button
+            onClick={e => {
+              e.stopPropagation ();
+              handleDeleteSelected ();
+            }}
+            type="primary"
+          >
+            Delete
+          </Button>
+        </Col>
+
+      </Row>
+      <Row align="center">
+        <Checkbox
+          onChange={e => {
+            e.stopPropagation ();
+            handleCheckbox (e.target.checked);
+          }}
+          style={{marginTop: 20}}
+        >
+          Minimum Spanning Tree
+        </Checkbox>
+      </Row>
+
     </div>
   );
 }

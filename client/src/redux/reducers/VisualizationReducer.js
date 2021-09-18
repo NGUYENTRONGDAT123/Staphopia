@@ -9,6 +9,7 @@ const initialState = {
   packedCircleRestoreData: null,
   networkData: null,
   networkRestoreData: null,
+  selectMst: false,
 };
 
 export default function Visualization (state = initialState, action) {
@@ -78,6 +79,12 @@ export default function Visualization (state = initialState, action) {
       return {
         ...state,
         networkData: action.payload,
+      };
+
+    case types.SELECT_MST:
+      return {
+        ...state,
+        selectMst: action.payload,
       };
 
     default:

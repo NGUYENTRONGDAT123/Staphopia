@@ -130,6 +130,7 @@ export default function NetworkChart (props) {
   let {finalData, loading} = ProcessNode (data);
 
   if (isLoading === false && loading === false) {
+    console.log(finalData);
     return (
       <Network
         data={finalData}

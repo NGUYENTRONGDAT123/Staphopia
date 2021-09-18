@@ -1,13 +1,16 @@
 import React, {useEffect, useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import './NetworkChart.css';
 const similarity = require ('compute-cosine-similarity');
 const jsnx = require ('jsnetworkx'); // in Node
 const jLouvain = require ('jlouvain');
+const k = require ('kruskal-mst');
 
 export default function ProcessNode (data) {
   //   const { data } = props;
   const [finalData, setFinalData] = useState ([]);
   const [loading, setLoading] = useState (true);
+  const isMst = useSelector (state => state.Visualization.selectMst);
 
   const process = async () => {
     let networkData = data;
@@ -16,6 +19,7 @@ export default function ProcessNode (data) {
 
     let colorBrewer = {
       Set2: {
+        1: ['rgb(252,141,98)'],
         2: ['rgb(252,141,98)', 'rgb(141,160,203)'],
         3: ['rgb(102,194,165)', 'rgb(252,141,98)', 'rgb(141,160,203)'],
         4: [
@@ -30,6 +34,33 @@ export default function ProcessNode (data) {
           'rgb(141,160,203)',
           'rgb(231,138,195)',
           'rgb(166,216,84)',
+        ],
+        6: [
+          'rgb(102,194,165)',
+          'rgb(252,141,98)',
+          'rgb(141,160,203)',
+          'rgb(231,138,195)',
+          'rgb(166,216,84)',
+          'rgb(255,217,47)',
+        ],
+        7: [
+          'rgb(102,194,165)',
+          'rgb(252,141,98)',
+          'rgb(141,160,203)',
+          'rgb(231,138,195)',
+          'rgb(166,216,84)',
+          'rgb(255,217,47)',
+          'rgb(229,196,148)',
+        ],
+        8: [
+          'rgb(102,194,165)',
+          'rgb(252,141,98)',
+          'rgb(141,160,203)',
+          'rgb(231,138,195)',
+          'rgb(166,216,84)',
+          'rgb(255,217,47)',
+          'rgb(229,196,148)',
+          'rgb(179,179,179)',
         ],
       },
     };
@@ -84,7 +115,7 @@ export default function ProcessNode (data) {
     finalDataTemp.nodes = [];
     finalDataTemp.links = [];
 
-    let index = 0;
+    let index = labels.length + 2;
     for (let i = 0; i < labels.length - 1; i++) {
       for (let j = i + 1; j < labels.length; j++) {
         if (networkMatrix[i][j] > 0) {
@@ -102,35 +133,44 @@ export default function ProcessNode (data) {
       }
     }
 
-    // let node_data = finalData.nodes.map (function (d) {
-    //   return d.id;
-    // });
+    if (isMst) {
+      let edges = finalDataTemp.links.map (function (item) {
+        return {
+          from: item.source,
+          to: item.target,
+          weight: item.weight,
+          id: item.id,
+          description: item.description,
+          color: item.color,
+        };
+      });
+      let mst = k.kruskal (edges);
+      console.log (mst);
+      finalDataTemp.links = mst.map (function (item) {
+        return {
+          source: item.from,
+          target: item.to,
+          weight: item.weight,
+          id: item.id,
+          description: item.description,
+          color: item.color,
+        };
+      });
+    }
 
     nodeData = [...new Set (nodeData)];
     edgeData = finalDataTemp.links.map (function (d) {
       return [d.source, d.target, d.weight];
     });
 
-    // let node_data = [...range (1, labels.length + 1)];
-    // let edge_data = finalDataTemp.links.map (function (d) {
-    //   return [d.source, d.target, d.weight];
-    // });
-
-    //var G = new jsnx.cycleGraph();
     var G = new jsnx.Graph ();
     G.addNodesFrom (nodeData);
     G.addEdgesFrom (edgeData);
 
     let betweenness = jsnx.betweennessCentrality (G);
-    // let eigenvector = jsnx.eigenvectorCentrality (G);
-    // let clustering = jsnx.clustering (G);
     let sizeRange = [20, 50];
     let betweennessArray = Object.values (betweenness._numberValues);
     let ratio = Math.max.apply (Math, betweennessArray);
-    // let normalized = [];
-    // for (let i = 0; i < betweennessArray.length; i++) {
-    //   normalized[i] = (betweennessArray[i] / ratio) * (sizeRange[1] - sizeRange[0]) + sizeRange[0];
-    // }
 
     let edgeCommunityData = [];
     for (let i = 0; i < edgeData.length; i++) {
@@ -158,6 +198,9 @@ export default function ProcessNode (data) {
           size: betweennessArray[i] / ratio * (sizeRange[1] - sizeRange[0]) +
             sizeRange[0],
           color: colorBrewer.Set2[nCommunity][result[nodeData[i]]],
+          description: [
+            ...new Set (networkData[nodeData[i] - 1].subclasses),
+          ].join (','),
         });
       } else {
         finalDataTemp.nodes.push ({
@@ -165,8 +208,16 @@ export default function ProcessNode (data) {
           id: nodeData[i],
           size: sizeRange[0],
           color: colorBrewer.Set2[nCommunity][result[nodeData[i]]],
+          description: [
+            ...new Set (networkData[nodeData[i] - 1].subclasses),
+          ].join (','),
         });
       }
+    }
+
+    for (let i = 0; i < finalDataTemp.links.length; i++) {
+      finalDataTemp.links[i].color =
+        colorBrewer.Set2[nCommunity][result[finalDataTemp.links[i].source]];
     }
 
     setFinalData (finalDataTemp);
@@ -179,7 +230,7 @@ export default function ProcessNode (data) {
       process ();
       console.log (finalData);
     },
-    [data]
+    [data, isMst]
   );
 
   return {finalData, loading};

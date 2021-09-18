@@ -99,3 +99,12 @@ export function dispatchRestoreAntibiotic(antibiotics) {
     });
   };
 }
+
+export function dispatchSelectMst(value) {
+  return (dispatch) => {
+    dispatch({
+      type: types.SELECT_MST,
+      payload: value,
+    });
+  };
+}
