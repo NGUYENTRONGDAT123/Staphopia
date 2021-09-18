@@ -1,7 +1,13 @@
 import React from 'react';
 import './App.css';
 import 'antd/dist/antd.css';
-import {BrowserRouter as Router, Route, Link, Redirect, Switch} from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+  Switch,
+} from 'react-router-dom';
 import NavBar from './components/navbar';
 import {Layout, Menu} from 'antd';
 import HomePage from './pages/HomePage/HomePage';
@@ -47,7 +53,7 @@ function App () {
 
     (
       <Router>
-        <Layout >
+        <Layout style={{height: '138h'}}>
           <Header>
             <Menu theme="dark" mode="horizontal">
               <Menu.Item key="1">
