@@ -1,18 +1,18 @@
-import React, { useEffect, useCallback, useRef, useState } from "react";
-import "./NetworkChart.css";
+import React, {useEffect, useCallback, useRef, useState} from 'react';
+import './NetworkChart.css';
 import {
   DataSet,
   parseGephiNetwork,
-} from "vis-network/standalone/esm/vis-network";
-import { range } from "d3-array";
-import Network from "./NodeNetwork";
-import ProcessNode from "./ProcessNode";
-const similarity = require("compute-cosine-similarity");
-const jsnx = require("jsnetworkx"); // in Node
-const jLouvain = require("jlouvain");
+} from 'vis-network/standalone/esm/vis-network';
+import {range} from 'd3-array';
+import Network from './NodeNetwork';
+import ProcessNode from './ProcessNode';
+const similarity = require ('compute-cosine-similarity');
+const jsnx = require ('jsnetworkx'); // in Node
+const jLouvain = require ('jlouvain');
 
-export default function NetworkChart(props) {
-  const { data, isLoading } = props;
+export default function NetworkChart (props) {
+  const {data, isLoading} = props;
   // const [finalData, setFinalData] = useState({});
   // const [loading, setLoading] = useState(true);
 
@@ -127,10 +127,8 @@ export default function NetworkChart(props) {
   //   // https://github.com/jgranstrom/jLouvain/blob/master/example/example.html
   // }, [finalData, loading]);
 
-  let { finalData, loading } = ProcessNode(data);
-  useEffect(() => {
-    console.log(finalData);
-  }, [finalData]);
+  let {finalData, loading} = ProcessNode (data);
+
   if (isLoading === false && loading === false) {
     return (
       <Network
@@ -138,10 +136,10 @@ export default function NetworkChart(props) {
         distance={70}
         strength={-600}
         maxDistance={100}
-        name={"currency-network"}
-        nodeName={"currency-node"}
-        lineName={"currency-line"}
-        nodeRatio={0.3}
+        name={'currency-network'}
+        nodeName={'currency-node'}
+        lineName={'currency-line'}
+        nodeRatio={0.6}
         width1={1100}
         height1={500}
         xOffset={0}

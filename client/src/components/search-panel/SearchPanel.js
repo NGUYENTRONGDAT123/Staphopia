@@ -241,7 +241,7 @@ export default function SearchPanel(props) {
       />
       <Tree
         checkable
-        style={{ overflow: "auto", height: "72vh" }}
+        style={{ overflow: "auto", height: "40vh" }}
         onExpand={onExpand}
         expandedKeys={expandedKeys}
         autoExpandParent={autoExpandParent}
