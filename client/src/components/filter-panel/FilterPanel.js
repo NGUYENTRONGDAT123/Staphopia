@@ -47,36 +47,34 @@ export default function FilterPanel (props) {
           });
         }
 
-        for (let i = 0; i < listRestoreAntibiotics.length; i++) {
-          restoreDataTemp.push ({
-            title: listRestoreAntibiotics[i],
-            key: listRestoreAntibiotics[i],
-            children: [],
-          });
-        }
-        setDataList (dataListTemp);
-        setData (dataTemp);
-        setRestoreData (restoreDataTemp);
+      for (let i = 0; i < listRestoreAntibiotics.length; i++) {
+        restoreDataTemp.push({
+          title: listRestoreAntibiotics[i],
+          key: listRestoreAntibiotics[i],
+          children: [],
+        });
       }
-    },
-    [networkData, restorePoint]
-  );
+      setDataList(dataListTemp);
+      setData(dataTemp);
+      setRestoreData(restoreDataTemp);
+    }
+  }, [networkData, restorePoint]);
 
-  const [expandedKeys, setExpandedKeys] = useState ([]);
-  const [checkedKeys, setCheckedKeys] = useState ([]);
-  const [selectedKeys, setSelectedKeys] = useState ([]);
-  const [autoExpandParent, setAutoExpandParent] = useState (true);
-  const [searchValue, setSearchValue] = useState ([]);
+  const [expandedKeys, setExpandedKeys] = useState([]);
+  const [checkedKeys, setCheckedKeys] = useState([]);
+  const [selectedKeys, setSelectedKeys] = useState([]);
+  const [autoExpandParent, setAutoExpandParent] = useState(true);
+  const [searchValue, setSearchValue] = useState([]);
 
-  const timer = useRef (null);
+  const timer = useRef(null);
 
-  const onKeyUp = e => {
-    clearTimeout (timer.current);
-    timer.current = setTimeout (() => triggerSearch (e), 500);
+  const onKeyUp = (e) => {
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => triggerSearch(e), 500);
   };
 
-  const onKeyDown = e => {
-    clearTimeout (timer);
+  const onKeyDown = (e) => {
+    clearTimeout(timer);
   };
 
   const triggerSearch = e => {
@@ -84,32 +82,32 @@ export default function FilterPanel (props) {
     if (value !== '') {
       value = value.toUpperCase ();
       const expandedKeys = dataList
-        .map (item => {
-          if (item.title.indexOf (value) > -1) {
-            return getParentKey (item.key, data);
+        .map((item) => {
+          if (item.title.indexOf(value) > -1) {
+            return getParentKey(item.key, data);
           }
           return null;
         })
-        .filter ((item, i, self) => item && self.indexOf (item) === i);
+        .filter((item, i, self) => item && self.indexOf(item) === i);
 
       const checkedKeys = dataList
-        .map (item => {
-          if (item.key.indexOf (value) > -1) {
+        .map((item) => {
+          if (item.key.indexOf(value) > -1) {
             return item.key;
           }
           return null;
         })
-        .filter ((item, i, self) => item && self.indexOf (item) === i);
+        .filter((item, i, self) => item && self.indexOf(item) === i);
 
-      setExpandedKeys (expandedKeys);
-      setCheckedKeys (checkedKeys);
-      setSearchValue (value);
-      setAutoExpandParent (true);
+      setExpandedKeys(expandedKeys);
+      setCheckedKeys(checkedKeys);
+      setSearchValue(value);
+      setAutoExpandParent(true);
     } else {
-      setExpandedKeys ([]);
-      setCheckedKeys ([]);
-      setSearchValue (value);
-      setAutoExpandParent (true);
+      setExpandedKeys([]);
+      setCheckedKeys([]);
+      setSearchValue(value);
+      setAutoExpandParent(true);
     }
   };
 
@@ -118,77 +116,80 @@ export default function FilterPanel (props) {
     for (let i = 0; i < tree.length; i++) {
       const node = tree[i];
       if (node.children) {
-        if (node.children.some (item => item.key === key)) {
+        if (node.children.some((item) => item.key === key)) {
           parentKey = node.key;
-        } else if (getParentKey (key, node.children)) {
-          parentKey = getParentKey (key, node.children);
+        } else if (getParentKey(key, node.children)) {
+          parentKey = getParentKey(key, node.children);
         }
       }
     }
     return parentKey;
   };
 
-  const onExpand = expandedKeysValue => {
-    setExpandedKeys (expandedKeysValue);
-    setAutoExpandParent (false);
+  const onExpand = (expandedKeysValue) => {
+    setExpandedKeys(expandedKeysValue);
+    setAutoExpandParent(false);
   };
 
-  const onCheck = checkedKeysValue => {
-    setCheckedKeys (checkedKeysValue);
+  const onCheck = (checkedKeysValue) => {
+    setCheckedKeys(checkedKeysValue);
   };
 
-  const handleDeleteSelected = value => {
+  const handleDeleteSelected = (value) => {
     let antibioticToDelete = checkedKeys;
-    let filtered = data.filter (function (item) {
-      return antibioticToDelete.indexOf (item.key) <= -1;
+    let filtered = data.filter(function (item) {
+      return antibioticToDelete.indexOf(item.key) <= -1;
     });
 
-    let newNetworkData = JSON.parse (JSON.stringify (networkData));
+    let newNetworkData = JSON.parse(JSON.stringify(networkData));
 
     for (let i = 0; i < newNetworkData.length; i++) {
-      newNetworkData[i].subclasses = newNetworkData[
-        i
-      ].subclasses.filter (function (item) {
-        var valid = true;
-        for (var i = 0; i < antibioticToDelete.length; i++) {
-          if (item.indexOf (antibioticToDelete[i]) > -1) {
-            valid = false;
+      newNetworkData[i].subclasses = newNetworkData[i].subclasses.filter(
+        function (item) {
+          var valid = true;
+          for (var i = 0; i < antibioticToDelete.length; i++) {
+            if (item.indexOf(antibioticToDelete[i]) > -1) {
+              valid = false;
+            }
           }
-        }
 
-        return valid;
-      });
+          return valid;
+        }
+      );
     }
 
-    deleteAntibiotic (newNetworkData);
-    setData (filtered);
+    deleteAntibiotic(newNetworkData);
+    setData(filtered);
   };
 
-  const handleRestore = value => {
-    let dataTemp2 = JSON.parse (JSON.stringify (restoreData));
-    let newNetworkData = JSON.parse (JSON.stringify (restorePoint));
-    restoreAntibiotic (newNetworkData);
-    setData (dataTemp2);
+  const handleRestore = (value) => {
+    let dataTemp2 = JSON.parse(JSON.stringify(restoreData));
+    let newNetworkData = JSON.parse(JSON.stringify(restorePoint));
+    restoreAntibiotic(newNetworkData);
+    setData(dataTemp2);
   };
 
   const handleCheckbox = value => {
     selectMst (value);
   };
 
-  const loop = data =>
-    data.map (item => {
-      const index = item.title.indexOf (searchValue);
-      const beforeStr = item.title.substr (0, index);
-      const afterStr = item.title.substr (index + searchValue.length);
-      const title = index > -1
-        ? <span>
+  const loop = (data) =>
+    data.map((item) => {
+      const index = item.title.indexOf(searchValue);
+      const beforeStr = item.title.substr(0, index);
+      const afterStr = item.title.substr(index + searchValue.length);
+      const title =
+        index > -1 ? (
+          <span>
             {beforeStr}
             <span className="site-tree-search-value">{searchValue}</span>
             {afterStr}
           </span>
-        : <span>{item.title}</span>;
+        ) : (
+          <span>{item.title}</span>
+        );
       if (item.children) {
-        return {title, key: item.key, children: loop (item.children)};
+        return { title, key: item.key, children: loop(item.children) };
       }
 
       return {
