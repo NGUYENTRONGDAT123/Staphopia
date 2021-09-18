@@ -16,6 +16,7 @@ export default function Network (props) {
     width1,
     height1,
     xOffset,
+    selectSample,
   } = props;
 
   //get the edges and links
@@ -23,7 +24,7 @@ export default function Network (props) {
   const links = data.links;
 
   //pan and zoom event
-  let zoom = d3.zoom ().scaleExtent ([1, 8]).on ('zoom', function (e) {
+  let zoom = d3.zoom ().on ('zoom', function (e) {
     d3.selectAll (`g`).attr ('transform', e.transform);
   });
 
@@ -47,8 +48,11 @@ export default function Network (props) {
     //create svg (every elements is in svg) a.k.a container
     const svg = d3
       .select (`.${name}`)
-      .attr ('width', width)
+      // .attr ('width', width)
       .attr ('height', height)
+      // .attr ('preserveAspectRatio', 'xMinYMin meet')
+      // .attr ('viewbox', [-width / 2, -height / 2, width, height])
+      // .style('display', 'block')
       .call (zoom); //allow pan and zoom within svg
 
     //design simulation
@@ -107,7 +111,7 @@ export default function Network (props) {
           .attr ('position', 'absolute')
           .attr ('z-index', 0)
           .attr ('stroke-width', 0.5)
-          .attr ('stroke', 'grey');
+          .attr ('stroke', d => d.color);
       },
       update =>
         update
@@ -119,7 +123,7 @@ export default function Network (props) {
           .attr ('position', 'absolute')
           .attr ('z-index', 0)
           .attr ('stroke-width', 0.5)
-          .attr ('stroke', 'grey'),
+          .attr ('stroke', d => d.color),
       exit =>
         exit
           .call (exit => exit.transition ().duration ((d, i) => i * 2))
@@ -185,22 +189,12 @@ export default function Network (props) {
       );
     }
 
-    // if the nodes connected, highlight them and fade the others
-    function fade (opacity) {
-      return (event, d) => {};
-    }
-
-    // unfade all the nodes
-    function unfade () {
-      return (event, d) => {};
-    }
-
     //initiating mouse events
     nodeElements
       .on ('mouseover', (event, d) => {
         tooltip
           .html (() => {
-            return `Label: ${d.label}`;
+            return `Antibiotics: ${d.description}`;
           })
           .style ('visibility', 'visible');
         nodeElements
@@ -216,18 +210,21 @@ export default function Network (props) {
         linkElements.style ('stroke-width', o => {
           return o.source.label === d.label || o.target.label === d.label
             ? 2
-            : 0.5;
+            : 0.1;
         });
       })
       .on ('mouseout', () => {
         tooltip.style ('visibility', 'hidden');
+        linkElements.style ('stroke-width', 0.5);
         nodeElements.style ('stroke-opacity', 1).style ('fill-opacity', 1);
-        linkElements.style ('stoke-width', 0.5);
       })
       .on ('mousemove', event => {
         return tooltip
           .style ('left', event.pageX + 10 + 'px')
           .style ('top', event.pageY - 50 + 'px');
+      })
+      .on ('click', (event, d) => {
+        selectSample (d.label);
       });
 
     //design lable
@@ -260,9 +257,9 @@ export default function Network (props) {
       lableElements
         .attr ('x', node => {
           //   console.log(node.x);
-          return node.x;
+          return node.x - 9;
         })
-        .attr ('y', node => node.y);
+        .attr ('y', node => node.y + 7);
 
       nodeElements
         .attr ('cx', node => {

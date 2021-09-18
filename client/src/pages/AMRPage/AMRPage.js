@@ -188,42 +188,49 @@ export default function AMRPage () {
         <Card title="Search Sample" style={{height: '60vh'}}>
           {searchPanel}
         </Card>
-        <Card title="Sample Information" style={{height: '30vh'}}>
-          {SampleInfoData !== null
-            ? <SampleInfoPanel
-                sampleMetadata={SampleInfoData}
-                isLoading={isLoadingSelect}
-              />
-            : <Empty
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description={<span>Please select sample</span>}
-              />}
-        </Card>
-        <Card title="Antibiotic Information" style={{height: '30vh'}}>
-          {AntibioticInfoData !== null
-            ? <AntibioticInfoPanel
-                antibioticData={AntibioticInfoData}
-                isLoading={isLoadingAntibiotic}
-              />
-            : <Empty
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description={<span>Please select sample</span>}
-              />}
-        </Card>
+
+        {tabKey === 'bubbleGraph'
+          ? <Card title="Antibiotic Information" style={{height: '30vh'}}>
+              {AntibioticInfoData !== null
+                ? <AntibioticInfoPanel
+                    antibioticData={AntibioticInfoData}
+                    isLoading={isLoadingAntibiotic}
+                  />
+                : <Empty
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                    description={<span>Please select sample</span>}
+                  />}
+            </Card>
+          : null}
+
+        {tabKey === 'bubbleGraph'
+          ? <Card title="Sample Information" style={{height: '30vh'}}>
+              {SampleInfoData !== null
+                ? <SampleInfoPanel
+                    sampleMetadata={SampleInfoData}
+                    isLoading={isLoadingSelect}
+                  />
+                : <Empty
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                    description={<span>Please select sample</span>}
+                  />}
+            </Card>
+          : <Card title="Sample Information" style={{height: '60vh'}}>
+              {SampleInfoData !== null
+                ? <SampleInfoPanel
+                    sampleMetadata={SampleInfoData}
+                    isLoading={isLoadingSelect}
+                  />
+                : <Empty
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                    description={<span>Please select sample</span>}
+                  />}
+            </Card>}
+
       </Col>
       <Col span={19}>
         <Row gutter={[8, 8]} type="flex">
           <Col span={24}>
-            {/* <Card title="AMR Visualizations" style={{height: '60vh'}}>
-              <BubbleChart
-                width="500"
-                height="500"
-                data={PackedCircleData}
-                isLoading={isLoadingPacked}
-                selectSample={handleSelectSample}
-                selectAntibiotic={handleSelectAntibiotic}
-              />
-            </Card> */}
             <Card
               style={{height: '60vh'}}
               tabList={tabList}
@@ -244,9 +251,8 @@ export default function AMRPage () {
                 : <NetworkChart
                     data={NetworkData}
                     isLoading={isLoadingNetwork}
-                  />
-              // <ProcessNode data={NetworkData} />
-              }
+                    selectSample={handleSelectSample}
+                  />}
             </Card>
           </Col>
         </Row>
