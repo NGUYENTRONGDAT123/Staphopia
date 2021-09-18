@@ -84,6 +84,13 @@ export async function fetchPackedCircleData() {
   return data.result;
 }
 
+export async function fetchNetworkData() {
+  const url = "/api/subclass-sample";
+  const result = await fetch(url);
+  const data = await result.json();
+  return data.result;
+}
+
 export async function fetchSelectedSample(sampleId) {
   const amrTableUrl = `/api/amr-sample?samples=[${sampleId}]`;
   const sampleInfoUrl = `/api/sample-metadata?samples=[${sampleId}]`;

@@ -13,6 +13,24 @@ redis_client.flushdb (function (err, succeeded) {
   else console.log ('Fail to clear Redis cache');
 });
 
+
+/**
+ * @swagger
+ * /api/amr-sample:
+ *   get:
+ *     summary: Retrieve a list of samples.
+ *     description: Get information about selected samples.
+ *     parameters:
+ *       - in: query
+ *         name: samples
+ *         required: false
+ *         description: Array of samples to retrieve.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A list of samples containing detailed information.
+ */
 router.get ('/amr-sample', async (req, res, next) => {
   const AMR = req.app.mongodb.db ('AMR');
   let samples = null;
@@ -67,9 +85,18 @@ router.get ('/amr-sample', async (req, res, next) => {
     });
 });
 
+/**
+ * @swagger
+ * /api/available-sample:
+ *   get:
+ *     summary: Retrieve a list of all available samples.
+ *     description: Get a short list of sample ID that are stored in database
+ *     responses:
+ *       200:
+ *         description: A list of samples ID.
+ */
 router.get ('/available-sample', async (req, res, next) => {
   const AMR = req.app.mongodb.db ('AMR');
-
   let key = 'available-sample';
   let pipeline = [
     {
@@ -129,6 +156,23 @@ router.get ('/available-sample', async (req, res, next) => {
     });
 });
 
+/**
+ * @swagger
+ * /api/subclass-sample:
+ *   get:
+ *     summary: Retrieve a list of subclasses.
+ *     description: Get information about subclasses of selected samples.
+ *     parameters:
+ *       - in: query
+ *         name: samples
+ *         required: false
+ *         description: Array of samples to retrieve e.g. [100,101]
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A list of subclasses of selected samples.
+ */
 router.get ('/subclass-sample', async (req, res, next) => {
   const AMR = req.app.mongodb.db ('AMR');
   let samples = null;
@@ -136,7 +180,6 @@ router.get ('/subclass-sample', async (req, res, next) => {
   let pipeline;
 
   // Get all data if query not found
-
   if (req.query.samples === undefined) {
     key = 'subclass-sample';
     pipeline = [
@@ -197,10 +240,18 @@ router.get ('/subclass-sample', async (req, res, next) => {
     });
 });
 
-// localhost:8393/api/available-subclass
+/**
+ * @swagger
+ * /api/available-subclass:
+ *   get:
+ *     summary: Retrieve a list of available subclasses.
+ *     description: Get information about all available subclasses.
+ *     responses:
+ *       200:
+ *         description: A list of available subclasses.
+ */
 router.get ('/available-subclass', async (req, res, next) => {
   const AMR = req.app.mongodb.db ('AMR');
-
   let key = 'available-subclass';
   let pipeline = [
     {
@@ -253,8 +304,23 @@ router.get ('/available-subclass', async (req, res, next) => {
     });
 });
 
-// e.g. localhost:8393/api/sample-subclass?subclasses=FOSFOMYCIN,QUATERNARY AMMONIUM
-// e.g. localhost:8393/api/sample-subclass
+/**
+ * @swagger
+ * /api/sample-subclass:
+ *   get:
+ *     summary: Retrieve a list of samples ID by selected subclasses.
+ *     description: Get information about selected subclasses e.g. FOSFOMYCIN,QUATERNARY AMMONIUM
+ *     parameters:
+ *       - in: query
+ *         name: subclasses
+ *         required: false
+ *         description: Array of subclasses to retrieve.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A list of samples ID by selected subclasses.
+ */
 router.get ('/sample-subclass', async (req, res, next) => {
   const AMR = req.app.mongodb.db ('AMR');
   let subclasses = null;
@@ -320,13 +386,20 @@ router.get ('/sample-subclass', async (req, res, next) => {
     });
 });
 
+/**
+ * @swagger
+ * /api/packed-circle:
+ *   get:
+ *     summary: Get all necessary data for packed circle graph
+ *     description: Get formatted data for packed circle graph
+ *     responses:
+ *       200:
+ *         description: A list of samples data hierarchy for visualization
+ */
 router.get ('/packed-circle', async (req, res, next) => {
   const AMR = req.app.mongodb.db ('AMR');
-  let samples = null;
   let key = null;
   let pipeline;
-
-  // Get all neccessary data for packed circle graph
   key = 'packed-circle';
   pipeline = [
     {
@@ -388,7 +461,23 @@ router.get ('/packed-circle', async (req, res, next) => {
     });
 });
 
-//get the sample metadata
+/**
+ * @swagger
+ * /api/sample-metadata:
+ *   get:
+ *     summary: Get the metadata of selected samples
+ *     description: Get formatted metadata from Staphopia API
+ *     parameters:
+ *       - in: query
+ *         name: samples
+ *         required: false
+ *         description: Array of samples ID to retrieve e.g. [100, 101, 102]
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A list of metadata for selected samples
+ */
 router.get ('/sample-metadata', async (req, res, next) => {
   const AMR = req.app.mongodb.db ('AMR');
   let samples = null;
@@ -396,7 +485,6 @@ router.get ('/sample-metadata', async (req, res, next) => {
   let pipeline;
 
   // Get all data if query not found
-  // try {
   if (req.query.samples === undefined) {
     key = 'sample-metadata';
     pipeline = [
@@ -414,9 +502,6 @@ router.get ('/sample-metadata', async (req, res, next) => {
       },
     ];
   }
-  // } catch (err) {
-  //   res.status(400).send({ error: true, message: "Bad request!" });
-  // }
 
   // try to get data from redis
   redis_get (key)
@@ -445,7 +530,16 @@ router.get ('/sample-metadata', async (req, res, next) => {
     });
 });
 
-//get antibiotics info
+/**
+ * @swagger
+ * /api/antibiotics-info:
+ *   get:
+ *     summary: Get the information of selected antibiotics
+ *     description: Get information of selected antibiotics stored in database
+ *     responses:
+ *       200:
+ *         description: A list of metadata for selected antibiotics
+ */
 router.get ('/antibiotics-info', async (req, res, next) => {
   const AMR = req.app.mongodb.db ('AMR');
   let antibiotics = null;
@@ -470,11 +564,6 @@ router.get ('/antibiotics-info', async (req, res, next) => {
       },
     ];
   }
-
-  // }catch (err) {
-  //   next(err);
-  //   // res.status(400).send({ error: true, message: "Bad request!" });
-  // }
 
   // try to get data from redis
   redis_get (key)
@@ -503,7 +592,23 @@ router.get ('/antibiotics-info', async (req, res, next) => {
     });
 });
 
-//get sample symbol info
+/**
+ * @swagger
+ * /api/sample-symbol:
+ *   get:
+ *     summary: Get the metadata of selected sample symbol
+ *     description: Get the metadata of selected sample symbol
+ *     parameters:
+ *       - in: query
+ *         name: sample
+ *         required: true
+ *         description: A sample ID to retrieve e.g. 100
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Sample symbol information
+ */
 router.get ('/sample-symbol', async (req, res, next) => {
   const AMR = req.app.mongodb.db ('AMR');
   let sample = null;
@@ -554,7 +659,10 @@ router.get ('/sample-symbol', async (req, res, next) => {
       );
 
       for (let i = 0; i < symbols.length - 1; i++) {
-        temp.links.push ({source: symbols[i].symbol, target: symbols[i + 1].symbol});
+        temp.links.push ({
+          source: symbols[i].symbol,
+          target: symbols[i + 1].symbol,
+        });
       }
 
       result = temp;

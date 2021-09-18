@@ -46,7 +46,7 @@ export default function HomePage() {
 
   return (
     <Container>
-      <button onClick={savePdf}>save</button>
+      {/* <button onClick={savePdf}>save</button> */}
       <Panel className="pn">
         <Panel className="pn-header">
           <h1>Staphbook</h1>

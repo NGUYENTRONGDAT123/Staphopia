@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Card, Input, Button, Tree } from "antd";
+import { Card, Input, Button, Tree, Row, Col } from "antd";
 import { select } from "d3";
 const { Search } = Input;
 
@@ -71,7 +71,6 @@ export default function SearchPanel(props) {
     setDataList(dataListTemp);
     setData(dataTemp);
     setRestoreData(restoreDataTemp);
-    // console.log (restoreDataTemp);
   }, [packedData, restorePoint]);
 
   const [expandedKeys, setExpandedKeys] = useState([]);
@@ -237,13 +236,12 @@ export default function SearchPanel(props) {
       <Search
         style={{ marginBottom: 8 }}
         placeholder="Search"
-        // onChange={onChange}
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
       />
       <Tree
         checkable
-        style={{ overflow: "auto", height: "72vh" }}
+        style={{ overflow: "auto", height: "40vh", marginBottom: "20px"}}
         onExpand={onExpand}
         expandedKeys={expandedKeys}
         autoExpandParent={autoExpandParent}
@@ -253,23 +251,31 @@ export default function SearchPanel(props) {
         selectedKeys={selectedKeys}
         treeData={loop(data)}
       />
-      <br />
-      <Button
-        onClick={(e) => {
-          e.stopPropagation();
-          handleRestore();
-        }}
-      >
-        Restore
-      </Button>
-      <Button
-        onClick={(e) => {
-          e.stopPropagation();
-          handleDeleteSelected();
-        }}
-      >
-        Delete Selected
-      </Button>
+      <Row align="center">
+        <Col>
+          <Button
+            onClick={e => {
+              e.stopPropagation ();
+              handleRestore ();
+            }}
+            style={{marginRight: 30}}
+            type="primary"
+          >
+            Restore
+          </Button>
+        </Col>
+        <Col>
+          <Button
+            onClick={e => {
+              e.stopPropagation ();
+              handleDeleteSelected ();
+            }}
+            type="primary"
+          >
+            Delete
+          </Button>
+        </Col>
+      </Row>
     </div>
   );
 }
