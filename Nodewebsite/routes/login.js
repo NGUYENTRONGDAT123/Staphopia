@@ -14,6 +14,7 @@ router.get("/", function (req, res) {
   });
 });
 
+//send authentication confirmation for other framework (e.g react)
 router.get("/checkAuthentication", function (req, res) {
   let userLoggedIn = false;
   if (req.session.userStatus === "loggedIn") {
