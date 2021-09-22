@@ -1,0 +1,897 @@
+<!-- Result Page Scripts -->
+<script>
+
+    /*
+     * Changes the sample information displayed based on the user selection
+     *
+     */
+
+    function resultsTabs(evt, tabName) {
+
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+
+
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    /*
+     * The cytoscape.js functionality
+     * Sets up the cytoscape element at the bottom of the sample information page
+     * and creates all the nodes and edges for the different related samples.
+     * Adds created nodes into a 'collection' that can be iterated over in future functions
+     * when changing the cytoscape elements displayed.
+     * Filters the nodes that are initially displayed by the default values of the sliders.
+     * Sets up the popups which will appear when the user clicks on one of the nodes.
+     *
+     */
+    var sampleIdentity = <%- JSON.stringify(sample_ID) %>;
+    //console.log("HELP");
+    //console.log(sampleIdentity);
+
+    var cy = cytoscape({
+        container: document.getElementById('cy'),
+        elements: [
+            // nodes
+            { data: { id: sampleIdentity }, style: {'background-color': 'grey'} }
+        ],
+        style: [{
+            selector: 'node', style: {'background-color': '#468e94', label: 'data(id)'},
+        }, {
+            selector: 'edge', style: {'curve-style': 'bezier', 'control-point-step-size': 10}
+        }
+        ],
+    });
+
+    // Create an empty collection for all the cytoscape elements to be iterated over
+    let collection = cy.collection();
+
+    // Convert data from backend to a form that javascript can use
+    let same_sq = <%- JSON.stringify(same_sequences) %>;
+    let same_loc = <%- JSON.stringify(same_locations) %>;
+    let same_ho = <%- JSON.stringify(same_hosts) %>;
+    let same_iso = <%- JSON.stringify(same_isolations) %>;
+    let weighted_dist = <%- JSON.stringify(weighted_distance) %>;
+
+    // Add nodes for samples with the same sequence type and connect them
+    // Iterate through the SQL results
+    same_sq.forEach(function(same_sequence) {
+        let same_sequence_sample_id = same_sequence.sample_id;
+        if (same_sequence_sample_id != sampleIdentity){
+
+            weighted_dist.forEach(function (weighted_distance_list) {
+                if (weighted_distance_list.comparison_sample == same_sequence.name) {
+
+                    // Create nodes and assign each node summary information
+                    cy.add({
+                        data: {
+                            id: same_sequence_sample_id,
+                            seq: same_sequence.st,
+                            loc: same_sequence.country,
+                            strain: same_sequence.strain,
+                            host: same_sequence.host,
+                            iso: same_sequence.isolation_source,
+                            dist: weighted_distance_list.distance
+                        }
+                    });
+                }
+            });
+            //cy.$id(same_sequence_sample_id).addClass('seq');
+
+            // Add nodes to the collection
+            collection = collection.add(cy.$id(same_sequence_sample_id));
+            var source = same_sequence_sample_id;
+
+            // Create edges between nodes
+            cy.add({
+                data: {
+                    id: 'edge' + source,
+                    source: source,
+                    target: (sampleIdentity),
+                },
+                classes: ['seq'],
+                style: {'line-color': 'green'}
+            });
+            // Add edges to the connections
+            collection = collection.add(cy.$id('edge' + same_sequence_sample_id));
+        }
+    });
+
+    // Add nodes for samples with the same location and connect them
+    // Iterate through the SQL results
+    same_loc.forEach(function(same_location) {
+        let same_location_sample_id = same_location.sample_id;
+        if (same_location_sample_id != sampleIdentity){
+            if(cy.$id(same_location_sample_id).empty()){
+                weighted_dist.forEach(function (weighted_distance_list) {
+                    if (weighted_distance_list.comparison_sample == same_location.name) {
+
+                        // Create nodes and assign each node summary information
+                        cy.add({
+                            data: {id: same_location_sample_id, seq: same_location.st, loc: same_location.country, strain: same_location.strain,
+                                host: same_location.host, iso: same_location.isolation_source, dist: weighted_distance_list.distance},
+                        });
+                        // Add nodes to the collection
+                        collection = collection.add(cy.$id(same_location_sample_id));
+                    }
+                });
+            }
+            //cy.$id(same_location_sample_id).addClass('loc');
+            var source = same_location_sample_id;
+
+            // Create edges between nodes
+            cy.add({
+                data: {
+                    id: 'edge2' + source,
+                    source: source,
+                    target: (sampleIdentity),
+                },
+                classes: ['loc'],
+                style: {'line-color': 'red'}
+            });
+            // Add edges to the connections
+            collection = collection.add(cy.$id('edge2' + same_location_sample_id));
+        }
+    });
+
+    // Add nodes for samples with the same host and connect them
+    // Iterate through the SQL results
+    same_ho.forEach(function(same_host) {
+        let same_host_sample_id = same_host.sample_id;
+        if (same_host_sample_id != sampleIdentity){
+            if(cy.$id(same_host_sample_id).empty()){
+                weighted_dist.forEach(function (weighted_distance_list) {
+                    if (weighted_distance_list.comparison_sample == same_host.name) {
+
+                        // Create nodes and assign each node summary information
+                        cy.add({
+                            data: {id: same_host_sample_id, seq: same_host.st, loc: same_host.country, strain: same_host.strain,
+                                host: same_host.host, iso: same_host.isolation_source, dist: weighted_distance_list.distance}
+                        });
+                        // Add nodes to the collection
+                        collection = collection.add(cy.$id(same_host_sample_id));
+                    }
+                });
+            }
+            //cy.$id(same_host_sample_id).addClass('host');
+            var source = same_host_sample_id;
+
+            // Create edges between nodes
+            cy.add({
+                data: {
+                    id: 'edge3' + source,
+                    source: source,
+                    target: (sampleIdentity),
+                },
+                classes: ['host'],
+                style: {'line-color': 'blue'}
+            });
+            // Add edges to the connections
+            collection = collection.add(cy.$id('edge3' + same_host_sample_id));
+        }
+    });
+
+    // Add nodes for samples with the same isolation source and connect them
+    // Iterate through the SQL results
+    same_iso.forEach(function(same_isolation) {
+        let same_iso_sample_id = same_isolation.sample_id;
+        if (same_iso_sample_id != sampleIdentity){
+            if(cy.$id(same_iso_sample_id).empty()){
+                weighted_dist.forEach(function (weighted_distance_list) {
+                    if (weighted_distance_list.comparison_sample == same_isolation.name) {
+
+                        // Create nodes and assign each node summary information
+                        cy.add({
+                            data: {id: same_iso_sample_id, seq: same_isolation.st, loc: same_isolation.country, strain: same_isolation.strain,
+                                host: same_isolation.host, iso: same_isolation.isolation_source, dist: weighted_distance_list.distance}
+                        });
+                        // Add nodes to the collection
+                        collection = collection.add(cy.$id(same_iso_sample_id));
+                    }
+                });
+            }
+            //cy.$id(same_iso_sample_id).addClass('iso');
+            var source = same_iso_sample_id;
+
+            // Create edges between nodes
+            cy.add({
+                data: {
+                    id: 'edge4' + source,
+                    source: source,
+                    target: (sampleIdentity),
+                },
+                classes: ['iso'],
+                style: {'line-color': 'orange'}
+            });
+            // Add edges to the connections
+            collection = collection.add(cy.$id('edge4' + same_iso_sample_id));
+        }
+    });
+
+    // Set up the initial display for the user by limiting the minimum connections to 2 and maximum weighted distance to 0.015
+    // Go through all of the elements in the collection
+    collection.forEach(function(ele, i ,eles) {
+        // Check if the element is a node
+        if(ele.isNode()){
+            let e = ele.connectedEdges();
+            // Check if the node has less than 2 connected edges and remove if true
+            if(e.length < 2){
+                ele.remove();
+            }
+            // Check if the node's sample has a weighted distance greater than 0.015 and remove if true
+            if (ele.data('dist') > 0.015){
+                ele.remove();
+            }
+
+            // Set up links for all nodes to their respective sample results page
+            ele.on('click', function(evt){
+                let id = this.id();
+                function get_sample(){
+                    let form = document.createElement("form");
+                    let element = document.createElement("input");
+                    form.action = '/result';
+                    form.method = "get";
+                    element.name ="sampleSelection";
+                    element.value= id;
+                    form.appendChild(element);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+
+                // Set up popup boxes for each node
+                popupS.confirm({
+                    content: '<b>Sample: </b>' + id +'<br><b>Sequence Type: </b>' + ele.data('seq') +'<br><b>Location: </b>' + ele.data('loc') +
+                    '<br><b>Strain: </b>' + ele.data('strain') +'<br><b>Host: </b>' + ele.data('host') +'<br><b>Isolation Source: </b>' + ele.data('iso') +
+                    '<br><b>Weighted Distance: </b>' + ele.data('dist'),
+                    labelOk: 'View',
+                    labelCancel: 'Cancel',
+                    additionalButtonCancelClass: 'popUpButtonCSS',
+                    additionalButtonOkClass: 'popUpButtonCSS',
+                    onSubmit: function() {
+                        get_sample();
+                    }
+                });
+            });
+
+        }
+    });
+
+    // Run cola plugin to display the nodes in an aesthetic way and make it movey and groovy
+    cy.layout({
+        name: 'cola'
+    }).run()
+
+
+    /*
+     * Updates the cytoscape element based on the values of the sliders when a user moves one.
+     * Iterates through the collection of elements and display the nodes which match the specification defined by the user and
+     * change the number displayed above the slider to accurately represent the nodes being shown.
+     *
+     */
+
+    /*
+    JSON to check which connections to hide
+    */
+    let filters = {
+        'location': false,
+        'sequence': false,
+        'host': false,
+        'isolation': false,
+    }
+
+    /*
+    function called when clicking
+    connType = string of the type of connection to hide
+    */
+    function changeConnection(connType){
+        console.log(filters);
+        if(connType === 'location'){
+            filters.location = !filters.location;
+            strikeThrough(filters.location, "locLegend");
+        }
+        else if(connType === 'sequence'){
+            filters.sequence = !filters.sequence;
+            strikeThrough(filters.sequence, "seqLegend");
+        }
+        else if(connType === 'host'){
+            filters.host = !filters.host;
+            strikeThrough(filters.host, "hostLegend");
+        }
+        else if(connType === 'isolation'){
+            filters.isolation = !filters.isolation;
+            strikeThrough(filters.isolation, "isoLegend");
+        }
+        console.log(filters);
+        changeDist();
+    }
+
+    /*
+    Strikethrough legend text that is filtered in the network visual
+    strike = boolean strikethrough or not
+    id = element id to have text strikethrough
+    */
+    function strikeThrough(strike, id){
+        if(strike){
+            let ele = document.getElementById(id);
+            ele.style.setProperty("text-decoration", "line-through");
+        }
+        else{
+            let ele = document.getElementById(id);
+            ele.style.setProperty("text-decoration", "none");
+        }
+    }
+
+    // Change the nodes based on the slider values defined by the user
+    function changeDist(){
+        let num = document.getElementById("myRange1").value;
+        let changed_dist = document.getElementById("myRange2").value;
+        let dist = changed_dist/10000;
+        collection.restore();
+        collection.forEach(function(ele, i ,eles) {
+            if(ele.isEdge()){
+                if (filters.location){
+                    if (ele.classes().includes('loc')){
+                        ele.remove();
+                    }
+                }
+                if (filters.isolation){
+                    if (ele.classes().includes('iso')){
+                        ele.remove();
+                    }
+                }
+                if (filters.host){
+                    if (ele.classes().includes('host')){
+                        ele.remove();
+                    }
+                }
+                if (filters.sequence){
+                    if (ele.classes().includes('seq')){
+                        ele.remove();
+                    }
+                }
+            }
+        });
+        collection.forEach(function(ele) {
+            if(ele.isNode()){
+                let e = ele.connectedEdges();
+                if (e.length < num) {
+                    ele.remove();
+                }
+                if (ele.data('dist') > dist){
+                    ele.remove();
+                }
+            }
+        })
+        // Change display above sliders to display new value
+        document.getElementById("weighteddistnum").innerHTML = "Minimum Connections = "+ num;
+        document.getElementById("weighteddist2num").innerHTML = "Maximum Weighted Distance = "+ dist;
+        cy.layout({
+            name: 'cola'
+        }).run()
+    }
+
+
+    /*
+     * SCRIPTS FOR CYTOSCAPE GRAPH BUTTONS
+     * Functionality for zooming in and out of the cytoscape graph/element,
+     * downloading a picture of the graph, expand and minimise the graph, and
+     * for centering the nodes in the element
+     *
+     */
+
+    <!-- Global variables for cytoscape graph buttons -->
+    var zoomAmount = 1;
+    var newZoom;
+
+
+    <!-- zoomInGraph functionality-->
+    function zoomInGraph() {
+        console.log("ZOOM IN - "+zoomAmount);
+        zoomAmount = zoomAmount + 0.25;
+        newZoom = zoomAmount;
+        console.log("IN - "+newZoom);
+
+        cy.zoom({level: newZoom});
+
+    }
+
+    <!-- zoomOutGraph functionality-->
+    function zoomOutGraph() {
+        console.log("ZOOM OUT - "+zoomAmount);
+
+        zoomAmount = zoomAmount - 0.25;
+        newZoom = zoomAmount;
+        console.log("OUT - "+newZoom);
+
+        cy.zoom({level: newZoom});
+
+    }
+
+    /*
+     * Downloads an image of the current state of the cytoscape element
+     */
+    function downloadGraph() {
+        console.log("download graph");
+
+        var png64 = cy.png({output: 'blob'});
+        saveAs(png64, `StaphBook-Sample ${<%- JSON.stringify(sample_ID) %>} Network.png`);
+    }
+
+    <!-- expandGraph functionality-->
+    function expandGraph() {
+        var windowHeight = window.innerHeight;
+        var graphHeight = windowHeight - 175;
+
+        document.getElementById("resultsPageGraphComponent3").style.height= graphHeight + "px";
+
+        <!-- specifically modify cytoscape graph -->
+        document.getElementById("cy").style.height= graphHeight + "px";
+
+        centerGraph();
+    }
+
+    <!-- center graph functionality-->
+    function centerGraph() {
+        zoomAmount = 1;
+        newZoom = 1;
+
+        cy.center();
+        cy.reset();
+
+    }
+    <!-- minimize graph functionality -->
+    function minimizeGraph() {
+        document.getElementById("resultsPageGraphComponent3").style.height= 400 + "px";
+
+        <!-- specifically modify cytoscape graph -->
+        document.getElementById("cy").style.height= 400 + "px";
+
+        cy.center();
+        cy.reset();
+    }
+
+    /*
+     * Script for Find my Friends functionality
+     * Functionality for selecting a range of genetic distance
+     * and displaying genome information on cards
+     */
+
+     // Global variables for slider selection
+     var maxPercentage = 100;
+     var stepValue = 0.00000001;
+
+     /* Navigate closely related samples functionality
+     * Includes functions to determine how many pages a group
+     * may have, samples to show, buttons to activate/deactivate.
+     */
+
+     var samplesPerPage = 20; // global variable
+     var maxPageNumber = 44000 / 20;
+     var currentPage = 1;
+     var pageGenomes = <%- JSON.stringify(all_weighted_distances) %>; // Global variable to be updated in page
+     var numPagesPerSection = 5;
+     var baseUrl =  "http://127.0.0.1:8000/getCloseSamples";
+
+     function DisplayFindMyFriendsSectionPage(pageNumber) { // currently out of 5
+       if (pageNumber === 0) {
+         pageNumber = numPagesPerSection;
+       }
+       //console.log("Page number is " + pageNumber + " out of 5");
+       //console.log(pageGenomes);
+       var sectionGenomes = pageGenomes.slice((pageNumber - 1) * samplesPerPage, pageNumber * samplesPerPage);
+       //console.log(sectionGenomes);
+       if (sectionGenomes == undefined) {
+         let parentSection = document.getElementById("findMyFriendsCards");
+         parentSection.innerHTML = "<p>No further genomes in this direction.</p>";
+         return;
+       }
+       clearFindMyFriendsSection();
+       populateFriendsSection(sectionGenomes);
+     }
+
+     function updateMaxPage() { // After updating min and max values
+       let minValue = document.getElementById("minGeneticDistanceTyped").value;
+       let maxValue = document.getElementById("maxGeneticDistanceTyped").value;
+
+       //console.log("Getting max samples");
+
+       fetch(`${baseUrl}/count?sampleSelection=${<%- sample_ID %>}&min=${minValue}&max=${maxValue}`)
+       .then((resp) => resp.json())
+       .then(function(samples) {
+        maxPageNumber = Math.ceil( samples.numSamples[0].count / samplesPerPage );
+        if (maxPageNumber < 1) {
+          maxPageNumber = 1;
+        }
+        let display = document.getElementById("maxPageNumber");
+        display.innerHTML = maxPageNumber;
+        document.getElementById("samplePageNumber").setAttribute("max", maxPageNumber);
+        })
+     }
+
+     async function fetchUpdateCloseSamples(newPageNumber){
+       let baseUrl =  "http://127.0.0.1:8000/getCloseSamples";
+       let sampleId = <%- sample_ID %>;
+       let page = Math.ceil(newPageNumber / numPagesPerSection); // figure out section
+       let orderBy = document.getElementById("orderBy").value;
+       let order = (document.getElementById("toggleOrder").checked) ? "asc" : "desc";
+       let min = document.getElementById("minGeneticDistanceTyped").value;
+       let max = document.getElementById("maxGeneticDistanceTyped").value;
+
+       //console.log("Passed information");
+       //console.log("orderBy: " + orderBy + " Order:" + order + " Min:" + min + " Max:" + max + "Page:" + page);
+
+      fetch(`${baseUrl}?sampleSelection=${sampleId}&page=${page}&orderBy=${orderBy}&order=${order}&min=${min}&max=${max}`)
+      .then((resp) => resp.json())
+      .then(function(samples) {
+        //console.log("Samples fetched");
+        //console.log(samples.closeSamples);
+        pageGenomes = samples.closeSamples;
+        DisplayFindMyFriendsSectionPage(newPageNumber % numPagesPerSection);
+        currentPage = newPageNumber;
+      })
+     }
+
+     function updatePageSamples(){ // When moving pages
+       let newPageNumber = document.getElementById("samplePageNumber").value;
+       newPageNumber = parseInt(newPageNumber);
+       if ( newPageNumber == NaN ) {
+         return;
+       }
+       //console.log(`The new page number is ${newPageNumber}`);
+       if ( newPageNumber >= 1 && newPageNumber <= maxPageNumber ) {
+         //console.log(newPageNumber);
+
+         if ( Math.ceil(currentPage / numPagesPerSection) != Math.ceil(newPageNumber / numPagesPerSection)) { //~~((newPageNumber) / numPagesPerSection) !=  ~~(currentPage / numPagesPerSection) // Next hundred genomes
+           //console.log("Activated fetch call for next section's genomes");
+           fetchUpdateCloseSamples(newPageNumber); // Call to load new samples and discards previously loaded samples
+         }
+         else { // Otherwise don't wait for fetch call
+           DisplayFindMyFriendsSectionPage(newPageNumber % numPagesPerSection);
+           currentPage = newPageNumber;
+         }
+       }
+     }
+
+     function stepToPage(step) {
+       step = parseInt(step);
+       let pageNumberSelection = document.getElementById("samplePageNumber");
+       let pageNumber = parseInt(pageNumberSelection.value);
+       pageNumber = pageNumber + step;
+       if (step < 0 && pageNumber < 1) {
+         pageNumber = 1;
+       }
+       if (step > 0 && pageNumber > maxPageNumber) {
+         pageNumber = maxPageNumber;
+       }
+       document.getElementById("samplePageNumber").value = pageNumber;
+       updatePageSamples();
+     }
+
+     /*
+     * Update input
+     */
+     function reloadSamples() { // After min and max sliders have been adjusted
+       let baseUrl =  "http://127.0.0.1:8000/getCloseSamples";
+       let sampleId = <%- sample_ID %>;
+       let page = Math.ceil(currentPage / numPagesPerSection);
+       let orderBy = document.getElementById("orderBy").value;
+       let order = (document.getElementById("toggleOrder").checked) ? "asc" : "desc";
+       let min = document.getElementById("minGeneticDistanceTyped").value;
+       let max = document.getElementById("maxGeneticDistanceTyped").value;
+
+       //console.log("Passed information");
+       //console.log("orderBy: " + orderBy + " Order:" + order + " Min:" + min + " Max:" + max + "Page:" + page);
+
+      fetch(`${baseUrl}?sampleSelection=${sampleId}&page=${page}&orderBy=${orderBy}&order=${order}&min=${min}&max=${max}`)
+      .then((resp) => resp.json())
+      .then(function(samples) {
+        //console.log("Samples fetched");
+        //console.log(samples.closeSamples);
+        pageGenomes = samples.closeSamples;
+        let newPageNumber = document.getElementById("samplePageNumber").value;
+        newPageNumber = parseInt(newPageNumber);
+        //console.log("Update genome display");
+        DisplayFindMyFriendsSectionPage(newPageNumber % numPagesPerSection);
+      })
+     }
+
+     function updateMinSliderSelection() {
+        let minSlider = document.getElementById("minGeneticDistInput");
+        let minInputBox = document.getElementById("minGeneticDistanceTyped");
+
+        let rangeSelected = updateMinSlider(minSlider.value);
+
+        if (parseFloat(minInputBox.value) != rangeSelected.minValue) {
+          minInputBox.value = rangeSelected.minValue;
+        }
+        updateMaxPage();
+        reloadSamples();
+     }
+
+     function updateMaxSliderSelection() {
+        let maxSlider = document.getElementById("maxGeneticDistInput");
+        let maxInputBox = document.getElementById("maxGeneticDistanceTyped");
+
+        let rangeSelected = updateMaxSlider(maxSlider.value);
+
+        if (parseFloat(maxInputBox.value) != rangeSelected.maxValue) {
+          maxInputBox.value = rangeSelected.maxValue;
+        }
+        updateMaxPage();
+        reloadSamples();
+     }
+
+     // Update visuals of slider
+     function updateMinSlider(newValue) {
+       let minSlider = document.getElementById("minGeneticDistInput");
+       let maxSlider = document.getElementById("maxGeneticDistInput");
+
+       minSlider.value = Math.min(parseFloat(newValue), parseFloat(maxSlider.value) - (stepValue));
+       let value = (100/(parseFloat(minSlider.max)-parseFloat(minSlider.min)))*parseFloat(minSlider.value)-(100/(parseFloat(minSlider.max)-parseFloat(minSlider.min)))*parseFloat(minSlider.min);
+
+       document.getElementById("leftSlider").style.width = value + "%";
+       document.getElementById("selectedSlider").style.left = value + "%";
+       document.getElementById("leftGeneticDistThumb").style.left = value + "%";
+       document.getElementById("minGeneticDist").innerHTML = minSlider.value;
+
+      return {
+        minValue: minSlider.value,
+        maxValue: maxSlider.value
+      };
+     }
+
+     function updateMaxSlider(newValue) {
+       let minSlider = document.getElementById("minGeneticDistInput");
+       let maxSlider = document.getElementById("maxGeneticDistInput");
+
+       let minValue = parseFloat(minSlider.value) + stepValue;
+       maxSlider.value = Math.max(parseFloat(newValue), minValue);
+       let value = (100/(parseFloat(maxSlider.max)-parseFloat(maxSlider.min)))*parseFloat(maxSlider.value)-(100/(parseFloat(maxSlider.max)-parseFloat(maxSlider.min)))*parseFloat(maxSlider.min);
+
+       document.getElementById("rightSlider").style.width = (maxPercentage - value) + "%";
+       document.getElementById("selectedSlider").style.right = (maxPercentage - value) + "%";
+       document.getElementById("rightGeneticDistThumb").style.left = value + "%";
+       document.getElementById("maxGeneticDist").innerHTML = maxSlider.value;
+
+       return {
+         minValue: minSlider.value,
+         maxValue: maxSlider.value
+       };
+     }
+
+     function updateMinTypedSelection() {
+       let minInputBox = document.getElementById("minGeneticDistanceTyped");  // Update values in input boxes
+       let minValue = parseFloat(minInputBox.value);
+
+       //console.log(minValue);
+
+       if (minValue != NaN) {
+         let rangeSelected = updateMinSlider(minValue);
+         if (parseFloat(minInputBox.value) != rangeSelected.minValue) {
+           minInputBox.value = rangeSelected.minValue;
+         }
+         updateMaxPage();
+         reloadSamples();
+       }
+
+     }
+
+     function updateMaxTypedSelection() {
+       let maxInputBox = document.getElementById("maxGeneticDistanceTyped");
+       let maxValue = parseFloat(maxInputBox.value);
+
+       //console.log(maxValue);
+
+       if (maxValue != NaN) {
+         let rangeSelected = updateMaxSlider(maxValue);
+         if (parseFloat(maxInputBox.value) != rangeSelected.maxValue) {
+           maxInputBox.value = rangeSelected.maxValue;
+         }
+         updateMaxPage();
+         reloadSamples();
+       }
+
+     }
+
+     function updateOrderByProperty() {
+       //console.log("Update byorder by");
+       reloadSamples();
+     }
+
+     function updateOrderByAsc() {
+       //console.log("Update by ascending");
+       reloadSamples();
+     }
+
+     /*
+     * Display genome cards
+     */
+     function clearFindMyFriendsSection() {
+        document.getElementById("findMyFriendsCards").innerHTML = "";
+     }
+
+
+     function populateFriendsSection(samples) {
+       let parentSection = document.getElementById("findMyFriendsCards"); // Now create cards
+       let count = 0;
+       let orderBy = document.getElementById("orderBy").value;
+
+       samples.forEach(function(sample) {
+         sample["highlight"] = orderBy;
+         genomeCard = createGenomeCard(sample);
+         parentSection.appendChild(genomeCard);
+
+         tag = parentSection.getElementsByClassName("geneticDistanceTag")[count]; // Position the tag
+         card = parentSection.getElementsByClassName("genomeCard")[count];
+         tag.setAttribute("style", `z-index: 1; top: ${ - 1 * 0.5 * tag.clientHeight }px; left: ${ 0.5 * card.clientWidth }px; width: ${ 0.6 * card.clientWidth }px;`);
+         count++;
+       });
+     }
+
+     function createGenomeCard(sample){
+       let focus = sample.highlight;
+       sample["sequenceType"] = "false";
+       sample["highlightlocation"] = "false";
+       sample["highlightstrain"] = "false";
+       sample["highlighthost"] = "false";
+       sample["highlightisolationSource"] = "false";
+       sample[`highlight${focus}`] = "highlighted";
+
+       let newCard = document.createElement("button");
+       newCard.setAttribute("class", "genomeCard");
+       newCard.setAttribute("name", "sampleSelection");
+       newCard.setAttribute("value", `${sample.id}`);
+       newCard.setAttribute("onclick", "window.location.href='/result'");
+       newCard.setAttribute("type", "submit");
+
+       let info = document.createElement("p");
+
+       let display = `<div class="genomeCardSampleId"><h4>${sample.id}</h4></div>
+       <span class=${sample.highlightsequenceType}><b>Sequence Type: </b>${sample.st}<br></span>
+       <span class=${sample.highlightlocation}><b>Location: </b>${sample.country}<br></span>
+       <span class=${sample.highlightstrain}><b>Strain: </b>${sample.strain}<br></span>
+       <span class=${sample.highlighthost}><b>Host: </b>${sample.host}<br></span>
+       <span class=${sample.highlightisolationSource}><b>Isolation Source: </b>${sample.isolation_source}<br></span>
+       <div class="geneticDistanceTag">${sample.distance}</div>`;
+
+       info.innerHTML = display;
+       newCard.innerHTML = info.outerHTML;
+
+       return newCard;
+     }
+
+    // Display cards when first loaded
+    window.onload = function() {
+      let currentPage = document.getElementById("samplePageNumber");
+      currentPage.value = 1;
+      updateMaxPage();
+      updatePageSamples();
+      updateFavoritesButton();
+
+
+      let coll = document.getElementsByClassName("collapsible"); // TODO: CLEANUp
+
+      // Set heights of genome information blocks
+      for (i = 0; i < coll.length; i++) {
+        let sectionContent = coll[i].nextElementSibling;
+        sectionContent.classList.toggle("contentActive");
+        let contentHeight = sectionContent.getBoundingClientRect().height;
+        sectionContent.style.setProperty('--max-height', contentHeight + 'px');
+        sectionContent.classList.toggle("contentActive");
+      }
+
+      for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+          this.classList.toggle("sectionActive");
+          let content = this.nextElementSibling;
+          content.classList.toggle("contentActive");
+
+        });
+      }
+    }
+
+    // Update display when window is rezied
+    window.onresize = function() {
+      tags = document.getElementsByClassName("geneticDistanceTag");
+      cards = document.getElementsByClassName("genomeCard");
+
+      for (i = 0; i < tags.length; i++) {
+        tag = tags[i];
+        card = cards[i];
+        tag.setAttribute("style", `z-index: 1; top: ${ - 1 * 0.5 * tag.clientHeight }px; left: ${ 0.5 * card.clientWidth }px; width: ${ 0.6 * card.clientWidth }px;`);
+      }
+    }
+
+
+    /*
+     * Script for Favorites Functionality
+     * Display whether or not a sample has been favorited by a user.
+     */
+    function updateFavoritesButton(){
+      let isFavorite = <%- isFavourited %>; // TODO: Change to american spelling
+      let style = "unfavoriteSample";
+      if (isFavorite) {
+        style = "favoriteSample";
+      }
+      let favoriteButton = document.getElementById("favoriteButtonHeart");
+      if (favoriteButton) {
+        favoriteButton.setAttribute("class", `fas fa-heart ${style}`);
+      }
+    }
+
+    function addSamplesToGroup(group_id){
+        collection.forEach((ele) => {
+            if(ele.isNode() && ele.inside()){
+                addSampleToGroup(group_id, ele.id());
+            }
+        });
+        addSampleToGroup(group_id, sampleIdentity);
+    }
+
+    function addToGroup(group_id){
+        addSampleToGroup(group_id, sampleIdentity);
+    }
+
+    function addSampleToGroup(group_id, sample_id){
+        //let group_id = document.getElementById('groups-list').value;
+        let baseUrl = window.location.origin;
+        let url = `${baseUrl}/addGroupSample`;
+
+        if(group_id === 'create'){
+            window.location.href = `${baseUrl}/createGroup`;
+        }
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                groupId: group_id,
+                sampleId: sample_id,
+            })
+        })
+            .then(response => {
+                if (response.status === 200 && sample_id === sampleIdentity) {
+                    location.reload(true);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    function remGroup(group_id){
+        let baseUrl = window.location.origin;//"http://127.0.0.1:8000"; // TODO: update when hosted
+        let url = `${baseUrl}/removeGroupSample`;
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                groupId: group_id,
+                sampleId: "<%- sample_ID %>",
+            })
+        })
+            .then(response => {
+                if (response.status == 200) {
+                    location.reload(true);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+</script>

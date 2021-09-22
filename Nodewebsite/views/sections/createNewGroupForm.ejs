@@ -1,0 +1,65 @@
+<div id="createGroupContainer">
+    <div id="groupCreationInfo">
+        <h1 class="text-center" style="margin-top: 20px">Create a new group</h1>
+        <p
+                class="text-center"
+                style="margin-top: 20px; margin-left: 10%; margin-right: 10%"
+        >
+            Please enter the required details, then click create.
+        </p>
+    </div>
+    <div id="newGroup-container" style="margin-top: 20px">
+        <div id="newGroupForm-container">
+            <form action="#" class="new-group" method="POST" nogroup="">
+                <!--Group name input-->
+                <div class="form-group">
+                    <label for="newGroupName">Group Name</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="newGroupName"
+                            name="name"
+                            required=""
+                    />
+                </div>
+                <!--Group description input-->
+                <div class="form-group">
+                    <label for="newGroupDesc">Group Description</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="newGroupDesc"
+                            name="description"
+                            placeholder="(Optional)"
+                    />
+                </div>
+                <div class="createGroupText">
+                    <!--Create group form submission-->
+                    <button
+                            class="btn btn-dark"
+                            type="submit"
+                            style="margin: auto; width: 30%"
+                    >
+                        Create
+                    </button>
+                </div>
+            </form>
+
+            <% if (groupAlreadyExists) { %>
+                <script>
+                    alert("Group already exists. Please use another name.");
+                </script>
+            <% } %>
+
+            <!--Link to View Groups page-->
+            <div class="form-footer" style="margin-top: 15px">
+                <div class="createGroupText">
+                    <p>
+                        To cancel or view existing groups, you can click
+                        <a style="color: #468e94" href="/groups"> <u> here</u> </a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

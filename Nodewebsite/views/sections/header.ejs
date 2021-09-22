@@ -1,0 +1,144 @@
+<!--Navigation Bar-->
+<nav
+  class="navbar navbar-expand-md navbar-light"
+  style="border-bottom: 0.5px solid gray"
+>
+  <!--Homepage Link-->
+  <a class="navbar-brand" style="font-size: 180%; color: #2f2f2f" href="/">
+    <i class="fas fa-atom" style="color: #468e94"></i> <b>Staph</b>Book
+  </a>
+
+  <!--Make navigation bar collapsible-->
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse" id="navbarSupportedContent">
+    <!--Navigation Search Bar-->
+    <ul class="navbar-nav mx-auto">
+      <li class="nav-item">
+        <!--Search form-->
+        <form class="form-inline" action="/searchResults" method="get">
+          <!--Search form dropdown-->
+          <select
+            id="options"
+            name="searchOption"
+            style="border: 0.5px solid gray; margin-right: 1px"
+            class="form-control form-control-sm"
+          >
+            <option value="Sequence">Sequence Type</option>
+            <option value="Location">Location</option>
+            <option value="Strain Name">Strain Name</option>
+            <option value="Host">Host</option>
+            <option value="Source">Isolation Source</option>
+            <option value="Sample">Sample ID</option>
+          </select>
+          <!--Search form text input-->
+          <div
+            class="input-group input-group-sm mb-3"
+            style="margin-top: 16px; width: 450px"
+          >
+            <input
+              id="input"
+              name="searchInput"
+              style="border: 0.5px solid gray"
+              class="form-inline form-control-sm typeahead tt-query"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Type your search here"
+              aria-label="Search"
+              aria-describedby="basic-addon2"
+            />
+            <div class="input-group-append">
+              <button class="btn btn-dark" type="submit">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </li>
+    </ul>
+
+    <!--Link to advanced search page-->
+    <ul class="navbar-nav mx-auto">
+      <li class="nav-item">
+        <a
+          class="nav-link btn btn-sm btn-outline-dark"
+          style="margin-left: 2px; margin-right: 2px; color: #468e94"
+          href="/advancedSearch"
+          >Advanced Search</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link btn btn-sm btn-outline-dark"
+          style="margin-left: 2px; margin-right: 2px; color: #468e94"
+          href="/uploadSample"
+          >New Sample</a
+        >
+      </li>
+      <!--Link to help/tutorial page-->
+      <li class="nav-item">
+        <a
+          class="nav-link btn btn-sm btn-outline-dark"
+          href="/tutorials"
+          style="margin-left: 2px; margin-right: 2px; color: #468e94"
+          >Help/Tutorial</a
+        >
+      </li>
+      <!--Link to AMR page-->
+      <li class="nav-item">
+        <a
+          class="nav-link btn btn-sm btn-outline-dark"
+          href="/amr"
+          style="margin-left: 2px; margin-right: 2px; color: #468e94"
+          >AMR</a
+        >
+      </li>
+
+      <% if (userLoggedIn) { %>
+      <li class="nav-item">
+        <!--User menu-->
+        <div class="dropdown" style="margin-left: auto; margin-right: 30px">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <i class="fas fa-user"></i>
+          </button>
+          <!--Links to user functionality-->
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="/favourites">Favourites</a>
+            <a class="dropdown-item" href="/groups">Groups</a>
+            <a class="dropdown-item" href="/logout">Logout</a>
+          </div>
+        </div>
+      </li>
+      <% } else { %>
+
+      <!--Login button-->
+      <li class="nav-item">
+        <a
+          class="btn btn-sm btn-dark nav-link"
+          style="margin-left: 2px; margin-right: 2px; color: white"
+          href="/login"
+        >
+          Log in / Register
+        </a>
+      </li>
+      <% } %>
+    </ul>
+  </div>
+</nav>

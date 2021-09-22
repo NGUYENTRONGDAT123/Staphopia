@@ -1,6 +1,7 @@
 {
   "name": "client",
   "version": "0.1.0",
+  "homepage": "./",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
@@ -69,4 +70,5 @@
     "file-loader": "^6.1.1",
     "sass": "^1.37.0"
   }
+  
 }

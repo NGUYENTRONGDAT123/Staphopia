@@ -1,0 +1,410 @@
+<script>
+
+    /*
+     * Functionality for downloading the sample's information.
+     * Adds all the data into an array with formatting that can be read by a csv document and
+     * downloads it.
+     *
+     */
+
+    function downloadInfo() {
+    console.log("download sample information");
+
+    let sampleIdentity = <%- JSON.stringify(sample_ID) %>;
+    let tag_tag = <%- JSON.stringify(tag_tag) %>;
+    let sample_metadata = <%- JSON.stringify(sample_metadata) %>;
+    let sequence_summary = <%- JSON.stringify(sequence_summary) %>;
+    let assembly_summary = <%- JSON.stringify(assembly_summary) %>;
+    let mlst_mlst = <%- JSON.stringify(mlst_mlst) %>;
+    let sccmec_primers = <%- JSON.stringify(sccmec_primers) %>;
+    let sccmec_proteins = <%- JSON.stringify(sccmec_proteins) %>;
+    let sccmec_subtypes = <%- JSON.stringify(sccmec_subtypes) %>;
+    let staphopia_blatstquery = <%- JSON.stringify(staphopia_blatstquery) %>;
+
+    let allObjects = [];
+    tag_tag.forEach(function(object){
+    var arr = [];
+    arr.push("Sample: " + sampleIdentity + "\r\n");
+    arr.push("\rTAGS");
+    arr.push("\rTag:");
+    arr.push(object.tag);
+    arr.push("\rComment:");
+    arr.push(object.comment);
+    allObjects.push(arr)
+    });
+
+    try {
+        sample_metadata.forEach(function(object){
+        var arr = [];
+        arr.push("\r\n\rMETADATA");
+        arr.push("\rStudy Accession:");
+        arr.push(object.metadata.study_accession);
+        arr.push("\rStudy Title:");
+        arr.push(object.metadata.study_title);
+        arr.push("\rStudy Alias:");
+        arr.push(object.metadata.study_alias);
+        arr.push("\rSecondary Study Accession:");
+        arr.push(object.metadata.secondary_study_accession);
+        arr.push("\rSample Accession:");
+        arr.push(object.metadata.sample_accession);
+        arr.push("\rSecondary Sample Accession:");
+        arr.push(object.metadata.secondary_sample_accession);
+        arr.push("\rSubmission Accession:");
+        arr.push(object.metadata.submission_accession);
+        arr.push("\rExperiment Title:");
+        arr.push(object.metadata.experiment_title);
+        arr.push("\rExperiment Alias:");
+        arr.push(object.metadata.experiment_alias);
+        arr.push("\rTax ID:");
+        arr.push(object.metadata.tax_id);
+        arr.push("\rScientific Name:");
+        arr.push(object.metadata.scientific_name);
+        arr.push("\rInstrument Platform:");
+        arr.push(object.metadata.instrument_platform);
+        arr.push("\rInstrument Model:");
+        arr.push(object.metadata.instrument_model);
+        arr.push("\rLibrary Layout:");
+        arr.push(object.metadata.library_layout);
+        arr.push("\rLibrary Strategy:");
+        arr.push(object.metadata.library_strategy);
+        arr.push("\rLibrary Selection:");
+        arr.push(object.metadata.library_selection);
+        arr.push("\rCenter Name:");
+        arr.push(object.metadata.center_name);
+        arr.push("\rCenter Link:");
+        arr.push(object.metadata.center_link);
+        arr.push("\rFirst Public:");
+        arr.push(object.metadata.first_public);
+        arr.push("\rCell Line:");
+        arr.push(object.metadata.cell_line);
+        arr.push("\rCollected By:");
+        arr.push(object.metadata.collected_by);
+        arr.push("\rCollection Date:");
+        arr.push(object.metadata.collection_date);
+        arr.push("\rCountry:");
+        arr.push(object.metadata.country);
+        arr.push("\rDescription:");
+        arr.push(object.metadata.description);
+        arr.push("\rEnvironmental Sample:");
+        arr.push(object.metadata.environmental_sample);
+        arr.push("\rGermline:");
+        arr.push(object.metadata.germline);
+        arr.push("\rIsolate:");
+        arr.push(object.metadata.isolate);
+        arr.push("\rIsolation Source:");
+        arr.push(object.metadata.isolation_source);
+        arr.push("\rSerotype:");
+        arr.push(object.metadata.serotype);
+        arr.push("\rSerovar:");
+        arr.push(object.metadata.serovar);
+        arr.push("\rSex:");
+        arr.push(object.metadata.sex);
+        arr.push("\rSubmitted Sex:");
+        arr.push(object.metadata.submitted_sex);
+        arr.push("\rStrain:");
+        arr.push(object.metadata.strain);
+        arr.push("\rSubspecies:");
+        arr.push(object.metadata.sub_species);
+        arr.push("\rTissue Type:");
+        arr.push(object.metadata.tissue_type);
+        arr.push("\rBiosample Tax ID:");
+        arr.push(object.metadata.biosample_tax_id);
+        arr.push("\rBiosample Scientific Name:");
+        arr.push(object.metadata.biosample_scientific_name);
+        arr.push("\rSample Alias:");
+        arr.push(object.metadata.sample_alias);
+        arr.push("\rChecklist:");
+        arr.push(object.metadata.checklist);
+        arr.push("\rBisoample Center Name:");
+        arr.push(object.metadata.biosample_center_name);
+        arr.push("\rEnvironment Biome:");
+        arr.push(object.metadata.environment_biome);
+        arr.push("\rEnvironment Feature:");
+        arr.push(object.metadata.environment_feature);
+        arr.push("\rEnvironment Material:");
+        arr.push(object.metadata.environment_material);
+        arr.push("\r>Project Name:");
+        arr.push(object.metadata.project_name);
+        arr.push("\rHost:");
+        arr.push(object.metadata.host);
+        arr.push("\rHost Tax ID:");
+        arr.push(object.metadata.host_tax_id);
+        arr.push("\rHost Status:");
+        arr.push(object.metadata.host_status);
+        arr.push("\rHost Sex:");
+        arr.push(object.metadata.host_sex);
+        arr.push("\rSubmitted Host Sex:");
+        arr.push(object.metadata.submitted_host_sex);
+        arr.push("\rHost Body Site:");
+        arr.push(object.metadata.host_body_site);
+        arr.push("\rInvestigation Type:");
+        arr.push(object.metadata.investigation_type);
+        arr.push("\rSequencing Method:");
+        arr.push(object.metadata.sequencing_method);
+        arr.push("\rBroker Name:");
+        arr.push(object.metadata.broker_name);
+
+        arr.push("\r\n\rSEQUENCING METRICS");
+        arr.push("\rName");
+        arr.push("Total BP");
+        arr.push("Coverage");
+        arr.push("Read Total");
+        arr.push("Read min");
+        arr.push("Read mean");
+        arr.push("Read std");
+        arr.push("Read median");
+        arr.push("Read max");
+        arr.push("Read 25th");
+        arr.push("Read 75th");
+        arr.push("Quality mean");
+        arr.push("Quality std");
+        arr.push("Quality median");
+        arr.push("Quality 25th");
+        arr.push("Quality 75th");
+
+        allObjects.push(arr)
+      });
+    }
+    catch(err) {
+      allObjects.push("\rError downloading sample metadata section");
+    }
+
+    sequence_summary.forEach(function(object){
+    var arr = [];
+    if (object.stage_id == 4){
+    arr.push("\radapter");
+    } else if(object.stage_id == 5){
+    arr.push("\rcleanup");
+    }else if(object.stage_id == 6){
+    arr.push("\racc");
+    }else if(object.stage_id == 7) {
+    arr.push("\roriginal");
+    }
+    arr.push(object.total_bp);
+    arr.push(object.coverage);
+    arr.push(object.read_total);
+    arr.push(object.read_min);
+    arr.push(object.read_mean);
+    arr.push(object.read_std);
+    arr.push(object.read_median);
+    arr.push(object.read_max);
+    arr.push(object.read_25th);
+    arr.push(object.read_75th);
+    arr.push(object.qual_mean);
+    arr.push(object.qual_std);
+    arr.push(object.qual_median);
+    arr.push(object.qual_25th);
+    arr.push(object.qual_75th);
+    allObjects.push(arr)
+    });
+
+    assembly_summary.forEach(function(object){
+    var arr = [];
+    arr.push("\r\n\rASSEMBLY METRICS");
+    arr.push("\rTotal Contig:");
+    arr.push(object.total_contig);
+    arr.push("\rTotal Contig Length:");
+    arr.push(object.total_contig_length);
+    arr.push("\rMin Contig Length:");
+    arr.push(object.min_contig_length);
+    arr.push("\rMedian Contig Length:");
+    arr.push(object.median_contig_length);
+    arr.push("\rMean Contig Length:");
+    arr.push(object.mean_contig_length);
+    arr.push("\rMax Contig Length:");
+    arr.push(object.max_contig_length);
+    arr.push("\rn50 Contig Length:");
+    arr.push(object.n50_contig_length);
+    arr.push("\rl50 Contig Count:");
+    arr.push(object.l50_contig_count);
+    arr.push("\rng50 Contig Length:");
+    arr.push(object.ng50_contig_length);
+    arr.push("\rlg50 Contig Count:");
+    arr.push(object.lg50_contig_count);
+    arr.push("\rContigs > 1k:");
+    arr.push(object.contigs_greater_1k);
+    arr.push("\rContigs > 10k:");
+    arr.push(object.contigs_greater_10k);
+    arr.push("\rContigs > 100k:");
+    arr.push(object.contigs_greater_100k);
+    arr.push("\rContigs > 1m");
+    arr.push(object.contigs_greater_1m);
+    arr.push("\rPercentage of Contigs > 1k:");
+    arr.push(object.percent_contigs_greater_1k);
+    arr.push("\rPercentage of Contigs > 10k:");
+    arr.push(object.percent_contigs_greater_10k);
+    arr.push("\rPercentage of Contigs > 100k:");
+    arr.push(object.percent_contigs_greater_100k);
+    arr.push("\rPercentage of Contigs > 1m:");
+    arr.push(object.percent_contigs_greater_1m);
+    arr.push("\rContigs Percentage of A:");
+    arr.push(object.contig_percent_a);
+    arr.push("\rContigs Percentage of T:");
+    arr.push(object.contig_percent_t);
+    arr.push("\rContigs Percentage of G:");
+    arr.push(object.contig_percent_g);
+    arr.push("\rContigs Percentage of C:");
+    arr.push(object.contig_percent_c);
+    arr.push("\rContigs Percentage of N:");
+    arr.push(object.contig_percent_n);
+    arr.push("\rContigs not ACGTN:");
+    arr.push(object.contig_non_acgtn);
+    allObjects.push(arr)
+    });
+
+    mlst_mlst.forEach(function(object){
+    var arr = [];
+    arr.push("\r\n\rMLST");
+    arr.push("\rst:");
+    arr.push(object.st);
+    arr.push("\rariba:");
+    arr.push(object.ariba);
+    arr.push("\rmentalist:");
+    arr.push(object.mentalist);
+    arr.push("\rblast:");
+    arr.push(object.blast);
+    allObjects.push(arr)
+    });
+
+    for(let i = 0; i < 1 ; i++){
+    var arr = [];
+    arr.push("\r\n\rSCCMEC PRIMER HITS");
+    arr.push("\rTitle");
+    arr.push("Contig");
+    arr.push("Hamming Distance");
+    arr.push("Bitscore");
+    arr.push("Evalue");
+    arr.push("Identity");
+    arr.push("Mismatch");
+    arr.push("Gaps");
+    arr.push("Query From");
+    arr.push("Query To");
+    arr.push("Hit From");
+    arr.push("Hit To");
+    arr.push("Align Length");
+    arr.push("Qseq");
+    arr.push("Hseq");
+    allObjects.push(arr)
+    }
+
+    sccmec_primers.forEach(function(object){
+    var arr = [];
+    arr.push("\r" + staphopia_blatstquery[object.query_id-1].title);
+    arr.push(object.contig);
+    arr.push(object.hamming_distance);
+    arr.push(object.bitscore);
+    arr.push(object.evalue);
+    arr.push(object.identity);
+    arr.push(object.mismatch);
+    arr.push(object.gaps);
+    arr.push(object.query_from);
+    arr.push(object.query_to);
+    arr.push(object.hit_from);
+    arr.push(object.hit_to);
+    arr.push(object.align_len);
+    arr.push(object.qseq);
+    arr.push(object.hseq);
+    allObjects.push(arr)
+    });
+
+    for(let i = 0; i < 1 ; i++){
+    var arr = [];
+    arr.push("\r\n\rSCCMEC SUBTYPE HITS");
+    arr.push("\rTitle");
+    arr.push("Contig");
+    arr.push("Hamming Distance");
+    arr.push("Bitscore");
+    arr.push("Evalue");
+    arr.push("Identity");
+    arr.push("Mismatch");
+    arr.push("Gaps");
+    arr.push("Query From");
+    arr.push("Query To");
+    arr.push("Hit From");
+    arr.push("Hit To");
+    arr.push("Align Length");
+    arr.push("Qseq");
+    arr.push("Hseq");
+    allObjects.push(arr)
+    }
+
+    sccmec_subtypes.forEach(function(object){
+    var arr = [];
+    arr.push("\r" + staphopia_blatstquery[object.query_id-1].title);
+    arr.push(object.contig);
+    arr.push(object.hamming_distance);
+    arr.push(object.bitscore);
+    arr.push(object.evalue);
+    arr.push(object.identity);
+    arr.push(object.mismatch);
+    arr.push(object.gaps);
+    arr.push(object.query_from);
+    arr.push(object.query_to);
+    arr.push(object.hit_from);
+    arr.push(object.hit_to);
+    arr.push(object.align_len);
+    arr.push(object.qseq);
+    arr.push(object.hseq);
+    allObjects.push(arr)
+    });
+
+    for(let i = 0; i < 1 ; i++){
+    var arr = [];
+    arr.push("\r\n\rSCCMEC SUBTYPE HITS");
+    arr.push("\rTitle");
+    arr.push("Contig");
+    arr.push("Hamming Distance");
+    arr.push("Bitscore");
+    arr.push("Evalue");
+    arr.push("Identity");
+    arr.push("Mismatch");
+    arr.push("Gaps");
+    arr.push("Query From");
+    arr.push("Query To");
+    arr.push("Hit From");
+    arr.push("Hit To");
+    arr.push("Align Length");
+    arr.push("Qseq");
+    arr.push("Hseq");
+    arr.push("Midline");
+    allObjects.push(arr)
+    }
+
+    sccmec_proteins.forEach(function(object){
+    var arr = [];
+    arr.push("\r" + staphopia_blatstquery[object.query_id-1].title);
+    arr.push(object.contig);
+    arr.push(object.hamming_distance);
+    arr.push(object.bitscore);
+    arr.push(object.evalue);
+    arr.push(object.identity);
+    arr.push(object.mismatch);
+    arr.push(object.gaps);
+    arr.push(object.query_from);
+    arr.push(object.query_to);
+    arr.push(object.hit_from);
+    arr.push(object.hit_to);
+    arr.push(object.align_len);
+    arr.push(object.qseq);
+    arr.push(object.hseq);
+    arr.push(object.midline);
+    allObjects.push(arr)
+    });
+
+    //var BOM = "\uFEFF";
+    //var csvData = BOM + allObjects;
+    //var blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+    // TODO: Cleanup format of information, weird newlines
+    let csvContent = "data:text/csv;charset=utf-8," + allObjects.map(e => e.join(",")).join("\n");
+    saveCsvAs(csvContent, "StaphBook-Sample:"+ sampleIdentity +"-info.csv");
+    }
+
+    function saveCsvAs(csvContent, fileName){
+      let encodedUri = encodeURI(csvContent);
+      let link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `StaphBook-Sample ${<%- JSON.stringify(sample_ID) %>} Metadata.csv`);
+      document.body.appendChild(link); // Required for FF
+      link.click();
+    }
+</script>

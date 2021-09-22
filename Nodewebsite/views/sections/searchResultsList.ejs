@@ -1,0 +1,25 @@
+<div id="queryTitleContainer">
+    <h2>Search results for:
+        <br><b>"<%= option %>: <%= input %>"</b></h2>
+</div>
+
+<div id="queryListContainer">
+    <div class="list-group">
+        <form action='/result' method="get">
+        <% samples.forEach(function (result_samples) { %>
+
+        <button type="submit" name="sampleSelection" value="<%= result_samples.sample_id %>" onclick="window.location.href='/result'" class="list-group-item list-group-item-action list-group-item-light" style="color: #0a0a0a">
+            Sample: <%= result_samples.sample_id %>,
+            Sequence Type: <%= result_samples.st %>,
+            Location: <%= result_samples.country %>,
+            Strain: <%= result_samples.strain %>,
+            Host: <%= result_samples.host %>,
+            Isolation Source: <%= result_samples.isolation_source %>
+        <% }) %>
+          
+      </button>
+        </form>
+        <br>
+        <p style="text-align: center"> Displaying result(s) <%= number %> of <%= number %></p>
+    </div>
+</div>

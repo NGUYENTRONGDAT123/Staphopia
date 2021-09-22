@@ -51,6 +51,30 @@ export function AMRGene(sample) {
   }
 }
 
+// a way to get authentication
+export function GetNav() {
+  const url = `http://localhost:3001/login/checkAuthentication`;
+  const [repo, setRepo] = React.useState([]);
+
+  React.useEffect(() => {
+    const getRepo = async () => {
+      try {
+        const res = await axios.get(url);
+        if (res.statusText === "OK") {
+          const myRepo = res.data.authentication;
+          setRepo(myRepo);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getRepo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return { repo };
+}
+
 // a function for fetching data from API for Packed Circle Graph
 export function PackedCircleData() {
   const url = `/api/packed-circle`;

@@ -1,0 +1,11 @@
+<div id = "errorPage">
+
+  <h3> Sorry, there was an error trying to retrieve <%= description %> <%= id %>.</h3>
+
+  <form action="<%= endpoint %>" method="get">
+    <button id="errorButton" submit" name="<%= query %>" onclick="window.location.href='<%= endpoint %>'" value="<%= id %>">
+      Click here to try again
+    </button>
+  </form>
+
+</div>

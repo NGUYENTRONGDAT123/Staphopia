@@ -1,0 +1,99 @@
+<script>
+  /*
+  *
+  * Scripts to display group cards on page based
+  * on user selection of public, shared and private groups,
+  * and corresponding group descriptions.
+  *
+  */
+
+  function tag_label() {
+    tags = document.getElementsByClassName("groupCountTag");
+    cards = document.getElementsByClassName("groupCard");
+
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      card = cards[i];
+      tag.setAttribute("style", `z-index: 1; top: ${- 1 * 0.5 * tag.clientHeight}px; left: ${0.8 * card.clientWidth}px; width: ${0.25 * card.clientWidth}px;`);
+    }
+  }
+  tag_label();
+  window.onresize = () => {
+    tag_label();
+  };
+
+  window.onload = () => {
+    loadUserGroups();
+    tag_label();
+  };
+
+  function createGroupCard(group){
+    let groupCard = document.createElement('button');
+
+    groupCard.setAttribute('name', 'groupId');
+    groupCard.setAttribute('value',  `${ group.group_id }`);
+    groupCard.setAttribute('onclick',  "window.location.href='/viewGroup'");
+    groupCard.setAttribute('type',  "submit");
+    groupCard.setAttribute('class', 'groupCard')
+
+    let groupCardContent = `<div class="groupCardTitle">
+                  <h4>${ group.name }</h4>
+                  </div>
+                  <b>Description: </b>${ group.description }<br>
+                  <b>Created: </b>${ new Date(group.created).toDateString() }<br>
+                  <b>Last modified: </b>${ new Date(group.modified).toDateString() }<br>
+                  <div class="groupCountTag">${ group.count}</div>`;
+    groupCard.innerHTML = groupCardContent;
+    console.log(groupCard.outerHMTL);
+
+    return groupCard;
+  }
+
+  function loadPublicGroups() {
+    let description = "All groups that have been made available for public access";
+    loadGroups("publicGroupsButton", <%- JSON.stringify(publicGroups) %>, description);
+  }
+
+  function loadSharedGroups(){
+    let description = "Groups that someone else has created and shared with you";
+    loadGroups("sharedGroupsButton", <%- JSON.stringify(sharedGroups) %>, description);
+  }
+
+  function loadUserGroups() {
+    let description = "Groups you have created";
+    loadGroups("userGroupsButton", <%- JSON.stringify(groups) %>, description);
+  }
+
+  function loadGroups(titleId, groups, description){ // Given div id to insert cards in and group details
+    let publicGroupButton = document.getElementById('publicGroupsButton');
+    publicGroupButton.style.fontWeight = 'normal';
+
+    let sharedGroupButton = document.getElementById('sharedGroupsButton');
+    sharedGroupButton.style.fontWeight = 'normal';
+
+    let userGroupButton = document.getElementById('userGroupsButton');
+    userGroupButton.style.fontWeight = 'normal';
+
+    let focusedGroupButton = document.getElementById(titleId);
+    focusedGroupButton.style.fontWeight = 'bold';
+
+    let displayGroupsDiv = document.getElementById('groupsCards');
+    displayGroupsDiv.innerHTML = "";
+
+    let groupDescirption = document.getElementById('groupsDescription');
+    groupsDescription.innerHTML = description;
+
+    if ( groups.length >= 1 ) {
+
+      groups.forEach((group) => {
+        let groupCard = createGroupCard(group);
+        displayGroupsDiv.appendChild(groupCard);
+      });
+
+      tag_label();
+    }
+    else {
+      displayGroupsDiv.innerHTML = "No groups found";
+    }
+  }
+</script>

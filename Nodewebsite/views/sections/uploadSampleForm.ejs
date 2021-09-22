@@ -1,0 +1,50 @@
+<!--Main content of the advanced search page-->
+<div id="page-conatiner">
+
+    <!--Information on the advanced search page-->
+    <div id="informarion" style="margin: auto">
+        <h1 class="text-center" style="margin-top: 20px">New Sample</h1>
+        <p class="text-center" style="margin-top: 20px">Fill in the fields you wish to use to define your sample. Fields
+            left unchanged will not be included in the search.</p>
+    </div>
+
+    <!--Advanced Search form-->
+    <div id="advancedSearch"  style="margin-left: auto; margin-right: auto; width: 60%">
+        <form action='/uploadResult' method="get">
+            <!--Sequence Type input (text)-->
+            <div class="form-group">
+                <label for="nameInput">Name</label>
+                <input type="text" class="form-control" name="name" id="nameInput" placeholder="Name">
+            </div>
+
+            <!--Sequence Type input (text)-->
+            <div class="form-group">
+                <label for="sequenceInput">Sequence Type</label>
+                <input type="number" max="10000" class="form-control" name="st" id="sequenceInput" placeholder="Sequence Type">
+            </div>
+
+            <!--Location input (text)-->
+            <div class="form-group">
+                <label for="locationInput">Location</label>
+                <input type="text" class="form-control" name="location" id="locationInput" placeholder="Location">
+            </div>
+
+            <!--Host input (text)-->
+            <div class="form-group">
+                <label for="hostInput">Host</label>
+                <input type="text" class="form-control" name="host" id="hostInput" placeholder="Host">
+            </div>
+
+            <div class="row">
+                <!--Gene Absent input (text)-->
+                <div class="col">
+                    <label for="sourceInput">Isolation Source</label>
+                    <input type="text" class="form-control" name="isolation_source" id="sourceInput" placeholder="Isolation Source">
+                </div>
+            </div>
+
+            <!--Form submission button-->
+            <button type="submit" class="btn btn-dark" style="margin-top: 20px; width: 100px">Search</button>
+        </form>
+    </div>
+</div>

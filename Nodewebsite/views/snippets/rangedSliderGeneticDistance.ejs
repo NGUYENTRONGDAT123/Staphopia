@@ -1,0 +1,16 @@
+<!-- Credits to GlitchWorker on CodePen for providing source code here: https://codepen.io/glitchworker/pen/XVdKqj -->
+<div slider id="slider-distance">
+
+  <div>
+    <div id="leftSlider" inverse-left style="width:70%;"></div>
+    <div id="rightSlider" inverse-right style="width:70%;"></div>
+    <div id="selectedSlider" range style="left:30%;right:40%;"></div>
+    <span id="leftGeneticDistThumb" thumb style="left:30%;"></span>
+    <span id="rightGeneticDistThumb" thumb style="left:60%;"></span>
+  </div>
+
+  <input id="minGeneticDistInput" type="range" tabindex="0" value="0.0045" max="0.015" min="0" step="0.00000001" oninput="updateMinSliderSelection()"/>
+
+  <input id="maxGeneticDistInput" type="range" tabindex="0" value="0.009" max="0.015" min="0" step="0.00000001" oninput="updateMaxSliderSelection()"/>
+
+</div>
