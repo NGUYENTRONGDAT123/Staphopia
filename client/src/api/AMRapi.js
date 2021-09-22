@@ -3,7 +3,7 @@ const axios = require("axios").default;
 
 //get all AMR data
 export function AllAMRGenes() {
-  const url = "/api/amr-sample";
+  const url = `/api/amr-sample`;
   const [repo, setRepo] = React.useState([]);
 
   const getRepo = async () => {
@@ -53,7 +53,7 @@ export function AMRGene(sample) {
 
 // a function for fetching data from API for Packed Circle Graph
 export function PackedCircleData() {
-  const url = "/api/packed-circle";
+  const url = `/api/packed-circle`;
   const [repo, setRepo] = React.useState([]);
   const [isLoading, setLoading] = React.useState(true);
   React.useEffect(() => {
@@ -78,14 +78,14 @@ export function PackedCircleData() {
 }
 
 export async function fetchPackedCircleData() {
-  const url = "/api/packed-circle";
+  const url = `/api/packed-circle`;
   const result = await fetch(url);
   const data = await result.json();
   return data.result;
 }
 
 export async function fetchNetworkData() {
-  const url = "/api/subclass-sample";
+  const url = `/api/subclass-sample`;
   const result = await fetch(url);
   const data = await result.json();
   return data.result;

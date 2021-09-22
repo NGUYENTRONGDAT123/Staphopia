@@ -1,25 +1,25 @@
-import React, {useEffect, useCallback, useRef, useState} from 'react';
-import './NetworkChart.css';
-import {Spin} from 'antd';
-import Network from './NodeNetwork';
-import ProcessNode from './ProcessNode';
+import React from "react";
+import "./NetworkChart.css";
+import { Spin } from "antd";
+import Network from "./NodeNetwork";
+import ProcessNode from "./ProcessNode";
 
-export default function NetworkChart (props) {
-  const {data, isLoading, selectSample} = props;
+export default function NetworkChart(props) {
+  const { data, isLoading, selectSample } = props;
 
-  let {finalData, loading} = ProcessNode (data);
+  let { finalData, loading } = ProcessNode(data);
 
   if (isLoading === false && loading === false) {
-    console.log (finalData);
+    console.log(finalData);
     return (
       <Network
         data={finalData}
         distance={70}
         strength={-600}
         maxDistance={100}
-        name={'node-network'}
-        nodeName={'node'}
-        lineName={'line'}
+        name={"node-network"}
+        nodeName={"node"}
+        lineName={"line"}
         nodeRatio={0.8}
         width1={1500}
         height1={500}
