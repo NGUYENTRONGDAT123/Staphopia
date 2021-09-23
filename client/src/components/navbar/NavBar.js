@@ -1,129 +1,130 @@
-import React from 'react';
-import './NavBar.css';
-import {Navbar, Nav, Container, NavDropdown, NavItem} from 'react-bootstrap';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faUser} from '@fortawesome/free-solid-svg-icons';
-import {Layout, Menu, Breadcrumb} from 'antd';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
-import {
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-} from '@ant-design/icons';
+import React from "react";
+import "./NavBar.css";
 
-const {SubMenu} = Menu;
-const {Header, Content, Footer, Sider} = Layout;
-
-export default function Navigation () {
-  //assigning location variable
-  // const location = useLocation ();
-
-  // //destructuring pathname from location
-  // const {pathname} = location;
-
-  // //Javascript split method to get the name of the path in array
-  // const splitLocation = pathname.split ('/');
-
+export default function Navigation() {
   return (
-    // <Navbar bg="dark" expand="lg" variant="dark" sticky="top">
-    //   <Container>
-    //     <Navbar.Brand href="/">Staphbook</Navbar.Brand>
-    //     <Navbar.Toggle aria-controls="basic-navbar-nav" />
-    //     <Navbar.Collapse className="justify-content-end">
-    //       <Nav className="ml-auto">
-    //         <NavItem>
-    //           <Nav.Link
-    //             href="/"
-    //             className={splitLocation[1] === "" ? "active" : ""}
-    //           >
-    //             Home
-    //           </Nav.Link>
-    //         </NavItem>
-    //         <NavItem>
-    //           <Nav.Link
-    //             href="/AMR"
-    //             className={splitLocation[1] === "AMR" ? "active" : ""}
-    //           >
-    //             AMR Visualization
-    //           </Nav.Link>
-    //         </NavItem>
-    //         <NavItem>
-    //           <Nav.Link
-    //             href="/Search"
-    //             className={splitLocation[1] === "Search" ? "active" : ""}
-    //           >
-    //             Advanced Search
-    //           </Nav.Link>
-    //         </NavItem>
-    //         <NavItem>
-    //           <Nav.Link
-    //             href="/Sample"
-    //             className={splitLocation[1] === "Sample" ? "active" : ""}
-    //           >
-    //             New Sample
-    //           </Nav.Link>
-    //         </NavItem>
-    //         <NavItem>
-    //           <Nav.Link
-    //             href="/Help"
-    //             className={splitLocation[1] === "Help" ? "active" : ""}
-    //           >
-    //             Help/ Tutorial
-    //           </Nav.Link>
-    //         </NavItem>
-    //         <NavItem>
-    //           <NavDropdown
-    //             title={<FontAwesomeIcon icon={faUser} />}
-    //             id="basic-nav-dropdown"
-    //           >
-    //             <NavDropdown.Item href="/">Action</NavDropdown.Item>
-    //             <NavDropdown.Item href="/">Another action</NavDropdown.Item>
-    //             <NavDropdown.Item href="/">Something</NavDropdown.Item>
-    //             <NavDropdown.Divider />
-    //             <NavDropdown.Item href="/">Separated link</NavDropdown.Item>
-    //           </NavDropdown>
-    //         </NavItem>
-    //       </Nav>
-    //     </Navbar.Collapse>
-    //   </Container>
-    // </Navbar>
+    <nav
+      class="navbar navbar-expand-md navbar-light"
+      style={{ borderBottom: "0.5px solid gray" }}
+    >
+      <a
+        class="navbar-brand"
+        style={{ fontSize: "180%", color: "#2f2f2f" }}
+        href="/"
+      >
+        <i class="fas fa-atom" style={{ color: "#468e94" }}></i> <b>Staph</b>
+        Book
+      </a>
 
-    (
-      // <Router>
-      //   <Layout>
-      //     <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-      //       <Menu.Item key="1">
-      //         <span>Home</span>
-      //         <Link to="/" />
-      //       </Menu.Item>
-      //       <Menu.Item key="2">
-      //         <span>AMR</span>
-      //         <Link to="/AMR" />
-      //       </Menu.Item>
-      //     </Menu>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-      //     <Layout>
-      //       <Header style={{background: '#fff', padding: 0, paddingLeft: 16}} />
-      //       <Content
-      //         style={{
-      //           margin: '24px 16px',
-      //           padding: 24,
-      //           background: '#fff',
-      //           minHeight: 280,
-      //         }}
-      //       >
-      //         <Route exact path="/" component={Dashboard} />
-      //         <Route path="/AMR" component={Meseros} />
-      //       </Content>
-      //       <Footer style={{textAlign: 'center'}}>
-      //         Ant Design ©2016 Created by Ant UED
-      //       </Footer>
-      //     </Layout>
+      <div class="navbar-collapse collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto"></ul>
 
-      //   </Layout>
-      // </Router>
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a
+              class="nav-link btn btn-sm btn-outline-dark"
+              style={{
+                marginLeft: "2px",
+                marginRight: "2px",
+                color: "#468e94",
+              }}
+              href="/advancedSearch"
+            >
+              Advanced Search
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link btn btn-sm btn-outline-dark"
+              style={{
+                marginLeft: "2px",
+                marginRight: "2px",
+                color: "#468e94",
+              }}
+              href="/uploadSample"
+            >
+              New Sample
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link btn btn-sm btn-outline-dark"
+              href="/tutorials"
+              style={{
+                marginLeft: "2px",
+                marginRight: "2px",
+                color: "#468e94",
+              }}
+            >
+              AMR
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link btn btn-sm btn-outline-dark"
+              href="/tutorials"
+              style={{
+                marginLeft: "2px",
+                marginRight: "2px",
+                color: "#468e94",
+              }}
+            >
+              Help/Tutorial
+            </a>
+          </li>
 
-      <div></div>
-    )
+          {/* <li class="nav-item">
+            <div
+              class="dropdown"
+              style={{ marginLeft: "auto", marginRight: "30px" }}
+            >
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="fas fa-user"></i>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/favourites">
+                  Favourites
+                </a>
+                <a class="dropdown-item" href="/groups">
+                  Groups
+                </a>
+                <a class="dropdown-item" href="/logout">
+                  Logout
+                </a>
+              </div>
+            </div>
+          </li> */}
+
+          <li class="nav-item">
+            <a
+              class="btn btn-sm btn-dark nav-link"
+              style={{ marginLeft: "2px", marginRight: "2px", color: "white" }}
+              href="/login"
+            >
+              Log in / Register
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
   );
 }
