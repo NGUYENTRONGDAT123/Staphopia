@@ -28,32 +28,25 @@ export default function Network(props) {
     d3.selectAll(`g`).attr("transform", e.transform);
   });
 
-  // design the tooltip
-  const tooltip = d3
-    .select("body")
-    .append("div")
-    .style("position", "absolute")
-    .style("z-index", "10")
-    .style("visibility", "hidden")
-    .style("background-color", "black")
-    .style("border-radius", "5px")
-    .style("padding", "10px")
-    .style("color", "white");
-
   const drawChart = () => {
     //setting width and height
     const width = width1;
     const height = height1;
 
+    // design the tooltip
+    const tooltip = d3
+      .select("body")
+      .append("div")
+      .style("position", "absolute")
+      .style("z-index", "10")
+      .style("visibility", "hidden")
+      .style("background-color", "black")
+      .style("border-radius", "5px")
+      .style("padding", "10px")
+      .style("color", "white");
+
     //create svg (every elements is in svg) a.k.a container
-    const svg = d3
-      .select(`.${name}`)
-      // .attr ('width', width)
-      .attr("height", height)
-      // .attr ('preserveAspectRatio', 'xMinYMin meet')
-      // .attr ('viewbox', [-width / 2, -height / 2, width, height])
-      // .style('display', 'block')
-      .call(zoom); //allow pan and zoom within svg
+    const svg = d3.select(`.${name}`).attr("height", height).call(zoom); //allow pan and zoom within svg
 
     //design simulation
     const simulation = d3
@@ -294,9 +287,7 @@ export default function Network(props) {
 
   useEffect(() => {
     //remove all elements to redraw again
-    d3.selectAll(`.${nodeName}`).remove();
-    d3.selectAll(`.${lineName}`).remove();
-    d3.selectAll(`.node-text`).remove();
+    d3.selectAll("g").remove();
     drawChart();
   }, [data]);
 

@@ -38,33 +38,33 @@ export default function BubbleChart(props) {
   let focus = hierarchalData;
   let view;
 
-  //design the container
-  const svg = d3
-    .select(ref.current) //this svg container will be called as id="bubblechart"
-    .append("svg")
-    .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
-    .style("display", "block")
-    .style("margin", "0 -14px")
-    .attr("style", "border: thin red solid")
-    .style("background", "white")
-    .style("cursor", "pointer");
-
-  // design the tooltip
-  const tooltip = d3
-    .select("body")
-    .append("div")
-    .style("position", "absolute")
-    .style("z-index", "10")
-    .style("visibility", "hidden")
-    .style("background-color", "black")
-    .style("border-radius", "5px")
-    .style("padding", "10px")
-    .style("color", "white");
-
   //design the legend
   // const legend = svg.selectAll(".legendItem");
 
   const drawChart = useCallback(() => {
+    //design the container
+    const svg = d3
+      .select(ref.current) //this svg container will be called as id="bubblechart"
+      .append("svg")
+      .attr("className", "bb-container")
+      .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
+      .style("display", "block")
+      .style("margin", "0 -14px")
+      .attr("style", "border: thin red solid")
+      .style("background", "white")
+      .style("cursor", "pointer");
+
+    // design the tooltip
+    const tooltip = d3
+      .select("body")
+      .append("div")
+      .style("position", "absolute")
+      .style("z-index", "10")
+      .style("visibility", "hidden")
+      .style("background-color", "black")
+      .style("border-radius", "5px")
+      .style("padding", "10px")
+      .style("color", "white");
     // legend
     //   .append("circle")
     //   .attr("cx", width / 2)
@@ -194,13 +194,22 @@ export default function BubbleChart(props) {
           .style("top", event.pageY - 50 + "px");
       });
 
-    console.log(root.descendants());
+    // console.log(root.descendants());
     //label
     const label = svg
       .append("g")
       .selectAll("text")
       .data(root.descendants())
       .join("text")
+      .filter((d) => {
+        if (d.data.children !== undefined) {
+          if (d.data.children.length !== 0) {
+            return d;
+          }
+        } else {
+          return d;
+        }
+      })
       .style("fill-opacity", (d) => (d.parent === root ? 1 : 0))
       .attr("text-anchor", "middle")
       .style("display", (d) => {
@@ -256,7 +265,15 @@ export default function BubbleChart(props) {
           return d.parent === focus || this.style.display === "inline";
         })
         .transition(transition)
-        .style("fill-opacity", (d) => (d.parent === focus ? 1 : 0))
+        .style("fill-opacity", (d) => {
+          // console.log(d.data);
+          if (d.parent === focus) {
+            return 1;
+          } else {
+            return 0;
+          }
+          //
+        })
         .on("start", function (d) {
           if (d.parent === focus) this.style.display = "inline";
         })
@@ -273,8 +290,10 @@ export default function BubbleChart(props) {
   // render again every time there are new data adjusted
   useEffect(() => {
     if (!isLoading && data) {
+      console.log(data);
       d3.selectAll(".node").remove();
       d3.selectAll("text").remove();
+      d3.selectAll(".bb-container").remove();
       drawChart();
     }
   }, [data, isLoading]);
@@ -294,7 +313,7 @@ export default function BubbleChart(props) {
         more information would be displayed such as details about antibiotics
         and samples.
       </p> */}
-      <svg ref={ref} width={"100%"} height={"50vh"} />
+      <svg className="bubble-chart" ref={ref} width={"100%"} height={"50vh"} />
       {/* <Button onClick={setData(data2)}>Hello</Button> */}
     </div>
   );

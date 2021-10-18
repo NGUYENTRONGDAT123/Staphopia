@@ -61,7 +61,7 @@ export default function Navigation() {
           <li class="nav-item">
             <a
               class="nav-link btn btn-sm btn-outline-dark"
-              href="/tutorials"
+              href="/AMR"
               style={{
                 marginLeft: "2px",
                 marginRight: "2px",

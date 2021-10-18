@@ -260,7 +260,7 @@ export default function ProcessNode(data) {
   useEffect(() => {
     setFinalData([]);
     process();
-    console.log(finalData);
+    // console.log(finalData);
   }, [data, isMst]);
 
   return { finalData, loading };
