@@ -14,11 +14,11 @@ import HomePage from "./pages/HomePage/HomePage";
 import AMRPage from "./pages/AMRPage/AMRPage";
 import { Header } from "antd/lib/layout/layout";
 import ErrorPage from "./pages/ErrorPage";
-import { GetNav } from "./api/AMRapi";
+import { GetAuthentication } from "./api/AMRapi";
 const { Footer, Content } = Layout;
 
 function App() {
-  let { repo } = GetNav();
+  let { repo } = GetAuthentication();
   console.log(repo);
   return (
     <Router>
@@ -27,7 +27,7 @@ function App() {
           <Menu theme="dark" mode="horizontal">
             <Menu.Item key="1">
               <span>Home</span>
-              <Link to="/" />
+              <Link to="/advancedSearch" />
             </Menu.Item>
             <Menu.Item key="2">
               <span>AMR</span>
@@ -43,7 +43,7 @@ function App() {
           }}
         >
           <Switch>
-            <Route exact path="/" component={HomePage} />
+            {/* <Route exact path="/" component={HomePage} /> */}
             <Route path="/AMR" component={AMRPage} />
             <Route path="*" component={ErrorPage} />
           </Switch>

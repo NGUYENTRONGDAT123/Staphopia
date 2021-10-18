@@ -14,6 +14,7 @@ router.get("/", function (req, res) {
   });
 });
 
+//_______WEBSCAPE________
 //send authentication confirmation for other framework (e.g react)
 router.get("/checkAuthentication", function (req, res) {
   let userLoggedIn = false;
@@ -22,6 +23,7 @@ router.get("/checkAuthentication", function (req, res) {
   }
   res.status(200).json({ authentication: `${userLoggedIn}` });
 });
+//_______WEBSCAPE________
 
 router.post("/", function (req, res) {
   let userLoggedIn = false;

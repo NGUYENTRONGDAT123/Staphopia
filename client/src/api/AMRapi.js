@@ -52,7 +52,7 @@ export function AMRGene(sample) {
 }
 
 // a way to get authentication
-export function GetNav() {
+export function GetAuthentication() {
   const url = `http://localhost:3001/login/checkAuthentication`;
   const [repo, setRepo] = React.useState([]);
 
