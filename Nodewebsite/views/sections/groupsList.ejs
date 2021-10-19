@@ -1,0 +1,59 @@
+<div id="groupsPageContainer">
+    <!-- Display Group Information  -->
+    <h5 style="text-align: center; margin-top: 5px;">
+      Staphlyococcus aureus <br>
+    </h5>
+
+    <h1 style="text-align: center; margin-top: -10px;">Groups</h1>
+    <div id="ButtonContainer" style="text-align:center;">
+      <a class="btn btn-outline-dark btn-sm" title="Add New Group" id="addNewGroup" style="color: #468e94;"
+        href="/createGroup">
+        <i class="fas fa-plus" style="font-size:20px; text-align: center; padding-left: 20px; padding-right: 20px;"></i>
+      </a>
+    </div>
+    <div id="showGroupsContainer">
+      <button id="publicGroupsButton" onclick="loadPublicGroups()">Public Groups</button> |
+      <button id="sharedGroupsButton" onclick="loadSharedGroups()">Shared with you</button> |
+      <button id="userGroupsButton" onclick="loadUserGroups()">Your Groups</button>
+    </div>
+    <p id="groupsDescription">Groups that you have created</p>
+
+    <% if (haveGroups) { %>
+    <form action='/viewGroup' method="get">
+      <div id="groupsCards">
+        <% groups.forEach(function (result_groups) { %>
+
+        <!--            <button type="submit" name="groupID" class="list-group-item list-group-item-action list-group-item-light"-->
+        <!--              style="color: #0a0a0a; overflow: hidden; height: 85px;" onclick="window.location.href='/result'" value="<%= result_groups.group_id %>">-->
+        <!--              Group Name: <%= result_groups.name %> ||-->
+        <!--              Count: <%= result_groups.count %> ||-->
+        <!--              Created: <%= new Date(result_groups.created).toDateString() %> ||-->
+        <!--              Last modified: <%= new Date(result_groups.modified).toDateString() %> ||-->
+        <!--            </button>-->
+
+        <button class="groupCard" name="groupId" value="<%= result_groups.group_id %>"
+          onclick="window.location.href='/viewGroup'" type="submit">
+
+          <div class="groupCardTitle">
+            <h4><%= result_groups.name %></h4>
+          </div>
+          <b>Description: </b><%= result_groups.description %><br>
+          <b>Created: </b><%= new Date(result_groups.created).toDateString() %><br>
+          <b>Last modified: </b><%= new Date(result_groups.modified).toDateString() %><br>
+          <div class="groupCountTag"><%= result_groups.count%></div>
+        </button>
+        <% }) %>
+      </div>
+    </form>
+    <% } else { %>
+
+    <button type="button" class="list-group-item list-group-item-action list-group-item-light" style="color: #0a0a0a"
+      disabled="">
+      No groups found.
+    </button>
+    <% } %>
+
+  <!-- Scripts to view shared groups functionality  -->
+  <% include ../snippets/sharedGroupScript.ejs %>
+
+</div>

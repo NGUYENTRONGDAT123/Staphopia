@@ -1,0 +1,90 @@
+<!--List of quick search options for logged in users-->
+<div id="quickSearches-container" style="margin-left: auto; margin-right: auto; width: 60%; margin-bottom: 0px">
+  <!--Options for different pill lists-->
+  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+
+    <!--Option for popular pill list-->
+    <li class="nav-item" style="width: 33%; text-align: center">
+      <a class="nav-link active btn-outline-dark" id="pills-favorites-tab" data-toggle="pill" href="#pills-popular" role="tab" aria-controls="pills-popular" aria-selected="false">Random Genomes</a>
+    </li>
+
+
+    <!--Option for recommended genomes pill list-->
+    <li class="nav-item" style="width: 33%; text-align: center">
+      <a class="nav-link btn-outline-dark" id="pills-recommended-tab" data-toggle="pill" href="#pills-recommended" role="tab" aria-controls="pills-recommended" aria-selected="false">Recommendations</a>
+    </li>
+
+    <!--Option for favorites pill list-->
+    <li class="nav-item" style="width: 33%; text-align: center">
+      <a class="nav-link btn-outline-dark" id="pills-favorites-tab" data-toggle="pill" href="#pills-favorites" role="tab" aria-controls="pills-favorites" aria-selected="false">Favourites</a>
+    </li>
+  </ul>
+
+  <!--Pill lists-->
+  <div class="tab-content" id="pills-tabContent" style="margin-top: -15px">
+    <!--Popular genomes pill list-->
+    <div class="tab-pane fade show active" id="pills-popular" role="tabpanel" aria-labelledby="pills-popular-tab">
+      <% include ../snippets/popularGenomes %>
+    </div>
+
+    <!--Recommended genomes pill list-->
+	
+	
+	
+	
+    <div class="tab-pane fade" id="pills-recommended" role="tabpanel" aria-labelledby="pills-recommended-tab">
+      <% if (haveSugs) { %>
+
+      <form action='/result' method="get">
+        <% suggested.forEach(function (result_sugs) { %>
+
+        <button type="submit" name="sampleSelection" value="<%= result_sugs.sample_id %>" onclick="window.location.href='/result'" class="list-group-item list-group-item-action list-group-item-light" style="color: #0a0a0a">
+          Sample: <%= result_sugs.sample_id %>,
+          Sequence Type: <%= result_sugs.st %>,
+          Location: <%= result_sugs.country %>,
+          Strain: <%= result_sugs.strain %>,
+          Host: <%= result_sugs.host %>,
+          Isolation Source: <%= result_sugs.isolation_source %>
+          <% }) %>
+
+        </button>
+      </form>
+
+      <% } else { %>
+
+      <button type="button"  class="list-group-item list-group-item-action list-group-item-light" style="color: #0a0a0a" disabled>
+        No recommendations found. Add samples to your favourites to receive recommendations.
+      </button>
+
+      <% } %>
+    </div>
+
+    <!--Favorites pill list-->
+    <div class="tab-pane fade" id="pills-favorites" role="tabpanel" aria-labelledby="pills-favorites-tab">
+      <% if (haveFavs) { %>
+
+      <form action='/result' method="get">
+        <% favorites.forEach(function (result_favs) { %>
+
+        <button type="submit" name="sampleSelection" value="<%= result_favs.sample_id %>" onclick="window.location.href='/result'" class="list-group-item list-group-item-action list-group-item-light" style="color: #0a0a0a">
+          Sample: <%= result_favs.sample_id %>,
+          Sequence Type: <%= result_favs.st %>,
+          Location: <%= result_favs.country %>,
+          Strain: <%= result_favs.strain %>,
+          Host: <%= result_favs.host %>,
+          Isolation Source: <%= result_favs.isolation_source %>
+          <% }) %>
+
+        </button>
+      </form>
+
+      <% } else { %>
+
+      <button type="button"  class="list-group-item list-group-item-action list-group-item-light" style="color: #0a0a0a" disabled>
+        No favourites found.
+      </button>
+
+      <% } %>
+    </div>
+  </div>
+</div>

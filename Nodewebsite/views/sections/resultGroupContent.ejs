@@ -1,0 +1,116 @@
+<div class="groupsPage">
+    <div class="resultsPageTopComponent">
+
+    <!-- Display Download Options -->
+    <button id="downloadButton" type="button" data-toggle="dropdown">
+      Download
+    </button>
+    <div id="groupDropDownMenu" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <button id="downloadRadarGraphButton" class="dropDownButton" onclick="downloadRadarGraph()">Radar Graph</button>
+      <button id="downloadBarGraphButton" class="dropDownButton" onclick="downloadBarGraphs()">Bar Graphs</button>
+      <button id="downloadGroupGenomesButton" class="dropDownButton" onclick="downloadGenomeInformation()">Genomes</button>
+    </div>
+
+    <!-- Display Group Information  -->
+    <h5 style="text-align: center; margin-top: 5px;">
+        Staphlyococcus Aureus <br>
+    </h5>
+
+    <h1 id="groupName" style="text-align: center; margin-top: -10px;">
+        <%- groupInfo.name %>
+    </h1>
+
+    <div id="groupEditErrorMessage" class="errorMessage"></div>
+
+    <div id="groupEditBar"></div>
+
+    <p id="groupDescription" class="groupDescription">
+        <%- groupInfo.description %>
+    </p>
+
+    <!-- Display aggregated data -->
+    <h4>Common Statistics and Distributions</h4>
+    <div id="radarGraphSection">
+      <canvas class = "radarGraph" id="aggregatedRadarGraph"></canvas>
+    </div>
+
+    <div id="barGraphsSection">
+      <canvas class="barGraph" id="sequenceTypeBar"></canvas>
+      <canvas class="barGraph" id="locationBar"></canvas>
+      <canvas class="barGraph" id="strainBar"></canvas>
+      <canvas class="barGraph" id="hostBar"></canvas>
+      <canvas class="barGraph" id="isolationSourceBar"></canvas>
+    </div>
+
+    <!-- Display genome cards -->
+    <div id="groupGenomeSection">
+      <h4>Genomes</h4>
+      <div id="removeGroupBar"></div>
+
+      <!-- Let user choose order to show samples -->
+      <p id ="groupSamplesFilterBar">
+        Order by
+        <select name="orderBy" id="orderBy" onchange="updateCards()">
+        <option value="sampleId">Sample ID</option>
+        <option value="sequenceType">Sequence Type</option>
+        <option value="location">Location</option>
+        <option value="strain">Strain</option>
+        <option value="host">Host</option>
+        <option value="isolationSource">Isolation Source</option>
+        </select>
+
+        Ascending
+        <label class="switch">
+          <input id="toggleOrder" type="checkbox" checked onchange="updateCards()">
+          <span class="toggle round"></span>
+        </label>
+      </p>
+
+    <div id="errorMessage" class="errorMessage"></div>
+    <div id="emptyGroupMessage"></div>
+
+    <!-- Let user browse groups of genomes at a time so they don't get overwhelmed -->
+    <div id="sampleNavigationBar">
+      <button class="navigationButton" onclick="stepToPage(-2)">&lt;&lt;</button>
+      <button class="navigationButton" onclick="stepToPage(-1)">&lt;</button> <span id="pageMessage"> Viewing page
+      <input type="number" id="samplePageNumber" name="samplePageNumber" min="1" value="1" onchange="updateSamples()"> of <span id="maxPageNumber">1</span> </span>
+      <button class="navigationButton" onclick="stepToPage(1)">&gt;</button>
+      <button class="navigationButton" onclick="stepToPage(2)">&gt;&gt;</button>
+   </div>
+   <div id="groupSamplesCards"></div>
+  </div>
+
+  <!-- Display collaborators -->
+  <h4>Collaborators</h4>
+
+  <!-- Display Group Status -->
+  <% if (groupInfo.status == "Public") { %>
+  <div id="public"> Public </div>
+  <p> This is a public group shared with everyone </div>
+  <!--
+  <div id= "displayUsers">
+    <button id="addUserButton" data-toggle="dropdown" style="margin:auto;display:block;">Share</button>
+    <div id="addUserDropDownMenu" class="dropdown-menu" aria-labelledby="addUserDropDownMenuButton">
+      <input id="inputUserEmail" type="text">
+      <button id="submitUserEmailButton" onclick="addNewCollaborator()" type="submit">Add</button>
+    </div>
+    <div id="userContainer"></div>
+  <div> -->
+  <div id="makeGroupPrivate"></div>
+  <% } else { %>
+    <div id= "displayUsers">
+      <button id="addUserButton" data-toggle="dropdown">Share</button>
+      <div id="addUserDropDownMenu" class="dropdown-menu" aria-labelledby="addUserDropDownMenuButton">
+        <input id="inputUserEmail" type="text">
+        <button id="submitUserEmailButton" onclick="addNewCollaborator()" type="submit">Add</button>
+      </div>
+      <button id="makePublicButton" onclick="makeGroupPublic()">Make Public</button>
+      <div id="userContainer"></div>
+      <div id="leaveGroup"></div>
+    </div>
+  <% } %>
+  </div>
+
+  <% include ../snippets/downloadGroupInfoScript.ejs %>
+  <% include ../snippets/viewGroupScript.ejs %>
+</div>

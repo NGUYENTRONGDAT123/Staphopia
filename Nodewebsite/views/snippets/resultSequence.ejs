@@ -1,0 +1,51 @@
+<table style="width: 100%;">
+    <tr>
+        <th>Name</th>
+        <th>Total BP</th>
+        <th>Coverage</th>
+        <th>Read Total</th>
+        <th>Read min</th>
+        <th>Read mean</th>
+        <th>Read std</th>
+        <th>Read median</th>
+        <th>Read max</th>
+        <th>Read 25th</th>
+        <th>Read 75th</th>
+        <th>Quality mean</th>
+        <th>Quality std</th>
+        <th>Quality median</th>
+        <th>Quality 25th</th>
+        <th>Quality 75th</th>
+    </tr>
+    <% sequence_summary.forEach(function (result_sequence_summary) { %>
+    <tr>
+        <td >
+            <% if(result_sequence_summary.stage_id == 4){ %>
+                adapter
+            <% }else if(result_sequence_summary.stage_id == 5){%>
+                cleanup
+            <% }else if(result_sequence_summary.stage_id == 6){%>
+                acc
+            <% }else if(result_sequence_summary.stage_id == 7){%>
+                original
+            <% } %>
+        </td>
+        <td > <%= result_sequence_summary.total_bp %> </td>
+        <td > <%= result_sequence_summary.coverage %> </td>
+        <td > <%= result_sequence_summary.read_total %> </td>
+        <td > <%= result_sequence_summary.read_min %> </td>
+        <td > <%= result_sequence_summary.read_mean %> </td>
+        <td > <%= result_sequence_summary.read_std %> </td>
+        <td > <%= result_sequence_summary.read_median %> </td>
+        <td > <%= result_sequence_summary.read_max %> </td>
+        <td > <%= result_sequence_summary.read_25th %> </td>
+        <td > <%= result_sequence_summary.read_75th %> </td>
+        <td > <%= result_sequence_summary.qual_mean %> </td>
+        <td > <%= result_sequence_summary.qual_std %> </td>
+        <td > <%= result_sequence_summary.qual_median %> </td>
+        <td > <%= result_sequence_summary.qual_25th %> </td>
+        <td > <%= result_sequence_summary.qual_75th %> </td>
+    </tr>
+
+    <% }) %>
+</table>

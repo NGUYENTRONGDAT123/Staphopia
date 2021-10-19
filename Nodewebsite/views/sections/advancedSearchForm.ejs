@@ -1,0 +1,67 @@
+<!--Main content of the advanced search page-->
+<div id="page-conatiner">
+
+    <!--Information on the advanced search page-->
+    <div id="informarion" style="margin: auto">
+        <h1 class="text-center" style="margin-top: 20px">Advanced Search</h1>
+        <p class="text-center" style="margin-top: 20px">Fill in the fields you wish to use to refine the search. Fields
+            left unchanged will not be included in the search.</p>
+    </div>
+
+    <!--Advanced Search form-->
+    <div id="advancedSearch"  style="margin-left: auto; margin-right: auto; width: 60%">
+        <form action='/advSearchResults' method="get">
+            <!--Name input (text)-->
+            <div class="form-group">
+                <label for="sequenceInput">Sequence Type</label>
+                <input type="number" max="10000" class="form-control" name="sequenceInput" id="sequenceInput" placeholder="Sequence Type">
+            </div>
+
+            <!--Sequence Type input (text)-->
+            <div class="form-group">
+                <label for="locationInput">Location</label>
+                <input type="text" class="form-control" name="locationInput" id="locationInput" placeholder="Location">
+            </div>
+
+            <!--Date Isolated Range-->
+            <div class="form-group">
+                <label>Date Isolated</label>
+            </div>
+            <div class="form-group row" style="margin-top: -20px; margin-left: 0px">
+                <!--Start date (Date)-->
+                <label for="inputDateStart" class="col-form-label" style="margin-right: 10px">From:</label>
+                <div>
+                    <input type="date" class="form-control" name="inputDateStart" id="inputDateStart" placeholder="DD/MM/YYYY">
+                </div>
+                <!--End date (Date)-->
+                <label for="inputDateEnd" class="col-form-label"
+                       style="margin-left: 30px; margin-right: 10px">To:</label>
+                <div>
+                    <input type="date" class="form-control" name="inputDateEnd" id="inputDateEnd" placeholder="DD/MM/YYYY">
+                </div>
+            </div>
+
+            <!--Place input (text)-->
+            <div class="form-group">
+                <label for="hostInput">Host</label>
+                <input type="text" class="form-control" name="hostInput" id="hostInput" placeholder="Host">
+            </div>
+
+            <div class="row">
+                <!--Gene Present input (text)-->
+                <div class="col">
+                    <label for="strainInput">Strain Name</label>
+                    <input type="text" class="form-control" name="strainInput" id="strainInput" placeholder="Strain Name">
+                </div>
+                <!--Gene Absent input (text)-->
+                <div class="col">
+                    <label for="sourceInput">Isolation Source</label>
+                    <input type="text" class="form-control" name="sourceInput" id="sourceInput" placeholder="Isolation Source">
+                </div>
+            </div>
+
+            <!--Form submission button-->
+            <button type="submit" class="btn btn-dark" style="margin-top: 20px; width: 100px">Search</button>
+        </form>
+    </div>
+</div>

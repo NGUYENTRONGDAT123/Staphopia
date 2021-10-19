@@ -1,0 +1,1011 @@
+<!-- Group Samples Page Scripts -->
+<script>
+
+  /*
+  *
+  * Display group statistics functionality
+  * Functions for displaying a radar and five separate bar graphs
+  * for displaying the count and percentages of ST, country, strain,
+  * host and isolation source information, and genome cards
+  * based on field to order by set in a dropdown
+  * and toggle button.
+  *
+  */
+  function displayGenomeCards() {
+     let numberSamplesPerPage = samplesPerPage;
+     let pageNumber = parseInt(document.getElementById("samplePageNumber").value);
+     if ( pageNumber == NaN ) {
+       return;
+     }
+
+     let groupSamples =  <%- JSON.stringify(samples) %>;
+
+     if (groupSamples.length < 1) {
+       let emptyGroupMessage = document.getElementById("emptyGroupMessage");
+       emptyGroupMessage.innerHTML = "No samples have been added to this group yet";
+       return;
+     }
+
+      groupSamples.forEach(function(sample) { // Throws error otherwise with undefined properties
+        if ( sample.st == undefined ) {
+          sample.st = "Unknown";
+        }
+        if ( sample.country == undefined ) {
+          sample.country = "Unknown";
+        }
+        if ( sample.strain == undefined ) {
+          sample.strain = "Unknown";
+        }
+        if ( sample.host == undefined ) {
+          sample.host = "Unknown";
+        }
+        if ( sample.isolation_source == undefined ) {
+          sample.isolation_source = "Unknown";
+        }
+      });
+
+
+      let orderBy = document.getElementById("orderBy").value; // Order samples by desired field
+      groupSamples.sort(function(a,b) {
+        if (orderBy == "sequenceType") {
+          if (a.st < b.st) {
+            return -1;
+          }
+          if (a.st > b.st) {
+            return 1;
+          }
+          return 0;
+        }
+        if (orderBy == "sampleId") {
+          if (a.id < b.id) {
+            return -1;
+          }
+          if (a.id > b.id) {
+            return 1;
+          }
+          return 0;
+        }
+        if (orderBy == "location") {
+          return a.country.localeCompare(b.country);
+        }
+        if (orderBy == "strain") {
+          return a.strain.localeCompare(b.strain);
+        }
+        if (orderBy == "host") {
+          return a.host.localeCompare(b.host);
+        }
+        if (orderBy == "isolationSource") {
+          return a.isolation_source.localeCompare(b.isolation_source);
+        }
+      });
+
+     orderByAsc = document.getElementById("toggleOrder"); // Apply reverse order if desired
+     if (orderByAsc.checked == false) {
+       groupSamples.reverse();
+     }
+
+     let parentSection = document.getElementById("groupSamplesCards");
+
+     groupSamples = groupSamples.slice(numberSamplesPerPage * (pageNumber - 1), numberSamplesPerPage * pageNumber); // Show samples by page
+
+     groupSamples.forEach(function(groupSample) {
+       let newCard = document.createElement("button");
+       newCard.setAttribute("class", "genomeCardInfo");
+       newCard.setAttribute("name", "sampleSelection");
+       newCard.setAttribute("value", `${groupSample.id}`);
+       newCard.setAttribute("onclick", "window.location.href='/result'");
+       newCard.setAttribute("type", "submit");
+
+       let info = document.createElement("p");
+
+       let display = `<div class="genomeCardSampleId"><h4>${groupSample.id}</h4></div>
+       <b>Sequence Type: </b>${groupSample.st}<br>
+       <b>Location: </b>${groupSample.country}<br>
+       <b>Strain: </b>${groupSample.strain}<br>
+       <b>Host: </b>${groupSample.host}<br>
+       <b>Isolation Source: </b>${groupSample.isolation_source}<br>`
+
+       info.innerHTML = display;
+       newCard.innerHTML = info.outerHTML;
+       let newCardGroup = document.createElement("div");
+       newCardGroup.setAttribute("class", "genomeCard");
+       newCardGroup.innerHTML = `<form action='/result' method="get">${newCard.outerHTML}</form> <button class="removeCheckBox" id="${groupSample.id}" value="false" onclick="toggleCheckBox(this.id)">&#10006;</button>`
+       parentSection.appendChild(newCardGroup);
+
+     });
+  }
+
+  function clearGroupSampleCards() {
+    let groupSamplesSection = document.getElementById("groupSamplesCards");
+    groupSamplesSection.innerHTML = "";
+  }
+
+  function updateCards() {
+    clearGroupSampleCards();
+    displayGenomeCards();
+    adjustRemoveCheckBoxes();
+  }
+
+  /*
+  * Scripts for setting up the charting functionality.
+  * Consists of functions to clean and reformat data.
+  */
+  // Gets max count of each genome information category from the given array of dictionaries
+  function getRadarLabelsData(dictionaries, total) {
+    labels = ["", "", "", "", ""];
+    maxes = [0,0,0,0,0];
+
+    for (d = 0; d < dictionaries.length; d++) { // Find most common sample information(s) for each category
+      max = 0;
+      label= "";
+      stringCount = 0;
+
+      for (const [key, value] of Object.entries(dictionaries[d])) {
+        if (value == max) { // Add to current most common list
+          label += ", ";
+          if (`, ${key}`.length > 8) {
+            label += "\n";
+          }
+          label += `${key}`;
+        }
+        if (value > max) { // Reset most common value
+          max = value;
+          label = key;
+        }
+      }
+      labels[d] = label;
+      maxes[d] = max;
+    }
+
+    // Calculate percentages
+    for (m = 0; m < maxes.length; m++) {
+      maxes[m] = parseFloat((maxes[m] / total * 100).toFixed(2));
+      if ( isNaN(maxes[m]) ) {
+        maxes[m] = "Not Applicable ";
+      }
+    }
+
+    // Reformat labels
+    labelPrefixes = ["Sequence Types", "Locations", "Strains","Hosts", "Isolation Sources"];
+    for (l=0; l < labels.length; l++) {
+      labels[l] = `${labelPrefixes[l]}\n${maxes[l]}% ${labels[l]}`;
+    }
+
+    return [labels, maxes];
+  }
+
+  // Separates the dictionary of names and numbers to inject into chart
+  function getBarLabelsData(dictionary) {
+    labels = [];
+    data = [];
+
+    for (const [key, value] of Object.entries(dictionary)) {
+      labels.push(key);
+      data.push(value);
+    }
+
+    return [labels, data];
+  }
+
+  // Increase count
+  function increaseCount(count) {
+    if (count == undefined) {
+      count = 1;
+    }
+    else {
+      count ++;
+    }
+    return count;
+  }
+
+  // Show graphs
+  function displayGraphs() {
+    let groupSamples =  <%- JSON.stringify(samples) %>;
+
+    let sequenceTypes = {};
+    let locations = {};
+    let strains = {};
+    let hosts = {};
+    let isolationSources = {};
+
+    groupSamples.forEach(function(sample) {
+      sequenceTypes[sample.st] = increaseCount(sequenceTypes[sample.st]);
+      locations[sample.country] = increaseCount( locations[sample.country]);
+      strains[sample.strain] = increaseCount(strains[sample.strain]);
+      hosts[sample.host] = increaseCount(hosts[sample.host]);
+      isolationSources[sample.isolation_source] = increaseCount(isolationSources[sample.isolation_source]);
+    });
+
+    canvases = [["sequenceTypeBar", sequenceTypes, "Sequence Types"], ["locationBar", locations, "Locations"],
+    ["strainBar", strains, "Strains"], ["hostBar", hosts, "Hosts"], ["isolationSourceBar", isolationSources, "Isolation Sources"]];
+
+    canvases.forEach(function(canvas) {
+      //console.log(canvas);
+      id = canvas[0];
+      chartInfo = getBarLabelsData(canvas[1]);
+      title = canvas[2];
+      createBarChart(id, title, chartInfo[0], chartInfo[1]);
+    });
+
+    // Create radar chart
+    chartInfo = getRadarLabelsData([sequenceTypes, locations, strains, hosts, isolationSources], Object.keys(groupSamples).length);
+    createRadarChart("aggregatedRadarGraph", chartInfo[0], chartInfo[1]);
+
+  }
+
+  // Insert a radar chart inside the element id specified
+  function createRadarChart(id, labels, data) {
+    // Setup aesthetic options
+    options = {
+      legend: {
+        display: false
+      },
+      scale: {
+        ticks: {
+          beginAtZero: true,
+          suggestedMax: 100,
+          suggestedMin: 0,
+          stepSize: 20,
+          fontSize: 16,
+          backdropColor: 'white',
+          display: false
+        },
+        angleLines: {
+          display: false,
+        },
+        gridLines: {
+        lineWidth: 1.5,
+        color: '#707070'
+        },
+        pointLabels: {
+            fontSize: 16,
+        }
+      }
+    };
+
+    // Alow for multi-line labels
+    plugins = [{
+     beforeInit: function(chart) {
+        chart.data.labels.forEach(function(e, i, a) {
+           if (/\n/.test(e)) {
+              a[i] = e.split(/\n/);
+           }
+        });
+      }
+    }];
+
+    var canvas = document.getElementById(id);
+    var myChart = new Chart(canvas, {
+      type: 'radar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Percentage",
+          data: data,
+         backgroundColor: "rgba(255, 99, 132, 0.2)",
+          pointHitRadius: 10,
+          pointRadius: 0,
+          border: 1,
+          borderColor: "rgba(255, 99, 132, 0.05)"
+      }]},
+      options: options,
+      plugins: plugins
+    });
+  }
+
+  // Insert a horizontal bar chart inside the specified document id
+  function createBarChart(id, title, labels, data) {
+    backgroundColours = []; // Same colour for consistency
+    for (i = 0; i < labels.length; i ++) {
+      alpha = Math.random()
+      if (alpha < 0.1) {
+        alpha += 0.1;
+      }
+      backgroundColours.push(`rgba(255, 99, 132, ${alpha})`);
+    }
+
+    options = {  // Setup aesthetic configurations
+      legend: {
+          display: false
+      },
+      responsive: false,
+      aspectRatio: 2,
+      maintainAspectRatio: true,
+      scales: {
+        xAxes: [{
+          ticks: {
+            maxRotation: 90,
+            minRotation: 80,
+            display: false,
+            beginAtZero: true,
+          },
+          gridLines: {
+            display: false,
+            lineWidth: 1.5,
+            color: '#707070'
+          },
+           scaleLabel: {
+            display: true,
+            labelString: title
+          }
+
+        }],
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+          },
+          gridLines: {
+            display: false,
+            lineWidth: 1.5,
+            color: '#707070'
+          }
+        }]
+      }
+    };
+
+    var canvas = document.getElementById(id)
+    var myChart = new Chart(canvas, {
+      type: 'horizontalBar',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: backgroundColours,
+          border: 5
+        }]
+      },
+      options: options
+    });
+  }
+
+
+  /*
+  * Remove group sample functionality
+  * Includes functions making the backend API call,
+  * updating the genome cards in each group,
+  * remove checkboxes and edit button correspondingly.
+  */
+
+  function displayRemoveButton() {
+    let editButton = document.getElementById("groupSampleEditButton");
+    editButton.innerText = "Remove";
+    editButton.style.backgroundColor = "#F22E31";
+    editButton.style.border = "1px solid #F22E31";
+    editButton.style.color = "white";
+    editButton.setAttribute("onclick", "removeGenomeSamples()"); // create function
+  }
+
+  function displayCancelButton(){
+    let editButton = document.getElementById("groupSampleEditButton");
+    editButton.innerText = "Cancel";
+    editButton.style.backgroundColor = "#1ABC9C";
+    editButton.style.border = "1px solid #1ABC9C";
+    editButton.style.color = "white";
+    editButton.setAttribute("onclick", "cancelRemoveGenomeSamples()");
+  }
+
+  function displayEditButton(){
+    let editButton = document.getElementById("groupSampleEditButton");
+    editButton.innerText = "Edit";
+    editButton.style.backgroundColor = "white";
+    editButton.style.border = "1px solid #636363";
+    editButton.style.color = "#468e94";
+    editButton.setAttribute("onclick", "enableRemoveGenomeSamples()");
+  }
+
+  function toggleCheckBox(id) {
+	let button = document.getElementById(id);
+
+    const toggleValue = async () => {
+      if (button.value == "false") {
+      	return true;
+      }
+      return false;
+    }
+
+    toggleValue().then((newValue) => {
+    	button.value = newValue;
+        //console.log(button.value);
+        button.style.backgroundColor = "white";
+        if (button.value == "true") {
+        	button.style.backgroundColor = "red";
+
+          // Update button
+          let editButton = document.getElementById("groupSampleEditButton");
+          if (editButton.innerText != "Remove") {
+            displayRemoveButton();
+          }
+        }
+
+        // If none selected, then user has the option to cancel
+        let checkboxes = document.getElementsByClassName("removeCheckBox");
+        let noneSelected = true;
+        for (i = 0; i < checkboxes.length; i++) {
+          if (checkboxes[i].style.backgroundColor == "red") {
+            noneSelected = false;
+          }
+        }
+        if (noneSelected){
+          displayCancelButton();
+        }
+    });
+}
+
+function setupRemoveCheckBoxes() {
+  checkboxes = document.getElementsByClassName("removeCheckBox");
+  cards = document.getElementsByClassName("genomeCard");
+
+  for (i = 0; i < checkboxes.length; i++) {
+    checkbox = checkboxes[i];
+    card = cards[i];
+    checkbox.style.top = `${ -1 * ( checkbox.offsetTop + 0.5 * checkbox.clientHeight ) }px`;
+    checkbox.style.left = `${ 0.5 * card.clientWidth }px`;
+    checkbox.style.visibility = "hidden";
+  }
+}
+
+function adjustRemoveCheckBoxes() {
+  checkboxes = document.getElementsByClassName("removeCheckBox");
+  cards = document.getElementsByClassName("genomeCard");
+
+  for (i = 0; i < checkboxes.length; i++) {
+    checkbox = checkboxes[i];
+    card = cards[i];
+    checkbox.style.top = `${ -1 * ( checkbox.offsetTop + 0.5 * checkbox.clientHeight ) }px`;
+    checkbox.style.left = `${ 0.5 * card.clientWidth }px`;
+
+    let editButton = document.getElementById("groupSampleEditButton");
+    if (editButton.textContent == "Edit") {
+      checkbox.style.visibility = "hidden";
+    }
+  }
+}
+
+function enableRemoveGenomeSamples() {
+  displayCancelButton();
+
+  let removeCheckBoxes = document.getElementsByClassName("removeCheckBox"); // Enable remove checkboxes
+  for (i = 0; i < removeCheckBoxes.length; i++) {
+    removeCheckBoxes[i].style.visibility = "visible";
+  }
+
+  let genomeCardButtons = document.getElementsByClassName("genomeCardInfo"); // disable redirect to sample
+  for (i = 0; i < genomeCardButtons.length; i++) {
+    genomeCardButtons[i].setAttribute('class', 'genomeCardInfo disabled');
+  }
+
+  let genomeCards = document.getElementsByClassName("genomeCard");
+  for (i = 0; i < genomeCards.length; i++) {
+    genomeCards[i].onmouseover = function () {
+      this.style.border = "1px solid transparent"; // Will need to revert
+    }
+  }
+
+}
+
+function cancelRemoveGenomeSamples() {
+  let removeCheckBoxes = document.getElementsByClassName("removeCheckBox"); //  disable remove checkboxes
+  for (i = 0; i < removeCheckBoxes.length; i++) {
+    removeCheckBoxes[i].style.visibility = "hidden";
+
+  }
+
+  let genomeCardButtons = document.getElementsByClassName("genomeCardInfo"); // enable redirect to sample
+  for (i = 0; i < genomeCardButtons.length; i++) {
+    genomeCardButtons[i].setAttribute('class', 'genomeCardInfo');
+  }
+
+  let genomeCards = document.getElementsByClassName("genomeCard");
+  for (i = 0; i < genomeCards.length; i++) {
+    genomeCards[i].onmouseover = function () {
+      this.style.border = "1.5px solid #3399FF";
+      this.style.transition = "0.3s";
+    }
+
+    genomeCards[i].onmouseleave = function () {
+      this.style.border = "1px solid #f3f3f3";
+      this.style.transition = "0.3s";
+    }
+  }
+
+  displayEditButton();
+}
+
+function removeGenomeSamples() {
+  let checkboxes = document.getElementsByClassName("removeCheckBox");
+  selectedSamples = [];
+  for (i = 0; i < checkboxes.length; i++) {
+    if (checkboxes[i].value == "true") {
+      selectedSamples.push(checkboxes[i].id);
+    }
+  }
+  //console.log(selectedSamples);
+
+  let baseUrl = window.location.origin;
+  let url = `${baseUrl}/removeGroupSample`;
+  //console.log(url);
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({groupId: <%- groupInfo.group_id %>, sampleId: selectedSamples.toString()})
+    })
+    .then(response => {
+        //console.log(response);
+        if (response.status == 200) {
+          let isoDate = new Date(Date.now()).toISOString(); // Update last modified
+          fetch(`${baseUrl}/updateGroup`, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({groupId: <%- groupInfo.group_id %>, modified: isoDate})
+            })
+            .then(responseUpdate => {
+              if (responseUpdate.status == 200) {
+                location.reload(true); // Update page with new statistics and cards
+                return;
+              }
+          })
+        }
+    })
+    .catch(error => {
+        console.log(error);
+    });
+
+
+  let errorLabel = document.getElementById("errorMessage");
+  errorLabel.innerHTML = "Sorry, the samples could not be removed. Please try again later.";
+  cancelRemoveGenomeSamples();
+
+  }
+
+
+  /* Navigate group sample functionality
+  * Includes functions to determine how many pages a group
+  * may have, samples to show, buttons to activate/deactivate.
+  */
+
+  var samplesPerPage = 21; // global variable
+  var maxPageNumber;
+
+  function displayMaxPage() {
+    let groupSamples =  <%- JSON.stringify(samples) %>;
+    let display = document.getElementById("maxPageNumber");
+    maxPageNumber = Math.ceil( groupSamples.length / samplesPerPage );
+    if (maxPageNumber < 1) {
+      maxPageNumber = 1;
+    }
+    display.innerHTML = maxPageNumber;
+    document.getElementById("samplePageNumber").setAttribute("max", maxPageNumber);
+  }
+
+  function updateSamples(){
+    let newPageNumber = document.getElementById("samplePageNumber").value;
+    newPageNumber = parseInt(newPageNumber);
+    if ( newPageNumber == NaN ) {
+      return;
+    }
+    //console.log(newPageNumber);
+    if ( newPageNumber >= 1 && newPageNumber <= maxPageNumber ) {
+      console.log(newPageNumber);
+      clearGroupSampleCards();
+      displayGenomeCards();
+      setupRemoveCheckBoxes();
+    }
+  }
+
+  function stepToPage(step) {
+    step = parseInt(step);
+    //console.log(step);
+    let pageNumberSelection = document.getElementById("samplePageNumber");
+    let maxPageNumber = parseInt(pageNumberSelection.max);
+    let pageNumber = parseInt(pageNumberSelection.value);
+    pageNumber = pageNumber + step;
+    //console.log(pageNumber);
+    if (step < 0 && pageNumber < 1) {
+      pageNumber = 1;
+    }
+    if (step > 0 && pageNumber > maxPageNumber) {
+      pageNumber = maxPageNumber;
+    }
+
+    document.getElementById("samplePageNumber").value = pageNumber;
+    clearGroupSampleCards();
+    displayGenomeCards();
+    setupRemoveCheckBoxes();
+  }
+
+
+  /*
+  * Edit group functionality
+  * Consisting of functions to let users update
+  * group names and descriptions.
+  */
+
+  function enableEditGroupInfo() {
+    let inputTitle = document.createElement('textarea');
+    inputTitle.setAttribute('type', 'text');
+    inputTitle.setAttribute('id', 'inputTitle');
+    inputTitle.innerHTML =  <%- JSON.stringify(groupInfo.name) %>;
+
+    let inputDescription = document.createElement('textarea');
+    inputDescription.setAttribute('type', 'text');
+    inputDescription.setAttribute('id', 'inputDescription');
+    inputDescription.innerHTML = <%- JSON.stringify(groupInfo.description) %>;
+
+    let edittingGroupEditBar = document.createElement('div');
+    edittingGroupEditBar.setAttribute('id', 'groupEditBar');
+    edittingGroupEditBar.innerHTML = `${getGroupCancelEditButton().outerHTML}${getGroupUpdateButton().outerHTML}${getGroupDeleteButton().outerHTML}`;
+
+    // replace with inputs
+    let title = document.getElementById("groupName");
+    let description = document.getElementById("groupDescription");
+    let groupEditBar = document.getElementById("groupEditBar");
+
+    title.parentNode.replaceChild(inputTitle, title);
+    description.parentNode.replaceChild(inputDescription, description);
+    groupEditBar.parentNode.replaceChild(edittingGroupEditBar, groupEditBar);
+  }
+
+  function updateGroupInformation(){
+    let newTitle = document.getElementById("inputTitle").value;
+    let newDescription = document.getElementById("inputDescription").value;
+    let isoDate = new Date(Date.now()).toISOString();
+    let baseUrl = window.location.origin;
+    let url = `${baseUrl}/updateGroup`;
+    //console.log(url);
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({groupId: <%- groupInfo.group_id %>, title: newTitle, description: newDescription, modified: isoDate})
+      })
+      .then(response => {
+          if (response.status == 200) {
+              location.reload(true);
+          }
+          let errorMessage = document.getElementById("groupEditErrorMessage"); //TODO: Fix error handling
+          errorMessage.innerHMTL = "There was an error updating the information. Please try again.";
+      })
+      .catch(error => {
+          console.log(error);
+      });
+  }
+
+  function deleteGroup(){
+    let baseUrl = window.location.origin;
+    let url = `${baseUrl}/removeGroup`;
+      //console.log(url);
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({groupId: <%- groupInfo.group_id %>})
+    })
+    .then(response => {
+      console.log(response);
+      if (response.status == 200){
+        location.href='/groups'
+        return;
+      }
+    })
+    .catch(error => {
+        console.log(error);
+    });
+    //returnNormalPage();
+
+    let errorLabel = document.getElementById("errorMessage");
+    errorLabel.innerHTML = "Sorry, the group could not be removed. Please try again later.";
+  }
+
+  function getNormalTitle() {
+    let title = document.createElement('h1');
+    title.setAttribute('id', 'groupName');
+    title.innerHTML = <%- JSON.stringify(groupInfo.name) %>;
+    return title;
+  }
+
+  function getNormalDescription(){
+    let description = document.createElement('p');
+    description.setAttribute('id', 'groupDescription');
+    description.innerHTML = <%- JSON.stringify(groupInfo.description) %>;
+    return description;
+  }
+
+  function getNormalGroupEditBar(){
+    let button = document.createElement('button');
+    button.setAttribute('id', 'groupEditButton');
+    button.setAttribute('onclick', 'enableEditGroupInfo()');
+    button.innerHTML = "Edit";
+
+    let normalEditBar = document.createElement('div');
+    normalEditBar.setAttribute('id', 'groupEditBar');
+    normalEditBar.innerHTML = button.outerHTML;
+    return normalEditBar;
+  }
+
+  function getGroupCancelEditButton(){
+    let button = document.createElement('button');
+    button.setAttribute('id', 'groupEditCancelButton');
+    button.setAttribute('onclick', 'returnNormalPage()');
+    button.innerHTML = "Cancel";
+    return button;
+  }
+
+  function getGroupUpdateButton(){
+    let button = document.createElement('button');
+    button.setAttribute('id', 'groupUpdateButton');
+    button.setAttribute('onclick', 'updateGroupInformation()');
+    button.innerHTML = "Update";
+    return button;
+  }
+
+  function getGroupDeleteButton(){
+    let button = document.createElement('button');
+    button.setAttribute('id', 'groupDeleteButton');
+    button.setAttribute('onclick', 'deleteGroup()');
+    button.innerHTML = "Delete";
+    return button;
+  }
+
+  function returnNormalPage(){
+    let inputTitle = document.getElementById("inputTitle");
+    let inputDescription = document.getElementById("inputDescription");
+    let groupEditBar = document.getElementById("groupEditBar");
+
+    let normalTitle = getNormalTitle();
+    let normalDescription = getNormalDescription();
+    let normalEditBar = getNormalGroupEditBar();
+
+    inputTitle.parentNode.replaceChild(normalTitle, inputTitle);
+    inputDescription.parentNode.replaceChild(normalDescription, inputDescription);
+    groupEditBar.parentNode.replaceChild(normalEditBar, groupEditBar);
+  }
+
+  /*
+  *  Functions to display users in a group,
+  * and add users to group.
+  */
+  function loadOwner() {
+    let owner = <%- JSON.stringify(groupInfo.email) %>;
+    let container = document.getElementById('userContainer');
+    let node = document.createElement("button");
+    node.setAttribute("class", "ownerLabel");
+    node.setAttribute("title", owner);
+    node.innerHTML = owner.substring(0,2);
+    container.appendChild(node);
+  }
+
+  function loadCollaborators() {
+    let owner = <%- JSON.stringify(groupInfo.email) %>;
+    let collaborators = <%- JSON.stringify(sharingInfo) %>;
+    //console.log(collaborators);
+    let container = document.getElementById('userContainer');
+    collaborators.forEach((collaborator)=> {
+      //console.log(collaborator);
+      let email = collaborator; //.share_to_email;
+      if (email != owner) {
+        //console.log(email);
+        let node = document.createElement("button");
+        node.setAttribute("class", "collaboratorLabel");
+        node.setAttribute("title", email);
+        node.innerHTML = email.substring(0,2);
+        container.appendChild(node);
+      }
+    });
+  }
+
+  function addNewCollaborator() {
+    let email = document.getElementById('inputUserEmail').value;
+    //console.log(email);
+    //console.log(<%- groupInfo.group_id %>);
+    let baseUrl = window.location.origin;//"http://127.0.0.1:8000";
+    let url = `${baseUrl}/addUserToGroup`;
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({groupId: <%- groupInfo.group_id %>, email: email})
+      })
+      .then(response => {
+          console.log(response);
+          if (response.status == 200) {
+            let isoDate = new Date(Date.now()).toISOString(); // Update last modified
+            fetch(`${baseUrl}/updateGroup`, {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({groupId: <%- groupInfo.group_id %>, modified: isoDate})
+              })
+              .then(responseUpdate => {
+                console.log("Added User");
+                if (responseUpdate.status == 200) {
+                  location.reload(true); // Update page with new user
+                  return;
+                }
+                //console.log(responseUpdate);
+            })
+          }
+      })
+      .catch(error => {
+          console.log(error);
+      });
+  }
+
+  function makeGroupPublic() {
+    let email = "_public_all_users_";
+    let baseUrl = window.location.origin;
+    let url = `${baseUrl}/addUserToGroup`;
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({groupId: <%- groupInfo.group_id %>, email: email})
+      })
+      .then(response => {
+          console.log(response);
+          if (response.status == 200) {
+            let isoDate = new Date(Date.now()).toISOString(); // Update last modified
+            fetch(`${baseUrl}/updateGroup`, {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({groupId: <%- groupInfo.group_id %>, modified: isoDate})
+              })
+              .then(responseUpdate => {
+                //console.log("Added User");
+                if (responseUpdate.status == 200) {
+                  location.reload(true); // Update page with new user
+                  return;
+                }
+                //console.log(responseUpdate);
+            })
+          }
+      })
+      .catch(error => {
+          console.log(error);
+      });
+  }
+
+  function loadLeaveGroup() {
+    let container = document.getElementById("leaveGroup");
+    container.innerHTML = '<p id="leaveMessage">You are currently a collaborator of this group. Would you like to leave this group?</p><Button id="makePrivateButton" onclick="leaveGroup()">Yes</Button>';
+  }
+
+  function loadUnpubliciseGroup() {
+    let container = document.getElementById("makeGroupPrivate");
+    container.innerHTML = '<p id="unpubliciseMessage">You have editting rights as a collaborator. Would you like to change this group back to private?</p><Button id="makePrivateButton" onclick="unpubliciseGroup()">Yes</Button>';
+  }
+
+  function loadEdittingBars() {
+    let groupEditBar = document.getElementById("groupEditBar");
+    groupEditBar.innerHTML = '<button id="groupEditButton" onclick="enableEditGroupInfo()">Edit</button>';
+
+    let removeGroupBar = document.getElementById("removeGroupBar");
+    removeGroupBar.innerHTML = '<button id="groupSampleEditButton" onclick="enableRemoveGenomeSamples()">Edit</button>';
+  }
+
+  function leaveGroup() {
+    let baseUrl = window.location.origin;
+    let url = `${baseUrl}/removeUserFromGroup`;
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({groupId: <%- groupInfo.group_id %>, email: <%-  JSON.stringify(email) %>})
+      })
+      .then(response => {
+          //console.log(response);
+          if (response.status == 200) {
+            let isoDate = new Date(Date.now()).toISOString(); // Update last modified
+            fetch(`${baseUrl}/updateGroup`, {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({groupId: <%- groupInfo.group_id %>, modified: isoDate})
+              })
+              .then(responseUpdate => {
+                //console.log("Added User");
+                if (responseUpdate.status == 200) {
+                  location.reload(true); // Update page with new user
+                  return;
+                }
+                //console.log(responseUpdate);
+            })
+          }
+      })
+      .catch(error => {
+          console.log(error);
+      });
+  }
+
+  function unpubliciseGroup() {
+    let baseUrl = window.location.origin;
+    let url = `${baseUrl}/removeUserFromGroup`;
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({groupId: <%- groupInfo.group_id %>, email: "_public_all_users_"})
+      })
+      .then(response => {
+          //console.log(response);
+          if (response.status == 200) {
+            let isoDate = new Date(Date.now()).toISOString();
+            fetch(`${baseUrl}/updateGroup`, {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({groupId: <%- groupInfo.group_id %>, modified: isoDate})
+              })
+              .then(responseUpdate => {
+                //console.log("Added User");
+                if (responseUpdate.status == 200) {
+                  location.reload(true);
+                  return;
+                }
+            })
+          }
+      })
+      .catch(error => {
+          console.log(error);
+      });
+  }
+
+  window.onload = function() {
+    displayGenomeCards();
+    displayGraphs();
+    setupRemoveCheckBoxes();
+    displayMaxPage();
+
+    let email = <%-  JSON.stringify(email) %>;
+    let collaborators = <%-  JSON.stringify(sharingInfo) %>;
+    let owner = <%-  JSON.stringify(groupInfo.email) %>;
+    let status = <%-  JSON.stringify(groupInfo.status) %>;
+
+    if ( status === "Your" || status === "Private") {
+      loadOwner();
+      loadCollaborators();
+    }
+    if (email === owner || collaborators.includes(email) ) {
+      loadEdittingBars();
+      //console.log("Have editting rights");
+      if ( status === "Public" ) {
+          loadUnpubliciseGroup();
+      } else if ( status === "Private" && email != owner ) {
+          //console.log("private group");
+          loadLeaveGroup();
+      }
+    }
+  }
+
+  window.onresize = function() {
+    adjustRemoveCheckBoxes();
+  }
+
+</script>

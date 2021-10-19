@@ -1,0 +1,92 @@
+<script>
+
+    /*
+     * Functionality for downloading group info.
+     * Lets the user save all the key information for samples
+     * belonging to a group, the radar graph
+     * and the bar graphs.
+     *
+     */
+
+     function downloadRadarGraph(){
+       let base64Image = document.getElementById("aggregatedRadarGraph").toDataURL("image/jpg");
+       saveImageAs(base64Image,  `StaphBook- ${<%- JSON.stringify(groupInfo.name) %>} Radar.png`);
+     }
+
+     function downloadBarGraphs(){
+
+       let barGraphs = document.getElementsByClassName("barGraph");
+
+       for (var i = 0; i < barGraphs.length; i++) {
+         let base64Image = barGraphs[i].toDataURL("image/jpg");
+         let name = barGraphs[i].id;
+         saveImageAs(base64Image,  `StaphBook- ${<%- JSON.stringify(groupInfo.name) %>} ${name}.png`);
+       }
+
+     }
+
+     function saveImageAs(base64Data, fileName) {
+       let link = document.createElement("a");
+       link.setAttribute("href", base64Data);
+       link.setAttribute("download", fileName);
+       document.body.appendChild(link); // for Firefox
+       link.click();
+     }
+
+
+     function downloadGenomeInformation(){
+       let groupSamples =  <%- JSON.stringify(samples) %>;
+
+       let groupName = ["Name", `${<%- JSON.stringify(groupInfo.name) %>}`];
+       let groupDescription = ["Description", `${<%- JSON.stringify(groupInfo.description) %>}`];
+       let headers = ["Sample Id", "Sequence Type", "Location", "Strain", "Host", "Isolation Source"];
+
+       let master_information = [];
+       master_information.push(groupName);
+       master_information.push(groupDescription);
+       master_information.push(headers);
+
+        groupSamples.forEach(function(sample) {
+          if ( sample.st == undefined ) {
+            sample.st = "Unknown";
+          }
+          if ( sample.country == undefined ) {
+            sample.country = "Unknown";
+          }
+          if ( sample.strain == undefined ) {
+            sample.strain = "Unknown";
+          }
+          if ( sample.host == undefined ) {
+            sample.host = "Unknown";
+          }
+          if ( sample.isolation_source == undefined ) {
+            sample.isolation_source = "Unknown";
+          }
+
+          let sampleRow = [];
+          sampleRow.push(sample.id);
+          sampleRow.push(sample.st);
+          sampleRow.push(sample.country);
+          sampleRow.push(sample.strain);
+          sampleRow.push(sample.host);
+          sampleRow.push(sample.isolation_source);
+          master_information.push(sampleRow);
+        });
+
+        let csvContent = "data:text/csv;charset=utf-8," + master_information.map(e => e.join(",")).join("\n");
+        saveCsvAs(csvContent, `StaphBook- ${<%- JSON.stringify(groupInfo.name) %>} Samples Key Metadata.png`);
+
+     }
+
+     // TODO: MOVE ALL DOWNLOADS TO ONE FILE
+     function saveCsvAs(csvContent, fileName){
+       let encodedUri = encodeURI(csvContent);
+       let link = document.createElement("a");
+       link.setAttribute("href", encodedUri);
+       link.setAttribute("download", `StaphBook-Sample ${<%- JSON.stringify(groupInfo.name) %>} Metadata.csv`);
+       document.body.appendChild(link); // for Firefox
+       link.click();
+     }
+
+
+</script>

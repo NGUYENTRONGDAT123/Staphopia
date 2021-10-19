@@ -1,0 +1,317 @@
+<div id="page-container">
+
+    <div class="resultsPageTopComponent">
+        <h5 style="text-align: center; margin-top: 5px;">
+            Staphlyococcus aureus <br>
+        </h5>
+
+        <h1 style="text-align: center; margin-top: -10px;">
+            Sample <%- sample_ID %>
+        </h1>
+
+        <!--Check if the user is logged in-->
+        <% if (userLoggedIn) { %>
+            <div id="favDiv" style="margin-left: auto; margin-right: auto; width: 50px; margin-bottom: 6px;">
+
+            </div>
+            <form method="POST" id="favoriteButtonForm">
+                <button type="submit" class="btn btn-outline-dark btn-sm" title="Favorite Button"
+                        id="favoriteButton" style="margin-left: 2px; margin-right: 2px; color: #ebebeb;">
+                    <i id ="favoriteButtonHeart" class="fas fa-heart"
+                       style="font-size:20px; text-align: center; padding-left: 20px; padding-right: 20px;"></i>
+                </button>
+            </form>
+            <%sample_groups.forEach(function (group) { %>
+                <button onclick="remGroup(this.value)" value=<%= group.group_id%> class="groupLabel">
+                    <%= group.name %>
+                </button>
+            <% }) %>
+
+        <div class="dropdown">
+            <button id="downloadButton" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                Add to Group
+            </button>
+            <div id="groupDropDownMenu" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <% avail_groups.forEach(function (group) { %>
+                    <button class="dropDownButton" onclick="addToGroup(this.value)" value=<%= group.group_id %>>
+                        <%= group.name %>
+                    </button>
+                <% }) %>
+                <button class="dropDownButton" onclick="addToGroup(this.value)" value="create">
+                    Create new group
+                </button>
+            </div>
+            <button type="button" id="downloadSampleInfo" onclick="downloadInfo()" title="Download Sample Information"
+                    class="btn btn-outline-dark btn-sm">
+                <i class="fas fa-download" style="font-size:20px; padding-left: 20px; padding-right: 20px;"></i>
+            </button>
+        </div>
+        <!--  close favDiv -->
+        <% } else { %>
+          <button type="button" id="downloadSampleInfo" onclick="downloadInfo()" title="Download Sample Information"
+                  class="btn btn-outline-dark btn-sm">
+              <i class="fas fa-download" style="font-size:20px; padding-left: 20px; padding-right: 20px;"></i>
+          </button>
+        <% } %>
+        <!-- close if userLogged in -->
+
+        <!-- Sample summary information -->
+        <hr style="width: 55%; margin-top: -2px"></hr>
+        <h4 style="text-align: center"> Summary </h4>
+        <p class="summaryInfo">
+            <% mlst_mlst.forEach(function (result_mlst_mlst) { %>
+            <b>Sequence Type:</b> <%= result_mlst_mlst.st %>
+            <% }) %>
+            <br>
+            <% sample_metadata.forEach(function (result_sample_metadata) { %>
+            <b>Location:</b> <%= result_sample_metadata.metadata.country %>
+            <br>
+            <b>Strain:</b> <%= result_sample_metadata.metadata.strain %>
+            <br>
+            <b>Host:</b> <%= result_sample_metadata.metadata.host %>
+            <br>
+            <b>Isolation Source:</b> <%= result_sample_metadata.metadata.isolation_source %>
+            <br>
+            <b>Scientific Name:</b><i> <%= result_sample_metadata.metadata.scientific_name %> </i>
+            <br>
+            <% }) %>
+            <% tag_tag.forEach(function (result_tag_tag) { %>
+            <b>Comment:</b> <%= result_tag_tag.comment %>
+            <% }) %>
+        </p>
+        <hr style="width: 55%">
+
+
+        </hr>
+        <h3 style="text-align: center" style="margin-top: 1em;"> Sample Information
+        </h3>
+
+    </div>
+
+    <div id="resultsPageSampleExpandableInformation">
+      <button type="button" class="collapsible"><span class="material-icons v">keyboard_arrow_down</span>Tags</button>
+      <div class="sectionContent">
+        <table class="adjustedTable">
+            <% tag_tag.forEach(function (result_tag_tag) { %>
+            <tr>
+                <td><b>Tag:</b></td>
+                <td>
+                    <%= result_tag_tag.tag %>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Comment:</b></td>
+                <td>
+                    <%= result_tag_tag.comment %>
+                </td>
+            </tr>
+            <% }) %>
+        </table>
+      </div>
+
+      <button type="button" class="collapsible"><span class="material-icons v">keyboard_arrow_down</span>Metadata</button>
+      <div class="sectionContent" id="Metadata">
+          <% include ../snippets/resultMetadata %>
+      </div>
+
+      <button type="button" class="collapsible"><span class="material-icons v">keyboard_arrow_down</span>Sequencing Metrics</button>
+      <div class="sectionContent" id="Sequencing">
+        <% include ../snippets/resultSequence %>
+      </div>
+
+      <button type="button" class="collapsible"><span class="material-icons v">keyboard_arrow_down</span>Assembly Metrics</button>
+      <div class="sectionContent" id="Assembly">
+        <% include ../snippets/resultAssembly %>
+      </div>
+
+      <button type="button" class="collapsible"><span class="material-icons v">keyboard_arrow_down</span>MLST</button>
+      <div class="sectionContent" id="MLST">
+        <table style="width: 100%;">
+            <% mlst_mlst.forEach(function (result_mlst_mlst) { %>
+            <tr>
+                <td><b>st:</b></td>
+                <td>
+                    <%= result_mlst_mlst.st %>
+                </td>
+            </tr>
+            <tr>
+                <td><b>ariba:</b></td>
+                <td>
+                    <%= result_mlst_mlst.ariba %>
+                </td>
+            </tr>
+            <tr>
+                <td><b>mentalist:</b></td>
+                <td>
+                    <%= result_mlst_mlst.mentalist %>
+                </td>
+            </tr>
+            <tr>
+                <td><b>BLAST:</b></td>
+                <td>
+                    <%= result_mlst_mlst.blast %>
+                </td>
+            </tr>
+            <% }) %>
+        </table>
+      </div>
+
+      <button type="button" class="collapsible"><span class="material-icons v">keyboard_arrow_down</span>SCCmec Primer Hits</button>
+      <div class="sectionContent"  id="Sccmec_Primers">
+        <% include ../snippets/resultSccmecPrimers %>
+      </div>
+
+      <button type="button" class="collapsible"><span class="material-icons v">keyboard_arrow_down</span>SCCmec Subtype Hits</button>
+      <div class="sectionContent" id="Sccmec_Subtypes">
+        <% include ../snippets/resultSccmecSubtypes %>
+      </div>
+
+      <button type="button" class="collapsible"><span class="material-icons v">keyboard_arrow_down</span>SCCmec Protein Hits</button>
+      <div class="sectionContent" id="Sccmec_Proteins">
+          <% include ../snippets/resultSccmecProteins.ejs %>
+      </div>
+    </div>
+    <!--Result page interactive element-->
+    <div id="resultsPageGraphComponents">
+        <div id="resultsPageGraphComponent1">
+            <h6 id="displayDescription">Functional network of related genomes and genomic interaction</h6>
+        </div>
+        <!-- close resultsPageGraphComponent1 -->
+
+        <div id="resultsPageGraphComponent2">
+            <div id="interactiveGraph">
+                <button type="button" id="centerGraph" onclick="centerGraph()" title="Center graph"
+                        class="btn btn-outline-dark btn-sm">
+                    <i class="fas fa-expand" style="font-size:20px; padding-left: 20px; padding-right: 20px;"></i>
+                </button>
+                <a href="#saveableGraphImage" id="downloadGraph" onclick="downloadGraph()"
+                   title="Create .png file of current graph" class="btn btn-outline-dark btn-sm">
+                    <i class="far fa-file-image" style="font-size:20px; padding-left: 20px; padding-right: 20px;"></i>
+                </a>
+                <button type="button" id="zoomInGraph" onclick="zoomInGraph()" title="Zoom in on graph"
+                        class="btn btn-outline-dark btn-sm">
+                    <i class="fa fa-search-plus" style="font-size:20px; padding-left: 20px; padding-right: 20px;"></i>
+                </button>
+                <button type="button" id="zoomOutGraph" onclick="zoomOutGraph()" title="Zoom out on graph"
+                        class="btn btn-outline-dark btn-sm">
+                    <i class="fa fa-search-minus" style="font-size:20px; padding-left: 20px; padding-right: 20px;"></i>
+                </button>
+                <a href="#interactiveGraph" id="expandGraph" onclick="expandGraph()" title="Make graph full screen"
+                   class="btn btn-outline-dark btn-sm">
+                    <i class="fas fa-long-arrow-alt-up"
+                       style="font-size:20px; padding-left: 20px; padding-right: 20px;"></i>
+                </a>
+                <button type="button" id="minimizeGraph" onclick="minimizeGraph()"
+                        title="Minimize graph to original size" class="btn btn-outline-dark btn-sm">
+                    <i class="fas fa-long-arrow-alt-down"
+                       style="font-size:20px; padding-left: 20px; padding-right: 20px;"></i>
+                </button>
+                <div class="dropdown">
+                    <button id="downloadButton" type="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        Add visible samples to Group
+                    </button>
+                    <div id="groupDropDownMenu" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <% avail_groups.forEach(function (group) { %>
+                            <button class="dropDownButton" onclick="addSamplesToGroup(this.value)" value=<%= group.group_id %>>
+                                <%= group.name %>
+                            </button>
+                        <% }) %>
+                        <button class="dropDownButton" onclick="addToGroup(this.value)" value="create">
+                            Create new group
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="cyLegend">
+                <p id="cyLegendTitle"><b> Legend</b></p>
+                <p id="cyLegendDivider"> | </p>
+
+                <div class="legend" onclick="changeConnection('location')">
+                    <div class="legendColorSquare" style="background-color: red;"></div>
+                    <p id="locLegend" class="cyLegendText"> Same Location </p>
+                    <div class="cyLegendSpacer"></div>
+                </div>
+
+                <div class="legend" onclick="changeConnection('host')">
+                    <div class="legendColorSquare" style="background-color: blue;"></div>
+                    <p id="hostLegend" class="cyLegendText"> Same Host </p>
+                    <div class="cyLegendSpacer"></div>
+                </div>
+
+                <div class="legend" onclick="changeConnection('sequence')">
+                    <div class="legendColorSquare" style="background-color: green;"></div>
+                    <p id="seqLegend" class="cyLegendText"> Same Sequence Type </p>
+                    <div class="cyLegendSpacer"></div>
+                </div>
+
+                <div class="legend" onclick="changeConnection('isolation')">
+                    <div class="legendColorSquare" style="background-color: orange;"></div>
+                    <p id="isoLegend" class="cyLegendText"> Same Isolation Source </p>
+                </div>
+            </div>
+
+        </div>
+        <!-- close resultsPageGraphComponent2 -->
+
+        <div id="resultsPageGraphComponent3">
+            <div id="cy"></div>
+        </div>
+        <!-- close resultsPageGraphComponent3 -->
+
+        <div id="resultsPageGraphComponent4" style="text-align: center;">
+            <div class="weightedDistanceSliders">
+                <p id="weighteddistnum">Minimum Connections = 2</p>
+                <input type="range" min="1" max="4" value="2" class="slider" id="myRange1" oninput="changeDist()"
+                       style="width: 40%; "></input>
+            </div>
+
+            <div class="weightedDistanceSliders">
+
+                <p id="weighteddist2num">Maximum Weighted Distance = 0.0150</p>
+                <input type="range" min="0" max="300" value="150" class="slider" id="myRange2" oninput="changeDist()"
+                       style="width: 60%; "></input>
+
+            </div>
+
+        </div>
+        <!-- close resultsPageGraphComponent4 -->
+
+        <!-- close resultsPageResultComponents -->
+        <!-- TODO: add information button, page move buttons << < Page X / 10 > >> Jumps 2 at a time -->
+        <div id="resultsPageGraphComponent5" style="text-align: center;">
+
+          <h3 style="text-align: center">Find My Friends</h3>
+
+          <p>Finding closely related genomes from a distance of <span id="minGeneticDist">0.00</span> to <span id="maxGeneticDist">0.0150</span></p>
+
+          <% include ../snippets/rangedSliderGeneticDistance.ejs %>
+
+          <% include ../snippets/selectionBar.ejs %>
+
+          <div id="closelyRelatedGenomesNavigationBar">
+            <button class="navigationButton" onclick="stepToPage(-2)">&lt;&lt;</button>
+            <button class="navigationButton" onclick="stepToPage(-1)">&lt;</button> <span id="pageMessage"> Viewing page
+            <input type="number" id="samplePageNumber" name="samplePageNumber" min="1" value="1" onchange="updatePageSamples()"> of <span id="maxPageNumber">1</span> </span>
+            <button class="navigationButton" onclick="stepToPage(1)">&gt;</button>
+            <button class="navigationButton" onclick="stepToPage(2)">&gt;&gt;</button>
+         </div>
+
+          <form action='/result' method="get"><div id="findMyFriendsCards"></div></form>
+
+        </div>
+        <!-- close resultsPageGraphComponent5 -->
+    </div>
+
+
+    <div id="imageTitleDiv"
+         style="width: 100%; font-size: 20px; text-align: center; margin-bottom: 20px; margin-top: 20px;"></div>
+    <img id="saveableGraphImage">
+
+    <!-- Scripts for result page functionality -->
+    <% include ../snippets/resultScripts.ejs %>
+    <!-- Scripts for downloading the sample information -->
+    <% include ../snippets/saveCsvScript.ejs %>
+
+</div>

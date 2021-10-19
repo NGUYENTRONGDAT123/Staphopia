@@ -1,0 +1,72 @@
+<!--Main content of the home page-->
+<div id="page-conatiner">
+
+    <!--Information section of the home page-->
+    <div id="information-container">
+        <h1 class="text-center" style="margin-top: 20px">Welcome to <b>Staph</b>Book</h1>
+        <p class="text-center" style="margin-top: 20px; margin-left: 10%; margin-right: 10%">
+          An interactive website for a database focusing on the genomes of the bacterial pathogen Staphylococcus aureus.</p>
+    </div>
+
+
+		<% if (userLoggedIn) { %>
+		
+		    <% include ../snippets/homePageLoggedIn %>
+
+		<% } else { %>
+		
+			<% include ../snippets/homePageNotLoggedIn %>
+			
+		<% } %>
+
+
+    <!--Tutorial boxes containing a brief description of the tutorial and link to that tutorial-->
+    <div id="tutorial-container" style="width: 910px; margin-right: auto; margin-left: auto; margin-top: 120px; height: auto;">
+        <h3 class="text-center" style="margin-top: 20px">New to <b>Staph</b>Book?</h3>
+
+        <!--Box for the first tutorial-->
+        <div id="tutorial1-container"  class ="tutorialCard">
+            <div class="card" style="height: 340px; background-color: #f9f9f9; border-color: #686868">
+                <div class="card-body">
+                    <h5 class="card-title">
+                      <i class="far fa-flag"></i>
+                      <br></br>
+                      Getting Started</h5>
+                    <p class="card-text">All information you need to know to begin using <b>Staph</b>Book.</p>
+                  <center><a onclick="window.location.href='/tutorials#tutorial1'" class="btn btn-outline-dark">Find out more</a></center>
+                </div>
+            </div>
+        </div>
+
+        <!--Box for the second tutorial-->
+        <div id="tutorial2-container" class ="tutorialCard">
+            <div class="card" style="height: 340px; background-color: #f9f9f9; border-color: #686868">
+   
+                <div class="card-body">
+                    <h5 class="card-title">
+                      <i class="fas fa-search"></i> 
+                        <br></br>
+                      How to find the genome you are looking for</h5>
+                    <p class="card-text">A step-by-step tutorial on how to use all the search functions of <b>Staph</b>Book to
+                    find exactly what you are looking for.</p>
+                  <center><a onclick="window.location.href='/tutorials#tutorial2'" class="btn btn-outline-dark">Find out more</a></center>
+                </div>
+            </div>
+        </div>
+
+        <!--Box for the third tutorial-->
+        <div id="tutorial3-container"  class ="tutorialCard">
+            <div class="card" style="height: 340px; background-color: #f9f9f9; border-color: #686868">
+                <div class="card-body">
+                    <h5 class="card-title">
+                      <i class="far fa-question-circle"></i>
+                      <br>
+                      How to save the data you've found</h5>
+                    <p class="card-text">A look at how data available on <b>Staph</b>Book and how that data can be saved and accessed quicker.</p>
+                  <center><a onclick="window.location.href='/tutorials#tutorial3'" class="btn btn-outline-dark" style="margin-bottom: 5px;">Find out more</a></center>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,76 @@
+<table style="width: 100%;">
+    <% assembly_summary.forEach(function (result_assembly_summary) { %>
+    <tr>
+        <td ><b>Total Contig:</b></td>
+        <td > <%= result_assembly_summary.total_contig %> </td>
+        <td ><b>Total Contig Length:</b></td>
+        <td > <%= result_assembly_summary.total_contig_length %> </td>
+    </tr>
+    <tr>
+        <td ><b>Min Contig Length:</b></td>
+        <td > <%= result_assembly_summary.min_contig_length %> </td>
+        <td ><b>Median Contig Length:</b></td>
+        <td > <%= result_assembly_summary.median_contig_length %> </td>
+    </tr>
+    <tr>
+        <td ><b>Mean Contig Length:</b></td>
+        <td > <%= result_assembly_summary.mean_contig_length %> </td>
+        <td ><b>Max Contig Length:</b></td>
+        <td > <%= result_assembly_summary.max_contig_length %> </td>
+    </tr>
+    <tr>
+        <td ><b>n50 Contig Length:</b></td>
+        <td > <%= result_assembly_summary.n50_contig_length %> </td>
+        <td ><b>l50 Contig Count:</b></td>
+        <td > <%= result_assembly_summary.l50_contig_count %> </td>
+    </tr>
+    <tr>
+        <td ><b>ng50 Contig Length:</b></td>
+        <td > <%= result_assembly_summary.ng50_contig_length %> </td>
+        <td ><b>lg50 Contig Count:</b></td>
+        <td > <%= result_assembly_summary.lg50_contig_count %> </td>
+    </tr>
+    <tr>
+        <td ><b>Contigs > 1k:</b></td>
+        <td > <%= result_assembly_summary.contigs_greater_1k %> </td>
+        <td ><b>Contigs > 10k:</b></td>
+        <td > <%= result_assembly_summary.contigs_greater_10k %> </td>
+    </tr>
+    <tr>
+        <td ><b>Contigs > 100k:</b></td>
+        <td > <%= result_assembly_summary.contigs_greater_100k %> </td>
+        <td ><b>Contigs > 1m</b></td>
+        <td > <%= result_assembly_summary.contigs_greater_1m %> </td>
+    </tr>
+    <tr>
+        <td ><b>Percentage of Contigs > 1k:</b></td>
+        <td > <%= result_assembly_summary.percent_contigs_greater_1k %> </td>
+        <td ><b>Percentage of Contigs > 10k:</b></td>
+        <td > <%= result_assembly_summary.percent_contigs_greater_10k %> </td>
+    </tr>
+    <tr>
+        <td ><b>Percentage of Contigs > 100k:</b></td>
+        <td > <%= result_assembly_summary.percent_contigs_greater_100k %> </td>
+        <td ><b>Percentage of Contigs > 1m:</b></td>
+        <td > <%= result_assembly_summary.percent_contigs_greater_1m %> </td>
+    </tr>
+    <tr>
+        <td ><b>Contigs Percentage of A:</b></td>
+        <td > <%= result_assembly_summary.contig_percent_a %> </td>
+        <td ><b>Contigs Percentage of T:</b></td>
+        <td > <%= result_assembly_summary.contig_percent_t %> </td>
+    </tr>
+    <tr>
+        <td ><b>Contigs Percentage of G:</b></td>
+        <td > <%= result_assembly_summary.contig_percent_g %> </td>
+        <td ><b>Contigs Percentage of C:</b></td>
+        <td > <%= result_assembly_summary.contig_percent_c %> </td>
+    </tr>
+    <tr>
+        <td ><b>Contigs Percentage of N:</b></td>
+        <td > <%= result_assembly_summary.contig_percent_n %> </td>
+        <td ><b>Contigs not ACGTN:</b></td>
+        <td > <%= result_assembly_summary.contig_non_acgtn %> </td>
+    </tr>
+    <% }) %>
+</table>

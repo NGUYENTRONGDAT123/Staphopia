@@ -15,7 +15,7 @@ EXPOSE 8393
 
 # CLIENT
 # Copy the current directory contents into the container at /client
-COPY ./client/ /client/
+COPY ./react-client/ /client/
 # Set the working directory to /client
 WORKDIR /client
 # install dependencies

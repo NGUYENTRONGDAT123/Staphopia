@@ -1,0 +1,406 @@
+/* Groups Page */
+#groupsDescription {
+  text-align: center;
+  margin-top: 1em;
+}
+
+#showGroupsContainer {
+  margin-top: 0.7em;
+  text-align: center;
+}
+
+#publicGroupsButton, #sharedGroupsButton, #userGroupsButton {
+  background-color: white;
+  border: 1px solid white;
+  borde-radius: 5px;
+}
+
+#publicGroupsButton:hover, #sharedGroupsButton:hover, #userGroupsButton:hover {
+  background-color: #fcfcfc;
+}
+
+#groupsCards {
+  width: 90%;
+  flex-wrap: wrap;
+  padding-top: 0.5em;
+  margin: auto;
+  text-align: center;
+  display: -webkit-flex;
+  display: flex;
+  justify-content: center;
+}
+
+.groupCard:hover {
+  border: 1.5px solid #3399FF;
+  transition: 0.3s;
+}
+
+.groupCountTag {
+  background-color: #1ABC9C;
+  color: white;
+  border-radius: 20px;
+  position: absolute;
+  padding: 0.3em;
+}
+
+.groupCardTitle {
+  padding-bottom: 0.7em;
+}
+
+#groupsPageContainer {
+  margin: 0 auto;
+  min-height: 100%;
+  height: calc(100% - 100px);
+  justify-content: center;
+  padding-top: 3em;
+}
+
+.genomeCardInfo {
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.genomeCardInfo:focus {
+  outline: none;
+}
+
+/* Group Samples Page */
+
+/* Status */
+#public {
+  width: 5em;
+  background-color: #f7af1e;
+  border-radius: 2em;
+  padding: 0.5em;
+  display: inline-block;
+  margin: 0.7em;
+  color: black;
+
+}
+
+#groupDescription {
+  margin-top: 1em;
+  margin-bottom: 2em;
+}
+
+/* Edit button */
+#groupSampleEditButton:focus, #groupEditButton:focus {
+  outline: none;
+}
+
+#groupSampleEditButton:hover, #groupEditButton:hover {
+  background-color: #1ABC9C;
+  border: 1px solid #1ABC9C;
+  color: white;
+}
+
+#groupSampleEditButton, #groupEditButton, #groupEditCancelButton, #groupUpdateButton, #groupDeleteButton{
+  margin: 0 auto;
+  padding: 0.5em;
+  background-color: white;
+  border-radius: 2em;
+  padding-left: 1.7em;
+  padding-right: 1.7em;
+  border: 1px solid #636363;
+  color: #468e94;
+  position: relative;
+  margin-top: 0.5em;
+  margin-bottom: 0.7em;
+}
+
+#groupEditCancelButton {
+  background-color: #fafafa;
+  color: #1ABC9C;
+  border: 1px solid #9c9c9c;
+  margin-right: 0.5em;
+  outline: none;
+}
+
+#groupUpdateButton {
+  margin-left: 0.5em;
+  background-color: #1ABC9C;
+  border: 1px solid #1ABC9C;
+  color: white;
+  outline: none;
+}
+
+#groupDeleteButton {
+  background-color: #fafafa;
+  color: #ce2009;
+  border: 1px solid #9c9c9c;
+  outline: none;
+  margin-left: 0.8em;
+}
+
+/* Selection bar */
+#groupSamplesFilterBar {
+  margin-top: 0.3em;
+}
+
+/* Remove sample checkboxes */
+.removeCheckBox {
+ background-color: white;
+ font-size: 1em;
+ height: 30px;
+ width: 30px;
+ border-radius: 4px;
+ border: 2px solid #F22E31;
+ color: white;
+ z-index: 1;
+ position: relative;
+}
+
+.removeCheckBox:hover {
+ background-color: #F22E31;
+}
+
+.removeCheckBox:focus {
+  outline: none;
+}
+
+.disabled {
+    pointer-events: none;
+}
+
+#emptyGroupMessage {
+  font-size: 1em;
+}
+
+.errorMessage {
+  font-size: 1em;
+}
+
+/* Sample page navigation bar */
+#sampleNavigationBar {
+  margin-bottom: 1.5em;
+  position:fixed;
+  bottom: 1em;
+  left: 50%;
+  background-color: white;
+  border-radius: 3em;
+  padding: 0.5em;
+  -webkit-box-shadow: 0px 0px 18px 1px rgba(0,0,0,0.1);
+  z-index: 2;
+  transform: translate(-50%, 0)
+}
+
+.navigationButton:hover {
+    border: 1px solid #1ABC9C;
+}
+
+.navigationButton {
+	  height: 2em;
+    width: 3em;
+    border-radius: 2em;
+    background-color: white;
+    color: #468e94;
+    outline: none;
+    border: 1px solid #e8e8e8;
+}
+
+#samplePageNumber {
+	  width: 3em;
+    height: 2em;
+    border-radius: 2em;
+    border: 1px solid white;
+    background-color: #fafafa;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    text-align: center;
+}
+
+#pageMessage {
+	padding-left: 1em;
+  padding-right: 1em;
+}
+
+#maxPageNumber{
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+}
+
+/* Input for editting title and description */
+#inputTitle {
+  font-size: 2.5em;
+  border: 1px solid white;
+  background-color: white;
+  text-align: center;
+  width: 50%;
+  height: auto;
+  border-radius: 0.3em;
+}
+
+#inputDescription {
+  font-size: 1em;
+  border: 1px solid white;
+  background-color: white;
+  text-align: center;
+  width: 50%;
+  height: auto;
+  border-radius: 0.3em;
+}
+
+#inputTitle:hover, #inputDescription:hover {
+  background-color: #f7f7f7;
+}
+
+/* Download elements */
+#groupDropDownMenu {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 8px 0;
+  margin: auto;
+}
+
+#downloadButton:focus {
+  outline: none;
+}
+
+#downloadButton:hover {
+  background-color: #1ABC9C;
+  border: 1px solid #1ABC9C;
+  color: white;
+}
+
+#downloadButton {
+  margin: 0 auto;
+  padding: 0.5em;
+  background-color: white;
+  border-radius: 2em;
+  padding-left: 1.7em;
+  padding-right: 1.7em;
+  border: 1px solid #636363;
+  color: #468e94;
+  position: relative;
+  margin-top: 0.5em;
+  margin-bottom: 0.7em;
+}
+
+.dropDownButton {
+  position: relative;
+  display: block;
+  background-color: white;
+  border: 1px solid white;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  width: 100%;
+}
+
+.dropDownButton:hover {
+  background-color: #f8f9fa;
+}
+
+/* Collaborator functionality */
+#displayUsers {
+  margin-top: 1em;
+  justify-content: center;
+}
+
+#status {
+  color: white;
+  background-color: #6ad8eb;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 0.5em;
+  padding-left: 1.7em;
+  padding-right: 1.7em;
+  margin-bottom: 0.7em;
+}
+
+#addUserButton, #makePublicButton {
+  padding: 0.5em;
+  background-color: white;
+  border-radius: 2em;
+  padding-left: 1.7em;
+  padding-right: 1.7em;
+  border: 1px solid #dbdbdb;
+  color: #468e94;
+  margin: 0.2em;
+}
+
+#addUserButton:hover, #makePublicButton:hover {
+  background-color: #1ABC9C;
+  border: 1px solid #1ABC9C;
+  color: white;
+}
+
+#userContainer {
+  margin-top: 1em;
+}
+
+.ownerLabel {
+  width: 3em;
+  height: 3em;
+  background-color: #dbdbdb;
+  border-radius: 2em;
+  border: 2px solid #1ABC9C;
+  color: #468e94;
+  margin: 0.2em;
+}
+
+.collaboratorLabel {
+  width: 3em;
+  height: 3em;
+  background-color: #dbdbdb;
+  border-radius: 2em;
+  border: 1px solid #dbdbdb;
+  color: #468e94;
+  margin: 0.2em;
+}
+
+#addUserDropDownMenu {
+  padding: 1em;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.08), 0 0 10px 0 rgba(0,0,0,0.08);
+}
+
+#inputUserEmail {
+  border: 1px solid #dbdbdb;
+  border-radius: 0.1em;
+}
+
+#submitUserEmailButton {
+  background-color: white;
+  border-radius: 0.3em;
+  border: 1px solid #1ABC9C;
+  color: white;
+  padding-left: 0.7em;
+  padding-right: 0.7em;
+  background-color: #1ABC9C;
+}
+
+#submitUserEmailButton:hover {
+  font-weight: bold;
+}
+
+#userForm {
+  display: inline;
+}
+
+/* Unpublicize group functionality */
+#leaveGroup {
+  text-align: center;
+}
+
+#makeGroupPrivate {
+  text-align: center;
+}
+
+#unpubliciseMessage, #leaveMessage {
+  display: inline-block;
+}
+
+#leaveMessage {
+  margin-top: 1em;
+}
+
+#makePrivateButton {
+  color: #1ABC9C;
+  text-decoration: underline;
+  background-color: transparent;
+  border: 1px solid transparent;
+}
+
+#makePrivateButton:hover {
+  color: #23947e;
+}
