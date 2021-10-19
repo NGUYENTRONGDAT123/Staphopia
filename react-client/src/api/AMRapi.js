@@ -20,6 +20,7 @@ export function AllAMRGenes() {
 
   React.useEffect(() => {
     getRepo();
+    // eslint-disable-next-line
   }, []);
   if (repo !== []) {
     return repo;
@@ -94,6 +95,7 @@ export function PackedCircleData() {
       }
     };
     getRepo();
+    // eslint-disable-next-line
   }, [setRepo]);
   if (repo !== undefined) {
     console.log(repo);

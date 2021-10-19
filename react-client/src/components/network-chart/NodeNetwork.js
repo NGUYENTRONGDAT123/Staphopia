@@ -287,6 +287,7 @@ export default function Network(props) {
     //remove all elements to redraw again
     d3.selectAll("g").remove();
     drawChart();
+    // eslint-disable-next-line
   }, [data]);
 
   return <svg className={name} width={"100%"} height={"1500"} />;

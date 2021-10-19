@@ -1,5 +1,6 @@
 import React from "react";
 import "./NavBar.css";
+import { FaAtom } from "react-icons/fa";
 
 export default function Navigation() {
   return (
@@ -12,7 +13,9 @@ export default function Navigation() {
         style={{ fontSize: "180%", color: "#2f2f2f" }}
         href="/"
       >
-        <i class="fas fa-atom" style={{ color: "#468e94" }}></i> <b>Staph</b>
+        {/* <i class="fas fa-atom" style={{ color: "#468e94" }}></i> */}
+        <FaAtom style={{ color: "#468e94" }} />
+        <b>Staph</b>
         Book
       </a>
 

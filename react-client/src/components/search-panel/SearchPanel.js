@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Card, Input, Button, Tree, Row, Col } from "antd";
-import { select } from "d3";
+import { Input, Button, Tree, Row, Col } from "antd";
 const { Search } = Input;
 
 export default function SearchPanel(props) {
@@ -35,14 +34,18 @@ export default function SearchPanel(props) {
           });
           for (let j = 0; j < packedData[i].children.length; j++) {
             dataTemp[dataTemp.length - 1].children.push({
-              title: packedData[i].children[j].name.replace ('.csv', ''),
-              key: packedData[i].name.concat(packedData[i].children[j].name.replace ('.csv', '')),
+              title: packedData[i].children[j].name.replace(".csv", ""),
+              key: packedData[i].name.concat(
+                packedData[i].children[j].name.replace(".csv", "")
+              ),
               value: packedData[i].children[j].value,
             });
 
             dataListTemp.push({
-              title: packedData[i].children[j].name.replace ('.csv', ''),
-              key: packedData[i].name.concat(packedData[i].children[j].name.replace ('.csv', '')),
+              title: packedData[i].children[j].name.replace(".csv", ""),
+              key: packedData[i].name.concat(
+                packedData[i].children[j].name.replace(".csv", "")
+              ),
             });
           }
         }
@@ -58,9 +61,9 @@ export default function SearchPanel(props) {
 
           for (let j = 0; j < restorePoint[i].children.length; j++) {
             restoreDataTemp[restoreDataTemp.length - 1].children.push({
-              title: restorePoint[i].children[j].name.replace ('.csv', ''),
+              title: restorePoint[i].children[j].name.replace(".csv", ""),
               key: restorePoint[i].name.concat(
-                restorePoint[i].children[j].name.replace ('.csv', '')
+                restorePoint[i].children[j].name.replace(".csv", "")
               ),
               value: restorePoint[i].children[j].value,
             });
@@ -241,7 +244,7 @@ export default function SearchPanel(props) {
       />
       <Tree
         checkable
-        style={{ overflow: "auto", height: "40vh", marginBottom: "20px"}}
+        style={{ overflow: "auto", height: "40vh", marginBottom: "20px" }}
         onExpand={onExpand}
         expandedKeys={expandedKeys}
         autoExpandParent={autoExpandParent}
@@ -254,11 +257,11 @@ export default function SearchPanel(props) {
       <Row align="center">
         <Col>
           <Button
-            onClick={e => {
-              e.stopPropagation ();
-              handleRestore ();
+            onClick={(e) => {
+              e.stopPropagation();
+              handleRestore();
             }}
-            style={{marginRight: 30}}
+            style={{ marginRight: 30 }}
             type="primary"
           >
             Restore
@@ -266,9 +269,9 @@ export default function SearchPanel(props) {
         </Col>
         <Col>
           <Button
-            onClick={e => {
-              e.stopPropagation ();
-              handleDeleteSelected ();
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDeleteSelected();
             }}
             type="primary"
           >

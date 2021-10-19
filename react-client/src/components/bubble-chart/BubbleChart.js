@@ -199,6 +199,7 @@ export default function BubbleChart(props) {
       .selectAll("text")
       .data(root.descendants())
       .join("text")
+      // eslint-disable-next-line
       .filter((d) => {
         if (d.data.children !== undefined) {
           if (d.data.children.length !== 0) {
@@ -231,6 +232,7 @@ export default function BubbleChart(props) {
     function zoomTo(v) {
       const k = width / v[2];
 
+      // eslint-disable-next-line
       view = v;
 
       label.attr(
@@ -248,6 +250,7 @@ export default function BubbleChart(props) {
     function zoom(event, d) {
       // const focus0 = focus;
 
+      // eslint-disable-next-line
       focus = d;
 
       const transition = svg
@@ -294,8 +297,8 @@ export default function BubbleChart(props) {
       d3.selectAll(".bb-container").remove();
       drawChart();
     }
+    // eslint-disable-next-line
   }, [data, isLoading]);
-  // eslint-disable-next-line
 
   return (
     <div>

@@ -68,8 +68,7 @@ const optionsSwagger = {
 const swaggerSpec = swaggerJSDoc(optionsSwagger);
 
 // connect to the Database
-// const DATABASE_URL =
-//   "mongodb+srv://readandwrite:capstone123@amrstaphaureus.zalot.mongodb.net/test";
+
 const DATABASE_URL = process.env.MONGODB;
 
 MongoClient.connect(DATABASE_URL, {

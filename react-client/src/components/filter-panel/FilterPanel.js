@@ -1,9 +1,8 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {Checkbox, Input, Button, Tree, Col, Row} from 'antd';
-import {select} from 'd3';
-const {Search} = Input;
+import React, { useState, useEffect, useRef } from "react";
+import { Checkbox, Input, Button, Tree, Col, Row } from "antd";
+const { Search } = Input;
 
-export default function FilterPanel (props) {
+export default function FilterPanel(props) {
   const {
     networkData,
     deleteAntibiotic,
@@ -11,41 +10,40 @@ export default function FilterPanel (props) {
     selectMst,
     restorePoint,
   } = props;
-  const [data, setData] = useState ([]);
-  const [dataList, setDataList] = useState ([]);
-  const [restoreData, setRestoreData] = useState ([]);
+  const [data, setData] = useState([]);
+  const [dataList, setDataList] = useState([]);
+  const [restoreData, setRestoreData] = useState([]);
 
-  useEffect (
-    () => {
-      let dataTemp = [];
-      let dataListTemp = [];
-      let restoreDataTemp = [];
+  useEffect(() => {
+    let dataTemp = [];
+    let dataListTemp = [];
+    let restoreDataTemp = [];
 
-      if (networkData !== null) {
-        let listAntibiotics = networkData
-          .map (a => a.subclasses)
-          .flat (1)
-          .filter ((v, i, a) => a.indexOf (v) === i)
-          .sort ();
+    if (networkData !== null) {
+      let listAntibiotics = networkData
+        .map((a) => a.subclasses)
+        .flat(1)
+        .filter((v, i, a) => a.indexOf(v) === i)
+        .sort();
 
-        let listRestoreAntibiotics = restorePoint
-          .map (a => a.subclasses)
-          .flat (1)
-          .filter ((v, i, a) => a.indexOf (v) === i)
-          .sort ();
+      let listRestoreAntibiotics = restorePoint
+        .map((a) => a.subclasses)
+        .flat(1)
+        .filter((v, i, a) => a.indexOf(v) === i)
+        .sort();
 
-        for (let i = 0; i < listAntibiotics.length; i++) {
-          dataTemp.push ({
-            title: listAntibiotics[i],
-            key: listAntibiotics[i],
-            children: [],
-          });
+      for (let i = 0; i < listAntibiotics.length; i++) {
+        dataTemp.push({
+          title: listAntibiotics[i],
+          key: listAntibiotics[i],
+          children: [],
+        });
 
-          dataListTemp.push ({
-            title: listAntibiotics[i],
-            key: listAntibiotics[i],
-          });
-        }
+        dataListTemp.push({
+          title: listAntibiotics[i],
+          key: listAntibiotics[i],
+        });
+      }
 
       for (let i = 0; i < listRestoreAntibiotics.length; i++) {
         restoreDataTemp.push({
@@ -62,6 +60,7 @@ export default function FilterPanel (props) {
 
   const [expandedKeys, setExpandedKeys] = useState([]);
   const [checkedKeys, setCheckedKeys] = useState([]);
+  // eslint-disable-next-line
   const [selectedKeys, setSelectedKeys] = useState([]);
   const [autoExpandParent, setAutoExpandParent] = useState(true);
   const [searchValue, setSearchValue] = useState([]);
@@ -77,10 +76,10 @@ export default function FilterPanel (props) {
     clearTimeout(timer);
   };
 
-  const triggerSearch = e => {
-    let {value} = e.target;
-    if (value !== '') {
-      value = value.toUpperCase ();
+  const triggerSearch = (e) => {
+    let { value } = e.target;
+    if (value !== "") {
+      value = value.toUpperCase();
       const expandedKeys = dataList
         .map((item) => {
           if (item.title.indexOf(value) > -1) {
@@ -169,8 +168,8 @@ export default function FilterPanel (props) {
     setData(dataTemp2);
   };
 
-  const handleCheckbox = value => {
-    selectMst (value);
+  const handleCheckbox = (value) => {
+    selectMst(value);
   };
 
   const loop = (data) =>
@@ -200,35 +199,35 @@ export default function FilterPanel (props) {
   return (
     <div>
       {/* <Row align="center"> */}
-        <Search
-          style={{marginBottom: 8}}
-          placeholder="Search"
-          // onChange={onChange}
-          onKeyDown={onKeyDown}
-          onKeyUp={onKeyUp}
-        />
-        <Tree
-          checkable
-          style={{overflow: 'auto', height: '32vh', marginBottom: 20}}
-          onExpand={onExpand}
-          expandedKeys={expandedKeys}
-          autoExpandParent={autoExpandParent}
-          onCheck={onCheck}
-          checkedKeys={checkedKeys}
-          selectedKeys={selectedKeys}
-          treeData={loop (data)}
-        />
+      <Search
+        style={{ marginBottom: 8 }}
+        placeholder="Search"
+        // onChange={onChange}
+        onKeyDown={onKeyDown}
+        onKeyUp={onKeyUp}
+      />
+      <Tree
+        checkable
+        style={{ overflow: "auto", height: "32vh", marginBottom: 20 }}
+        onExpand={onExpand}
+        expandedKeys={expandedKeys}
+        autoExpandParent={autoExpandParent}
+        onCheck={onCheck}
+        checkedKeys={checkedKeys}
+        selectedKeys={selectedKeys}
+        treeData={loop(data)}
+      />
 
       {/* </Row> */}
 
       <Row align="center">
         <Col>
           <Button
-            onClick={e => {
-              e.stopPropagation ();
-              handleRestore ();
+            onClick={(e) => {
+              e.stopPropagation();
+              handleRestore();
             }}
-            style={{marginRight: 30}}
+            style={{ marginRight: 30 }}
             type="primary"
           >
             Restore
@@ -236,29 +235,27 @@ export default function FilterPanel (props) {
         </Col>
         <Col>
           <Button
-            onClick={e => {
-              e.stopPropagation ();
-              handleDeleteSelected ();
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDeleteSelected();
             }}
             type="primary"
           >
             Delete
           </Button>
         </Col>
-
       </Row>
       <Row align="center">
         <Checkbox
-          onChange={e => {
-            e.stopPropagation ();
-            handleCheckbox (e.target.checked);
+          onChange={(e) => {
+            e.stopPropagation();
+            handleCheckbox(e.target.checked);
           }}
-          style={{marginTop: 20}}
+          style={{ marginTop: 20 }}
         >
           Minimum Spanning Tree
         </Checkbox>
       </Row>
-
     </div>
   );
 }
