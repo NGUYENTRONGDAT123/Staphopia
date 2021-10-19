@@ -68,9 +68,9 @@ const optionsSwagger = {
 const swaggerSpec = swaggerJSDoc(optionsSwagger);
 
 // connect to the Database
-// covid 19 MongoDB
-const DATABASE_URL =
-  "mongodb+srv://readandwrite:capstone123@amrstaphaureus.zalot.mongodb.net/test";
+// const DATABASE_URL =
+//   "mongodb+srv://readandwrite:capstone123@amrstaphaureus.zalot.mongodb.net/test";
+const DATABASE_URL = process.env.MONGODB;
 
 MongoClient.connect(DATABASE_URL, {
   useNewUrlParser: true,
@@ -147,7 +147,7 @@ app.use(
 
 //directories
 //------------------------WebScape-------------------------
-app.use("/amr", express.static("../client/build"));
+app.use("/AMR", express.static("../client/build"));
 //------------------------WebScape-------------------------
 app.use(express.static(__dirname + "/views/"));
 

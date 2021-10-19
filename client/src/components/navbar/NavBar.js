@@ -85,35 +85,6 @@ export default function Navigation() {
             </a>
           </li>
 
-          {/* <li class="nav-item">
-            <div
-              class="dropdown"
-              style={{ marginLeft: "auto", marginRight: "30px" }}
-            >
-              <button
-                class="btn btn-secondary dropdown-toggle"
-                type="button"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <i class="fas fa-user"></i>
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="/favourites">
-                  Favourites
-                </a>
-                <a class="dropdown-item" href="/groups">
-                  Groups
-                </a>
-                <a class="dropdown-item" href="/logout">
-                  Logout
-                </a>
-              </div>
-            </div>
-          </li> */}
-
           <li class="nav-item">
             <a
               class="btn btn-sm btn-dark nav-link"

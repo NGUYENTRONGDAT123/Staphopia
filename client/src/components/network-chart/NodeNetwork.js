@@ -1,7 +1,5 @@
-// import data from "./data1.json";
 import * as d3 from "d3";
 import { useEffect } from "react";
-// import "./Network.css";
 
 export default function Network(props) {
   const {

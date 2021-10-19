@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef, useState } from "react";
+import React, { useEffect, useCallback, useRef } from "react";
 import * as d3 from "d3";
 import "./BubbleChart.css";
 
@@ -7,8 +7,6 @@ export default function BubbleChart(props) {
   const height = props.height;
   const { data, isLoading, selectSample, selectAntibiotic } = props;
   const ref = useRef();
-
-  // const [data, setData] = useState([]);
 
   //pack data
   function pack() {
