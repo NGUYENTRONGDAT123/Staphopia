@@ -14,7 +14,6 @@
     "axios": "^0.21.1",
     "bootstrap": "^5.0.2",
     "compute-cosine-similarity": "^1.0.0",
-    "cytoscape": "^3.19.0",
     "d3": "^7.0.0",
     "d3-hierarchy": "^3.0.1",
     "j-louvain": "git+https://github.com/sirisacademic/jLouvain.git",
@@ -70,5 +69,4 @@
     "file-loader": "^6.1.1",
     "sass": "^1.37.0"
   }
-  
 }
