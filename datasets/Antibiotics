@@ -1,0 +1,163 @@
+[{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5af"
+  },
+  "Subclass": "AMIKACIN",
+  "Formula": "C22H43N5O13",
+  "Weight": "585.6",
+  "Image": "https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=37768&t=l",
+  "Link": "https://pubchem.ncbi.nlm.nih.gov/compound/37768",
+  "Description": "Amikacin is a broad-spectrum semi-synthetic aminoglycoside antibiotic, derived from kanamycin with antimicrobial property"
+},{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5bd"
+  },
+  "Subclass": "MACROLIDE",
+  "Image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Erythromycin_A.svg/150px-Erythromycin_A.svg.png",
+  "Link": "https://en.wikipedia.org/wiki/Macrolide",
+  "Description": "The macrolides are a class of natural products that consist of a large macrocyclic lactone ring to which one or more deoxy sugars, usually cladinose and desosamine, may be attached."
+},{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5b4"
+  },
+  "Subclass": "KANAMYCIN",
+  "Formula": "C18H36N4O11",
+  "Weight": "484.5",
+  "Image": "https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=6032&t=l",
+  "Link": "https://pubchem.ncbi.nlm.nih.gov/compound/6032",
+  "Description": "Kanamycin A is the major component of the kanamycin complex, an aminoglycoside antibiotic isolated from Streptomyces kanamyceticus, with antibacterial activity."
+},{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5ba"
+  },
+  "Subclass": "TETRACYCLINE",
+  "Formula": "C22H24N2O8",
+  "Weight": "444.4",
+  "Image": "https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=54675776&t=l",
+  "Link": "https://pubchem.ncbi.nlm.nih.gov/compound/54675776",
+  "Description": "Tetracycline is a broad-spectrum naphthacene antibiotic produced semisynthetically from chlortetracycline, an antibiotic isolated from the bacterium Streptomyces aureofaciens."
+},{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5b7"
+  },
+  "Subclass": "MUPIROCIN",
+  "Formula": "C26H44O9",
+  "Weight": "500.6",
+  "Image": "https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=446596&t=l",
+  "Link": "https://pubchem.ncbi.nlm.nih.gov/compound/446596",
+  "Description": "Mupirocin is a natural crotonic acid derivative extracted from Pseudomonas fluorescens. Mupirocin inhibits bacterial protein synthesis by specific reversible binding to bacterial isoleucyl tRNA synthase."
+},{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5b8"
+  },
+  "Subclass": "SPECTINOMYCIN",
+  "Formula": "C14H24N2O7",
+  "Weight": "332.35",
+  "Image": "https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=15541&t=l",
+  "Link": "https://pubchem.ncbi.nlm.nih.gov/compound/15541",
+  "Description": "Spectinomycin is an aminocyclitol aminoglycoside antibiotic derived from Streptomyces spectabilis with bacteriostatic activity. "
+},{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5b5"
+  },
+  "Subclass": "LINCOSAMIDE",
+  "Formula": "C8H17NO6",
+  "Weight": "223.22",
+  "Image": "https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=3082027&t=l",
+  "Link": "https://pubchem.ncbi.nlm.nih.gov/compound/3082027",
+  "Description": "Lincomycin is a lincosamide antibiotic that comes from the actinomycete Streptomyces lincolnensis."
+},{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5b3"
+  },
+  "Subclass": "FUSIDIC ACID",
+  "Formula": "C31H48O6",
+  "Weight": "516.7",
+  "Image": "https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=3000226&t=l",
+  "Link": "https://pubchem.ncbi.nlm.nih.gov/compound/3000226",
+  "Description": "Fusidic Acid is a bacteriostatic antibiotic derived from the fungus Fusidium coccineum and used as a topical medication to treat skin infections."
+},{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5b1"
+  },
+  "Subclass": "CHLORAMPHENICOL",
+  "Formula": "C11H12Cl2N2O5",
+  "Weight": "323.13",
+  "Image": "https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=5959&t=l",
+  "Link": "https://pubchem.ncbi.nlm.nih.gov/compound/5959",
+  "Description": "Chloramphenicol is a semisynthetic, broad-spectrum antibiotic derived from Streptomyces venequelae with primarily bacteriostatic activity."
+},{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5be"
+  },
+  "Subclass": "QUATERNARY AMMONIUM",
+  "Image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Quaternary_ammonium_cation.svg/220px-Quaternary_ammonium_cation.svg.png",
+  "Link": "https://en.wikipedia.org/wiki/Quaternary_ammonium_cation",
+  "Description": "Quaternary ammonium cations, also known as quats, are positively charged polyatomic ions of the structure NR+ 4, R being an alkyl group or an aryl group."
+},{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5b2"
+  },
+  "Subclass": "FOSFOMYCIN",
+  "Formula": "C3H7O4P",
+  "Weight": "138.06",
+  "Image": "https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=446987&t=l",
+  "Link": "https://pubchem.ncbi.nlm.nih.gov/compound/446987",
+  "Description": "Fosfomycin is a phosphoenolpyruvate analogue and a synthetic broad-spectrum antibiotic with antimicrobial and bactericidal properties. "
+},{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5b6"
+  },
+  "Subclass": "METHICILLIN",
+  "Formula": "C17H20N2O6S",
+  "Weight": "380.4",
+  "Image": "https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=6087&t=l",
+  "Link": "https://pubchem.ncbi.nlm.nih.gov/compound/6087",
+  "Description": "Methicillin is a semisynthetic, narrow spectrum beta-lactamase-resistant penicillin antibiotic with bactericidal and beta-lactamase resistant activity."
+},{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5bb"
+  },
+  "Subclass": "TRIMETHOPRIM",
+  "Formula": "C14H18N4O3",
+  "Weight": "290.32",
+  "Image": "https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=5578&t=l",
+  "Link": "https://pubchem.ncbi.nlm.nih.gov/compound/5578",
+  "Description": "Trimethoprim is a synthetic derivative of trimethoxybenzyl-pyrimidine with antibacterial and antiprotozoal properties."
+},{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5bf"
+  },
+  "Subclass": "QUINOLONE",
+  "Image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Ciprofloxacin.svg/280px-Ciprofloxacin.svg.png",
+  "Link": "https://en.wikipedia.org/wiki/Quinolone_antibiotic",
+  "Description": "A quinolone antibiotic is a member of a large group of broad-spectrum bacteriocidals that share a bicyclic core structure related to the substance 4-quinolone."
+},{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5b0"
+  },
+  "Subclass": "BLEOMYCIN",
+  "Formula": "C55H84N17O21S3",
+  "Weight": "1415.6",
+  "Image": "https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=5360373&t=l",
+  "Link": "https://pubchem.ncbi.nlm.nih.gov/compound/5360373",
+  "Description": "Bleomycin is a mixture of glycopeptide antineoplastic antibiotics isolated from the bacterium Streptomyces verticillus. "
+},{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5bc"
+  },
+  "Subclass": "BETA-LACTAM",
+  "Image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Beta-lactam.svg/120px-Beta-lactam.svg.png",
+  "Link": "https://en.wikipedia.org/wiki/%CE%92-lactam_antibiotic",
+  "Description": "beta-lactam antibiotics are antibiotics that contain a beta-lactam ring in their molecular structure. This includes penicillin derivatives (penams), cephalosporins and cephamycins (cephems), monobactams, carbapenems and carbacephems."
+},{
+  "_id": {
+    "$oid": "611e31b3250d4628e4d6b5b9"
+  },
+  "Subclass": "STREPTOMYCIN",
+  "Formula": "C21H39N7O12",
+  "Weight": "581.6",
+  "Image": "https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=19649&t=l",
+  "Link": "https://pubchem.ncbi.nlm.nih.gov/compound/19649",
+  "Description": "Streptomycin is an aminoglycoside antibiotic derived from Streptomyces griseus with antibacterial activity."
+}]
