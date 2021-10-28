@@ -1,45 +1,45 @@
-import React from 'react';
-import {Table} from 'antd';
+import React from "react";
+import { Table } from "antd";
 
 const columns = [
   {
-    title: 'Gene Symbol',
-    dataIndex: 'Gene symbol',
-    key: 'geneSymbol',
+    title: "Gene Symbol",
+    dataIndex: "Gene symbol",
+    key: "geneSymbol",
   },
   {
-    title: 'Contig ID',
-    dataIndex: 'Contig id',
-    key: 'contigId',
+    title: "Contig ID",
+    dataIndex: "Contig id",
+    key: "contigId",
   },
   {
-    title: 'Class',
-    dataIndex: 'Class',
-    key: 'class',
+    title: "Class",
+    dataIndex: "Class",
+    key: "class",
   },
   {
-    title: 'Sub-class',
-    dataIndex: 'Subclass',
-    key: 'subClass',
+    title: "Sub-class",
+    dataIndex: "Subclass",
+    key: "subClass",
   },
   {
-    title: 'Method',
-    dataIndex: 'Method',
-    key: 'method',
+    title: "Method",
+    dataIndex: "Method",
+    key: "method",
   },
   {
-    title: 'Indentity Percentage',
-    dataIndex: '% Identity to reference sequence',
-    key: 'itentity',
+    title: "Identity Percentage",
+    dataIndex: "% Identity to reference sequence",
+    key: "itentity",
   },
   {
-    title: 'Length',
-    dataIndex: 'Target length',
-    key: 'targetLength',
+    title: "Length",
+    dataIndex: "Target length",
+    key: "targetLength",
   },
 ];
 
-export default function AmrTable({data}) {
+export default function AmrTable({ data }) {
   return (
     <Table
       dataSource={data}
@@ -47,8 +47,8 @@ export default function AmrTable({data}) {
       bordered
       size="middle"
       pagination={false}
-      scroll={{x: 'calc(700px + 50%)', y: 420}}
-      style={{ height: '400px' }}
+      scroll={{ x: "calc(700px + 50%)", y: 420 }}
+      style={{ height: "400px" }}
     />
   );
 }
