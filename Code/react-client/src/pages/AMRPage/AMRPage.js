@@ -36,6 +36,7 @@ export default function AMRPage() {
   const [isLoadingAntibiotic, setIsLoadingAntibiotic] = useState(false);
   const [tabKey, setTabKey] = useState("bubbleGraph");
 
+  // get data from redux store
   const SampleInfoData = useSelector((state) => state.Visualization.sampleInfo);
   const AntibioticInfoData = useSelector(
     (state) => state.Visualization.antibioticInfo
@@ -58,6 +59,7 @@ export default function AMRPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // fetch data from backend and save to redux store
     async function getPackedData() {
       setIsLoadingPacked(true);
       const result = await fetchPackedCircleData();
@@ -67,6 +69,7 @@ export default function AMRPage() {
     }
     getPackedData();
 
+    // fetch data from backend and save to redux store
     async function getNetworkData() {
       setIsLoadingNetwork(true);
       const result = await fetchNetworkData();
@@ -77,6 +80,7 @@ export default function AMRPage() {
     getNetworkData();
   }, [tabKey, dispatch]);
 
+  // handle when a sample is selected
   const handleSelectSample = async (sample) => {
     setIsLoadingSelect(true);
     const data = await fetchSelectedSample(sample);
@@ -84,6 +88,7 @@ export default function AMRPage() {
     setIsLoadingSelect(false);
   };
 
+  // handle when a antibiotic is selected
   const handleSelectAntibiotic = async (antibiotic) => {
     setIsLoadingAntibiotic(true);
     const data = await fetchSelectedAntibiotic(antibiotic);
@@ -91,26 +96,32 @@ export default function AMRPage() {
     setIsLoadingAntibiotic(false);
   };
 
+  // delete sample from redux
   const handleDeleteSample = (samples) => {
     dispatch(dispatchDeleteSample(samples));
   };
 
+  // restore sample in redux
   const handleRestoreSample = (samples) => {
     dispatch(dispatchRestoreSample(samples));
   };
 
+  // delete antibiotics from redux
   const handleDeleteAntibiotic = (antibiotics) => {
     dispatch(dispatchDeleteAntibiotic(antibiotics));
   };
 
+  // restore antibiotics in redux
   const handleRestoreAntibiotic = (antibiotics) => {
     dispatch(dispatchRestoreAntibiotic(antibiotics));
   };
 
+  // check if MST option is selected
   const handleSelectMst = (value) => {
     dispatch(dispatchSelectMst(value));
   };
 
+  // list of visualization keys
   const tabList = [
     {
       key: "bubbleGraph",

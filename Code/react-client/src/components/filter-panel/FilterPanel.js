@@ -20,18 +20,21 @@ export default function FilterPanel(props) {
     let restoreDataTemp = [];
 
     if (networkData !== null) {
+      // create a list to store sample and antibiotic data
       let listAntibiotics = networkData
         .map((a) => a.subclasses)
         .flat(1)
         .filter((v, i, a) => a.indexOf(v) === i)
         .sort();
-
+      
+      // create a list to restore data
       let listRestoreAntibiotics = restorePoint
         .map((a) => a.subclasses)
         .flat(1)
         .filter((v, i, a) => a.indexOf(v) === i)
         .sort();
 
+      // create a flatten list contains antibiotic data for antd components
       for (let i = 0; i < listAntibiotics.length; i++) {
         dataTemp.push({
           title: listAntibiotics[i],
@@ -44,7 +47,7 @@ export default function FilterPanel(props) {
           key: listAntibiotics[i],
         });
       }
-
+      // create a flatten list contains restore data for antd components
       for (let i = 0; i < listRestoreAntibiotics.length; i++) {
         restoreDataTemp.push({
           title: listRestoreAntibiotics[i],
@@ -65,6 +68,7 @@ export default function FilterPanel(props) {
   const [autoExpandParent, setAutoExpandParent] = useState(true);
   const [searchValue, setSearchValue] = useState([]);
 
+  // set timer to delay search
   const timer = useRef(null);
 
   const onKeyUp = (e) => {
@@ -76,10 +80,12 @@ export default function FilterPanel(props) {
     clearTimeout(timer);
   };
 
+  // when the search is triggered
   const triggerSearch = (e) => {
     let { value } = e.target;
     if (value !== "") {
       value = value.toUpperCase();
+      // list of expanded keys
       const expandedKeys = dataList
         .map((item) => {
           if (item.title.indexOf(value) > -1) {
@@ -88,7 +94,7 @@ export default function FilterPanel(props) {
           return null;
         })
         .filter((item, i, self) => item && self.indexOf(item) === i);
-
+      // list of checked keys
       const checkedKeys = dataList
         .map((item) => {
           if (item.key.indexOf(value) > -1) {
@@ -110,6 +116,7 @@ export default function FilterPanel(props) {
     }
   };
 
+  // get parent key from list
   const getParentKey = (key, tree) => {
     let parentKey;
     for (let i = 0; i < tree.length; i++) {
@@ -125,15 +132,18 @@ export default function FilterPanel(props) {
     return parentKey;
   };
 
+  // when expand to see children data
   const onExpand = (expandedKeysValue) => {
     setExpandedKeys(expandedKeysValue);
     setAutoExpandParent(false);
   };
 
+  // when select key
   const onCheck = (checkedKeysValue) => {
     setCheckedKeys(checkedKeysValue);
   };
 
+  // delete unwanted sample from visualizations
   const handleDeleteSelected = (value) => {
     let antibioticToDelete = checkedKeys;
     let filtered = data.filter(function (item) {
@@ -142,6 +152,7 @@ export default function FilterPanel(props) {
 
     let newNetworkData = JSON.parse(JSON.stringify(networkData));
 
+    // loop through and delete the selected items
     for (let i = 0; i < newNetworkData.length; i++) {
       newNetworkData[i].subclasses = newNetworkData[i].subclasses.filter(
         function (item) {
@@ -161,6 +172,7 @@ export default function FilterPanel(props) {
     setData(filtered);
   };
 
+  // restore the original network data
   const handleRestore = (value) => {
     let dataTemp2 = JSON.parse(JSON.stringify(restoreData));
     let newNetworkData = JSON.parse(JSON.stringify(restorePoint));
@@ -168,10 +180,12 @@ export default function FilterPanel(props) {
     setData(dataTemp2);
   };
 
+  // check if the minimum spanning tree option is selected
   const handleCheckbox = (value) => {
     selectMst(value);
   };
 
+  // loop through data to create data tree
   const loop = (data) =>
     data.map((item) => {
       const index = item.title.indexOf(searchValue);
@@ -198,11 +212,9 @@ export default function FilterPanel(props) {
     });
   return (
     <div>
-      {/* <Row align="center"> */}
       <Search
         style={{ marginBottom: 8 }}
         placeholder="Search"
-        // onChange={onChange}
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
       />
@@ -217,8 +229,6 @@ export default function FilterPanel(props) {
         selectedKeys={selectedKeys}
         treeData={loop(data)}
       />
-
-      {/* </Row> */}
 
       <Row align="center">
         <Col>

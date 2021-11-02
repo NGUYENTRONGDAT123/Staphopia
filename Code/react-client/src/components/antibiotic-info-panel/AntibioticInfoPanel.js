@@ -24,13 +24,16 @@ export default function AntibioticInfoPanel (props) {
     },
     [antibioticData]
   );
-
+  
+  // display spin when data is loading
   if (isLoading)
     return (
       <div className="d-flex justify-content-center flex-column align-items-center">
         <Spin />
       </div>
     );
+  
+  // display data when it is loaded
   return (
     <div className="d-flex justify-content-center flex-column align-items-center mh-100">
       <Link href={link} target="_blank">

@@ -103,6 +103,7 @@ export function PackedCircleData() {
   }
 }
 
+// fetch data for packed circle graph
 export async function fetchPackedCircleData() {
   const url = `/api/packed-circle`;
   const result = await fetch(url);
@@ -110,6 +111,7 @@ export async function fetchPackedCircleData() {
   return data.result;
 }
 
+// fetch data for network graph
 export async function fetchNetworkData() {
   const url = `/api/subclass-sample`;
   const result = await fetch(url);
@@ -117,6 +119,7 @@ export async function fetchNetworkData() {
   return data.result;
 }
 
+// fetch data when sample is selected
 export async function fetchSelectedSample(sampleId) {
   const amrTableUrl = `/api/amr-sample?samples=[${sampleId}]`;
   const sampleInfoUrl = `/api/sample-metadata?samples=[${sampleId}]`;
@@ -132,6 +135,7 @@ export async function fetchSelectedSample(sampleId) {
   };
 }
 
+// fetch data when antibiotic is selected
 export async function fetchSelectedAntibiotic(antibiotic) {
   const antibioticUrl = `/api/antibiotics-info?antibiotics=["${antibiotic}"]`;
 

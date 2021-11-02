@@ -13,7 +13,6 @@ export default function Navigation() {
         style={{ fontSize: "180%", color: "#2f2f2f" }}
         href="/"
       >
-        {/* <i class="fas fa-atom" style={{ color: "#468e94" }}></i> */}
         <FaAtom style={{ color: "#468e94" }} />
         <b>Staph</b>
         Book

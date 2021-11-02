@@ -13,6 +13,7 @@ export default function SampleInfoPanel(props) {
   const [strain, setStrain] = useState(null);
 
   useEffect(() => {
+    // get sample metadata from redux store
     setSampleId(sampleMetadata[0].sample_id);
     setCollectionDate(sampleMetadata[0].collection_date);
     setLocation(sampleMetadata[0].location);

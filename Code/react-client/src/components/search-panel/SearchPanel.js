@@ -20,6 +20,7 @@ export default function SearchPanel(props) {
     var dataListTemp = [];
     var restoreDataTemp = [];
     if (packedData !== null) {
+      // create a list to store sample and antibiotic data
       for (let i = 0; i < packedData.length; i++) {
         if (packedData[i].name !== null) {
           dataTemp.push({
@@ -50,7 +51,7 @@ export default function SearchPanel(props) {
           }
         }
       }
-
+      // create a list to store restore data
       for (let i = 0; i < restorePoint.length; i++) {
         if (restorePoint[i].name !== null) {
           restoreDataTemp.push({
@@ -82,6 +83,7 @@ export default function SearchPanel(props) {
   const [autoExpandParent, setAutoExpandParent] = useState(true);
   const [searchValue, setSearchValue] = useState([]);
 
+  // set timer to delay search
   const timer = useRef(null);
 
   const onKeyUp = (e) => {
@@ -92,10 +94,11 @@ export default function SearchPanel(props) {
   const onKeyDown = (e) => {
     clearTimeout(timer);
   };
-
+  // when the search is triggered
   const triggerSearch = (e) => {
     const { value } = e.target;
     if (value !== "") {
+      // list of expanded keys
       const expandedKeys = dataList
         .map((item) => {
           if (item.title.indexOf(value) > -1) {
@@ -104,7 +107,7 @@ export default function SearchPanel(props) {
           return null;
         })
         .filter((item, i, self) => item && self.indexOf(item) === i);
-
+      // list of checked keys
       const checkedKeys = dataList
         .map((item) => {
           if (item.key.indexOf(value) > -1) {
@@ -126,6 +129,7 @@ export default function SearchPanel(props) {
     }
   };
 
+  // get parent key from list
   const getParentKey = (key, tree) => {
     let parentKey;
     for (let i = 0; i < tree.length; i++) {
@@ -141,18 +145,18 @@ export default function SearchPanel(props) {
     return parentKey;
   };
 
+  // when expand to see children data
   const onExpand = (expandedKeysValue) => {
-    //console.log ('onExpand', expandedKeysValue); // if not set autoExpandParent to false, if children expanded, parent can not collapse.
-
     setExpandedKeys(expandedKeysValue);
     setAutoExpandParent(false);
   };
 
+  // when tick the check box
   const onCheck = (checkedKeysValue) => {
-    //console.log ('onCheck', checkedKeysValue);
     setCheckedKeys(checkedKeysValue);
   };
 
+  // when key is selected
   const onSelect = (selectedKeysValue, info) => {
     if (selectedKeysValue.length > 0) {
       console.log("onSelect", selectedKeysValue);
@@ -167,11 +171,12 @@ export default function SearchPanel(props) {
       }
     }
   };
-
+  // delete unwanted sample from visualizations
   const handleDeleteSelected = (value) => {
     let sampleToDelete = checkedKeys;
     let dataTemp = [...data];
     for (let i = 0; i < data.length; i++) {
+      // loop through and delete the selected items
       if (data[i] !== undefined) {
         var filtered = data[i].children.filter(function (item) {
           return sampleToDelete.indexOf(item.key) <= -1;
@@ -183,9 +188,9 @@ export default function SearchPanel(props) {
     let newPackedData = formatData(dataTemp);
     deleteSample(newPackedData);
     setData(dataTemp);
-    //console.log (restoreData);
   };
 
+  // format data into usable format
   const formatData = (dataTemp) => {
     let newPackedData = [];
     for (let i = 0; i < dataTemp.length; i++) {
@@ -203,13 +208,15 @@ export default function SearchPanel(props) {
     return newPackedData;
   };
 
+  // restore the original network data
   const handleRestore = (value) => {
     let dataTemp2 = JSON.parse(JSON.stringify(restoreData));
     let newPackedData = formatData(dataTemp2);
     restoreSample(newPackedData);
     setData(dataTemp2);
   };
-
+  
+  // loop through data to create data tree
   const loop = (data) =>
     data.map((item) => {
       const index = item.title.indexOf(searchValue);

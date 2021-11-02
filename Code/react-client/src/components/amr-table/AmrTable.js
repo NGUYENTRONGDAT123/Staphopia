@@ -1,6 +1,7 @@
 import React from "react";
 import { Table } from "antd";
 
+// define columns in AMR table
 const columns = [
   {
     title: "Gene Symbol",
@@ -53,4 +54,3 @@ export default function AmrTable({ data }) {
   );
 }
 
-// Class, sub-class, contig start, contig end, length, gene symbol

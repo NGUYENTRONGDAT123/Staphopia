@@ -5,48 +5,11 @@ import { Container, Row, Col } from "react-bootstrap";
 import BubbleGraph from "../../image/BubbleGraph.png";
 import CircleGraph from "../../image/CircleGraph.png";
 import NodeNetwork from "../../image/NodeNetwork.png";
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
-import { AmrPdfDefinition } from "../../pdf/DocDefinition";
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default function HomePage() {
-  let numbers = [10, 6, 2, 3, 7, 1, 2];
-  let array = [];
-  let sum = 0;
-  for (let i = 0; i < numbers.length; i++) {
-    let numberToInsert = numbers[i];
-    let index = sortedIndex(array, numberToInsert);
-    array.splice(index, 0, numberToInsert);
-
-    if (index >= array.length / 2) {
-      sum = sum + (array.length - 1 - index + 2);
-    } else {
-      sum = sum + (index + index + 1);
-    }
-  }
-
-  function savePdf() {
-    const doc = AmrPdfDefinition({});
-    console.log(doc);
-    pdfMake.createPdf(doc).open();
-  }
-
-  function sortedIndex(array, value) {
-    var low = 0,
-      high = array.length;
-
-    while (low < high) {
-      var mid = (low + high) >>> 1;
-      if (array[mid] < value) low = mid + 1;
-      else high = mid;
-    }
-    return low;
-  }
 
   return (
     <Container>
-      {/* <button onClick={savePdf}>save</button> */}
       <Panel className="pn">
         <Panel className="pn-header">
           <h1>Staphbook</h1>
@@ -108,15 +71,6 @@ export default function HomePage() {
           </Row>
         </Panel>
       </Panel>
-
-      {/* <Row className="justify-content-md-center">
-        <Col xs lg="2">
-          <img src={QUTLogo} alt="QUT" className="img_logo" />
-        </Col>
-        <Col xs lg="2">
-          <img src={EmoryLogo} alt="Emory" className="img_logo" />
-        </Col>
-      </Row> */}
     </Container>
   );
 }
