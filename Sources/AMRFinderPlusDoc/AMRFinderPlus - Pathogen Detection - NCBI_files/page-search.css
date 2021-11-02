@@ -1,0 +1,209 @@
+.ptg-top {
+    white-space: nowrap;
+    font-size: 1.5rem;
+}
+.ptg-top > div {
+    display: inline-block;
+    vertical-align: top;
+}
+.ptg-top > div:first-child {
+    width: calc(100% - 15em);
+    white-space: normal;
+}
+.ptg-search {
+    text-align:right;
+    margin: 1em 0;
+    padding: 0;
+}
+.ptg-search input[type="search"]{
+    vertical-align: top;
+    display: inline-block;
+    font: inherit;
+    margin: 0;
+    width: 8em;
+    padding: .1em .5em .1em 1.3em;
+    height: auto;
+    border: solid 1px #AAA;
+    border-radius: .3em 0 0 .3em;
+    background-repeat: no-repeat;
+    background-position: .1em .4em;
+    background-origin: padding-box;
+    background-size: 1em;
+    background-image:url(/pathogens/static/main/img/search.svg);
+}
+
+.ptg-search button {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
+    padding: 0;
+    font-size: inherit;
+    height: 1.6em;
+    width: 2em;
+    background-color: white;
+    border-style: solid;
+    border-width: 1px 1px 1px 0;
+    border-color: #AAA;
+    border-radius: 0 .3em .3em 0;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: .8em;
+    background-image: url(/pathogens/static/main/img/next.svg);
+}
+.ptg-search button:nth-child(2) {
+    border-radius: 0;
+    background-image: url(/pathogens/static/main/img/prev.svg);
+}
+
+.ptg-search button.pdt-pressed {
+    background-color: #EEE;
+}
+
+.ptg-search.ptg-fixed {
+    position: fixed;
+    top: 0;
+/*    right: 2rem; */
+    z-index: 10;
+    height: 1.5rem;
+    margin-left: .2rem;
+    margin-top: .2rem;
+}
+
+.ptg-search.ptg-fixed input::-ms-clear {
+    display: none;
+}
+
+.ptg-mask {
+    display: none;
+    width: 100%;
+    height: 3rem;
+    top: 0;
+    background-color: white;
+    opacity: .9;
+    border-bottom: solid 1px gray;
+    box-shadow: 1rem 1rem 2rem gray;
+    text-align: right;
+}
+
+.ptg-mask > span {
+    display: inline-block;
+    width: 1em;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.ptg-mask > .ptg-close {
+    background-size: .6em;
+    background-image: url(/pathogens/static/main/img/close.svg);
+    margin-right: 2em;
+}
+
+.ptg-mask.ptg-fixed {
+    position:fixed;
+    z-index: 5;
+    display: block;
+}
+
+#main_content {
+    /*display: none;*/
+    padding-bottom: .5em;
+}
+
+#main_content .pdt-header {
+    white-space: nowrap;
+    color: #111;
+    margin-bottom: 0;
+    padding-left: 0.2em;
+}
+
+a[aria-expanded] {
+    display: inline-block;
+    white-space: normal;
+    color: inherit;
+    text-decoration: none;
+    margin-left: .5em;
+    cursor: pointer;
+}
+
+.pdt-icon {
+    display: inline-block;
+    vertical-align: top;
+    width: .65em;
+    height: 1em;
+    background-repeat:no-repeat;
+    background-position: center;
+    background-image:url(/pathogens/static/main/img/arrow.svg);
+    background-size: .5em;
+    cursor: pointer;
+
+    transform: rotateZ(90deg);
+
+    -webkit-transition-property: transform;
+    -webkit-transition-duration: 200ms;
+    -webkit-transition-timing-function: ease;
+    -moz-transition-property:transform;
+    -moz-transition-duration: 200ms;
+    -moz-transition-timing-function: ease;
+    -ms-transition-property:transform;
+    -ms-transition-duration: 200ms;
+    -ms-transition-timing-function: ease;
+    -o-transition-property:transform;
+    -o-transition-duration: 200ms;
+    -o-transition-timing-function: ease;
+    transition-property:transform;
+    transition-duration: 200ms;
+    transition-timing-function: ease;
+}
+
+.pdt-collapsed > .pdt-icon {
+    transform: rotateZ(0deg);
+}
+
+h4>.pdt-icon, h5>.pdt-icon, h6>.pdt-icon {
+    height: 1.2em;
+    background-size: .75em;
+}
+
+#main_content .pdt-collapsed+div {
+    display: none;
+}
+
+.pdt-header {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #9fbcdf;
+    background-color: #cde3fe;
+}
+
+.pdt-content {
+    border-style: solid;
+    border-width: 1px 1px 1px;
+    margin-top: -1px;
+    border-color:  #9fbcdf #BBB #BBB;
+    padding: 1rem;
+}
+
+.pdt-search ::-moz-selection { /* Code for Firefox */
+    color: red;
+    background: yellow;
+}
+
+.pdt-search ::selection {
+    color: red;
+    background: yellow;
+}
+
+@media print {
+  .ptg-search {
+    display: none;
+  }
+
+  .pdt-icon {
+    display: none;
+  }
+
+  #main_content .pdt-collapsed+div {
+    display: block;
+  }
+}
