@@ -1,0 +1,1 @@
+The file links to documentation of reference sequence from NCBI organization, which a neccessary database to prepare data

@@ -1,0 +1,1 @@
+The file links to AMRFinderPlus tools' documentation, a tool used for finding Antibiotics Resistence genes of bacteria

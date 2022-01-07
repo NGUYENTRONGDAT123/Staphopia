@@ -1,0 +1,348 @@
+
+ div#besetsel-form h3 {
+  color: white;
+}
+div.besetsel-body {
+  margin-left: 1em;
+}
+div#besetsel-form div {
+  margin-bottom: .5em;
+}
+div#besetsel-form a {
+  color:white;
+}
+div#besetsel-form a:hover {
+  background-color: #666;
+}
+.sidecontentpullout {
+	background-color: #c00;
+	color: white;
+	padding: 4px 3px;
+	-moz-border-radius-bottomleft: 1em;
+	-moz-border-radius-topleft: 1em;
+	-webkit-border-bottom-left-radius: 1em;
+	-webkit-border-top-left-radius: 1em;
+	border-bottom-left-radius: 1em;
+	border-top-left-radius: 1em;
+	font-size: 1.2em;
+	opacity: 1 !important;
+}
+.sidecontentpullout:hover {
+	background-color: #444444;
+	color: white;
+	opacity: 1 !important;
+}
+.sidecontent {
+    font-size: 1.2em;
+	background-color: black;
+	color: white;
+	-moz-border-radius-bottomleft: 1em;
+	-webkit-border-bottom-left-radius: 1em;
+	border-bottom-left-radius: 1em;
+	zoom: 1;
+	z-index: 10000 !important;
+}
+.sidecontent > div > div {
+	padding-left: 10px;
+	padding-right: 40px;
+}
+.sidecontent h2 { color: white; }
+.sidecontent a { color: white; display: block; margin: 0; padding: 2px 5px;}
+.sidecontent a:hover { background-color: #666;}
+.sidecontent, .sidecontentpullout { position: fixed !important; }
+.sctable td { border: none; padding-right: 5px;}
+body{font:62.5%/1.3846 arial,helvetica,clean,sans-serif;background-color:#ccc;margin:0}
+.grid{font-size: 1.3em}
+img{border:0}
+abbr,acronym{cursor:help;border-bottom:1px dotted #000;}
+blockquote{margin:1.3846em 1em;}
+p,table,pre,fieldset,dl{margin: 0.6923em 0;}
+ol,ul{margin: 0.6923em 1em 0.6923em inherit}
+dl dd{margin-left:1em;}
+table{border-collapse:collapse;margin:1.3846em 0;}
+thead{border-bottom:1px solid #eee;}
+tfoot{border-top:1px solid #eee;}
+th{text-align:center;background-color:#f0f0f0;}
+th,td{padding:0.2em;border:1px solid #ddd;}
+caption{margin-bottom:.5em;text-align:center;}
+fieldset {border: 0;}
+button{cursor:pointer;}
+input,button,textarea{margin:2px;}
+input[type="checkbox"] {margin: 3px 3px 3px 4px;}
+textarea {font-family: monospace; font-size: 1.2296em; *font-size:1em; vertical-align:baseline;}
+h1,.h1{font-size: 1.3846em; line-height:1.5; margin:1em 0 .5em; } 
+h2,.h2{font-size: 1.2307em; line-height:1.125; margin:1.125em 0 .5625em;} 
+h3,.h3{font-size: 1.0769em; line-height:1.2857; margin:1.2856em 0 .6428em; } 
+h4,h5,h6,h3.inline{font-size: 1em; margin:1.3846em 0 .6923em; } 
+h5,.h5{font-style:italic;font-weight:normal;}
+h6, .h6 {font-weight: normal;}
+h4,.h4{color:#59331f;}
+h3,.h3{color:#724128;}
+h2,.h2{color:#985735;}
+h1,.h1{color:#000;}
+h3.inline,h4.inline,h5.inline,h6.inline{display:inline;float:left;margin:0 0 -0.125em;padding-right:.3em}
+.whole_rhythm {margin: 1.3846em 0} 
+.half_rhythm {margin: .6923em 0} 
+.no_top_margin{margin-top:0}
+.no_bottom_margin{margin-bottom:0}
+.no_margin{margin:0}
+.content a{color:#2f4a8b}
+.content a:hover,.content a:active{color:#985735}
+.content a:visited{color:#642a8f}
+.inline_list,.inline_list_right{list-style-type:none;margin:0;padding:0}
+.inline_list li{display:inline;margin-right:.3em}     
+.inline_list_right li{display:inline;margin-left:.4em;}
+.column_list{list-style-type:none;margin:0;padding:0}
+.column_list li{float:left;width:8em}
+.offscreen{text-indent:-9999px}
+.offscreen_noflow{float:left;text-indent:-9999em;_display:block;margin:0;padding:0;height:0;}
+.left{float:left}
+.right{float:right}
+.align_right{text-align:right}
+.hidden{display:none}
+.nowrap{white-space:nowrap}
+.noborder{border:0}
+body .no_max_width{max-width:none;overflow:auto}
+.inline_block{display:-moz-inline-box;display:inline-block;*display:inline;zoom:1;}
+.clearfix:before,.clearfix:after{content:"";display:table}.clearfix:after{clear:both}.clearfix{zoom:1}
+.small,sup,sub{font-size:.8461em; line-height: 1.6363em;} 
+.small sup,.small sub{font-size:1em}
+sup,sub{position:relative;vertical-align:baseline;}
+sup{top:-.5em}
+sub{top:.25em}
+.shadow {-webkit-box-shadow: 0.4em 0.4em 0.5em rgba(0,0,0,.3);-moz-box-shadow: 0.4em 0.4em 0.5em rgba(0,0,0,.3);box-shadow: 0.4em 0.4em 0.5em rgba(0,0,0,.3)}
+.iconblock{overflow:hidden}
+.icnblk_img{text-decoration:none;float:left;margin-right:1em;cursor:pointer}
+.icnblk_img_right { float: right; margin-right: 0; margin-left: 1em;}
+.icnblk_cntnt{display:table-cell;vertical-align:top;*zoom:1}
+.icnblk_cntnt h1,.icnblk_cntnt h2,.icnblk_cntnt h3,.icnblk_cntnt h4{margin:0 0 .6923em}
+.grid{ min-width:800px; max-width:1200px; width:100%; clear:both; margin:0 auto; text-align:left;overflow:hidden }
+.col { margin-right: 1%; float: left; background-color: #fff; overflow:hidden; }
+.last { *zoom:1; *margin-right:0; _margin-right:-6px;  }
+.col.last {float:right;}
+.one_col { width: 7.3333%; }
+.two_col { width: 15.6664%; }
+.three_col { width: 23.9999%; }
+.four_col { width: 32.3333%; }
+.five_col { width: 40.6666%; }
+.six_col { width: 48.9999% }
+.seven_col { width: 57.3333%; }
+.eight_col { width: 65.6666%; }
+.nine_col { width: 73.9999%; }
+.ten_col { width: 82.3333%; }
+.eleven_col { width: 90.6666%; }
+.twelve_col { width: 98.9999%; }
+@media screen and (max-width: 1200px) {
+	body > .grid > .twelve_col { width: 100%; }
+}
+h1.res_name a.imglogo {
+    background: transparent url(//static.pubmed.gov/portal/portal3rc.fcgi/4190722/img/251741) no-repeat scroll 0% 0%;
+    display: block;
+    height: 45px;
+    text-indent: -9999px;
+    width: 165px;
+}
+.dbheader .headerimage { background-image: url(//static.pubmed.gov/portal/portal3rc.fcgi/4190722/img/2523000); }
+body div.content { margin: 1em 1.2307em;}
+div.container {margin: 0 1.6em } 
+ol.refseq-bib li { margin: 0.6923em 0 } 
+ol.refseq-bib p { margin: 0; }
+p.block-links a {display: block; margin-left: 1em;}
+#update-page .optionslist { list-style-type: none; margin: 0; }
+#update-page .section textarea {width: 600px;}
+#update-page #endtxtidshow { width:10em; border: 2px solid #666; text-align: center; font-size:2.3em; padding:1em; background-color: #eee;}
+#update-page .buttons { padding: 1.5em 0;}
+#update-page .buttons input[type="submit"] { height: 50px; width:150px; }
+#junksection {border:2px solid red;} 
+#junksection h3 {color: red;}
+#junksection a {display: block;}
+div.clear {clear:both; margin:0; padding:0; height:0;}
+ul.hor_list {list-style-type:none; }
+ul.hor_list li {float: left; padding-right: 1em;}
+div.citation_section {margin: 0.6923em 0;}
+div.citation_section p {margin:0;}
+#refseq_release {
+    display: block;
+	padding: .5em;	
+	
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;    
+    
+    -moz-box-shadow: 2px 2px 2px #aaaaaa;
+    -webkit-box-shadow: 2px 2px 2px #aaaaaa;
+    box-shadow: 2px 2px 2px #aaaaaa;    
+    
+    background: #f2f6f9;
+    background-image: -moz-linear-gradient(top, #f2f6f9, #dde6ec);
+    background-image: -webkit-gradient(linear, center top, center bottom, from(#f2f6f9), to(#dde6ec));
+    background-image: -webkit-linear-gradient(top, #f2f6f9, #dde6ec);
+    background-image: linear-gradient(top, #f2f6f9, #dde6ec);
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+}
+#refseq_release h2 {background-color:transparent; border:0; text-align:center; padding: .2em 0 0 0;}
+#refseq_release h3, #refseq_release h4 {background-color:transparent; border:0; text-align:center; padding-top: 0; padding-bottom:0;} 
+#refseq_release p {margin:.4em 0;}
+#refseq_release a {word-wrap:break-word;} 
+#refseq_release dt {float: left; width: 7em;} 
+#refseq_release ul li {border:0; padding:0 1em;}
+.ncbi-feedback-button {
+  background: #2e8540 url(//static.pubmed.gov/portal/portal3rc.fcgi/4190722/img/4189885) no-repeat;
+  color: #fff;
+  position: fixed;
+  z-index: 99;
+  bottom: 0;
+  right: 0;
+  margin: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transition: background-color .15s, box-shadow .3s;
+  font-size: 20px;
+  height: 25px;
+  line-height: 24px;
+  
+  border-radius: 0;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Source Sans Pro","Helvetica Neue","Helvetica","Roboto","Arial",sans-serif;
+  font-weight: 700;
+  padding: 10px 100px 10px 46px;
+  text-align: left;
+  text-decoration: none; 
+  text-indent: -1000px;
+  overflow: hidden;
+  }
+  @media screen and (max-width: 600px) {
+    .ncbi-feedback-button {
+      padding: 0;
+      width: 44px;
+      height: 44px;
+      background-position: 12px 13px;
+      background-size: 22px; } }
+  .ncbi-feedback-button:visited {
+    background-color: #1ca186;
+    color: #fff; }
+  .ncbi-feedback-button:hover {
+    background-color: #277236;
+    box-shadow: none;
+    color: #fff; }
+noscript p.nojs {
+	background: #ffb url(//static.pubmed.gov/portal/portal3rc.fcgi/4190722/img/67327) no-repeat 5px center;
+	padding: 4px;
+	padding-left: 28px;
+	margin:0;	
+}
+.last-updated {text-align: right; margin-right: 1em; color: #777; }
+body.paf-nav .col1 { float: left; width: 70%;}
+body.paf-nav .col2 { width: 28%; margin-left: 72%;}
+#paf-nav .portlet ul li a.paf-nav-current { text-decoration: none; color: black; font-weight: bold; }
+@media print {
+   html, body { height: 100%; }
+   div.page > div.container { min-height: 100%; margin-bottom: -20px; padding-bottom: 52px; position: relative;  }
+   p.last-updated { position: relative; bottom: 0;  right: 0; height: 24px; color: black; }
+}
+@page { margin: 0.75in; }
+.portlet { border-top: .4em solid #97b0c8; padding-top: .461em; margin: .769em 0 2.154em 0; overflow: visible; line-height: 1.231em; zoom:1; }
+.portlet h1, .portlet h2, .portlet h3, .portlet h4, .portlet h5, .portlet h6 {color: #985735; font-weight: bold; display: inline;  }
+.portlet .whatsthis {color: #14376c; white-space: nowrap; margin-left: .3em;}
+.portlet ul { margin: 0; padding: 0; }
+.portlet ul li { list-style-type: none; margin-top: .461em; border-bottom: 1px dotted #CCC; padding-bottom: 1px; position: relative; overflow: visible; zoom:1;  }
+.portlet .portlet_list li { border-bottom: 0; }
+.portlet ul li a { font-weight: normal; color: #14376c; text-decoration: none; }
+.portlet ul li a:hover,.portlet ul li a:active{border-bottom:0}
+.portlet ul a { _display: block; _float: left; _clear: left; }
+.portlet .seemore { display: block; text-align: right; color: #14376c; font-size: .923em; text-decoration: none; margin-top: .8em; }
+.portlet .portlet_section_header { text-decoration: none; font-weight: bold; color: #000; border-bottom:0 } 
+.portlet li.two_line { height: 2.461em; height\0: 2.361em; overflow: hidden; }
+.portlet .two_line a { max-height: 2.453em; overflow: hidden; display: block; }
+.portlet .long_info, .portlet p, .portlet .two_line .source, .portlet .one_line_source, .portlet_content .image .desc, .portlet ul li .desc a { color: #777;}
+.portlet .two_line .source, .portlet .one_line_source { white-space: nowrap; position: absolute; right: 0; background-color: white; padding-left: .3em; }
+.portlet .two_line .source { top: 1.231em; }
+.portlet .two_line .tertiary { font-size: .769em; color: #777; position: absolute; right:0; background-color: white; padding: .1em 0 0 .3em; top: 1.6em; top\0: 1.5em; }
+.portlet .portlet_content p { margin: .8em 0; }
+.portlet .buttonwrap { float: left; position: relative; top: -.1em; overflow: visible; }
+.portlet .invert { color: #fff; background-color: #14376c; padding: 0 .2em; }
+.portlet .tertiary { color: #777; text-align: right; line-height: 1.4em; position: relative; top: .1em; }
+.portlet_content { position: relative; margin: 0; }
+.portlet_content textarea { margin: 0 0 .9em; }
+.portlet_content img { margin: .3em 1.4em .7em 0;}
+.portlet_content .image { display: block; overflow: auto; overflow:hidden\0; }
+.portlet_content .image .img_link { float: left; }
+.portlet_shutter { background: url(//static.pubmed.gov/portal/portal3rc.fcgi/4190722/img/32197) no-repeat scroll left top;  display: block; float: right; width: 15px; height: 15px; position: absolute; top: -.2em; margin-left: .6em; right: 0; }
+.shutter_closed { background-position: left bottom; }
+.portlet .related li { border-bottom: 0; }
+.portlet .right { text-align: right; }
+.ra_qry, .ra_rcd { padding-left: 2em; }
+.ra_qry { background: transparent url(//static.pubmed.gov/portal/portal3rc.fcgi/4190722/img/32182) no-repeat scroll 0 1px; }
+.ra_rcd { background: transparent url(//static.pubmed.gov/portal/portal3rc.fcgi/4190722/img/32183) no-repeat scroll 0 1px; }
+.sensor {border:1px solid #97B0C8;background-color:#FEFEFF;padding:0;margin:0 0 1em 0}
+.sensor_inner {border:3px solid #D7E2EC;background-color:#FEFEFF;padding:0 1em 1em;margin:0}
+.sensor .sensor_head { margin-bottom: 0; position: relative}
+.sensor .sensor_head h3 { font-weight: normal; }
+.sensor h3,.sensor h4,.sensor h5,.sensor h6{margin:.6923em 0 0}
+.sensor .sensor_content{margin-bottom:1.1em}
+.sensor p{margin:0}
+.sensor .portlet_shutter { display: none; }
+.no_p_margins{margin:0}
+.portlet_head{margin-bottom:.461em;position: relative}
+.portlet_title,.sensor_title{margin-right: 2em}
+.portlet_title h3 { line-height: inherit; }
+.header{background:#d5d5d5 url(//static.pubmed.gov/portal/portal3rc.fcgi/4190722/img/2375536) repeat-x scroll left bottom; position: relative;margin-bottom: 1.231em;z-index:20 }
+.header a{text-decoration:none}
+.header a:hover{text-decoration:underline}
+.search{margin:0 0 0 13.539em; padding:1.2em 0 .7em}
+.search_form{*zoom:1}
+.search_form select,.search_form .ui-ncbiclearbutton-wrap,.search_form button{margin-right:.2em;font-family:arial,helvetica,sans-serif;}
+.search_form select{font-size: 1.077em; width:8.5em;margin-right:.3em;*vertical-align: middle; position: relative; bottom: 1px;}
+.search_form select optgroup {font-style: normal; color: #555; padding-left: 0.2em;} 
+.search_form select optgroup option {color: #000}
+.search_form input{font-size: 1.1543em; width:48%;display:inline-block;_width:100%}
+.search_form div.nowrap {*height: 100%; }
+.search_form button.nowrap {*vertical-align: middle; }
+.search_form div.nowrap div.nowrap {*height: 100%; *vertical-align: middle; }
+.search_form .nowrap{display:inline;*zoom:1}
+.searchlinks{margin:.2em 0 0 9.6em;_zoom:1}
+.searchlinks li{margin-right:1.2em;zoom:1}
+.searchlinks .help{position:absolute;right:1em;margin-right:0;_margin-top:-.1em}
+.searchlinks .hidden{display:none}
+.searchlinks .visible{display:inline}
+.search_form .wrap{position:relative;display:inline;_width:70%}
+#cl{position:absolute;right:8px;top:-3px;top:-12px\9;*top:5px}
+.search_form button{border:0 none;cursor:pointer;overflow:visible;width:auto;background-color:#ddd;padding:.2em .4em;*padding:.2em .6em;_padding:.2em .4em;margin:0 .2em;*margin:0 .3em;*height:2em; -moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;text-shadow:.1em .1em .1em rgba(0,0,0,.5);-moz-box-shadow:.1em .1em .1em rgba(0,0,0,.5);-webkit-box-shadow:.1em .1em .1em rgba(0,0,0,.5);box-shadow:.1em .1em .1em rgba(0,0,0,.5)}
+.search_form button.button_search{background-color:#47a;font-weight:bold;color:#fff;*margin-left:.5em;font-size:inherit;}
+.search_form button.button_search:active{background-color:#4c96df}
+.search_form button.button_preview{background-color:#A64D48;font-weight:bold;color:#fff}
+.search_form button.button_preview:active{background-color:#F27069}
+.search_form input:focus{-moz-box-shadow:0 0 .3em rgba(211,186,44,.8)}
+.search_form .ui-ncbiclearbutton-wrap { width: 64%; *display: inline; border:1px solid #999; }
+.search_form .ui-ncbiclearbutton-wrap input { width: 100%; *width: 50%; }
+.search_form .ui-ncbiclearbutton-wrap a.reset { margin-left: 0; top: 50%; margin-top: -7px; }
+.rss_icon{position:relative;top:3px;margin-right:.3em}
+.rss_menu{z-index:1001;display:none;}
+.rss_menu legend{font-weight:bold;margin:2px 0 0 3px}
+.rss_menu ul{margin:0;padding:0;list-style-type:none;padding-top:5px}
+.rss_menu ul li{margin-bottom:.4em}
+.rss_menu span,.rss_menu label{margin-right:.5em}
+.rss_menu ul input{top:0}
+.rss_menu dd{margin-left:0;margin-bottom:1em}
+.rss_menu #rss_name{width:15em}
+.rss_menu button{margin-top:.5em}
+.rss_menu label{display:block}
+.db_logo{background:transparent url() no-repeat scroll left top;display:block;height:36px;width:100px;text-indent:-9999px}
+.res_logo{width:11.539em;left:1.231em;padding-top:.4em;position:absolute}
+.res_logo h1{font-weight:normal;margin:0}
+.long{padding:.5em 0}
+.long h1{line-height:1.15}
+.res_logo h1 a{color:#333;display:block;padding:.3em 0;text-shadow:1px 1px 1px rgba(240,240,240,.9)}
+.res_tagline{display:none}
+.res_logo h1 a,.res_logo h1 a:hover,.res_logo h1 a:visited{text-decoration:none}
+h1.img_logo{margin:0}
+h1.img_logo a{padding:0}
+div.page div.header { margin-bottom: 0;}

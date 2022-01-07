@@ -1,0 +1,97 @@
+.prj-owner {
+    color:#999;
+    font-size:1.3rem;
+    width:100%;
+}
+.prj-name{
+    width:100%;
+}
+
+th.num,
+td.num {
+    text-align:right;
+}
+
+.contributors-table {
+    word-wrap:break-word;
+    table-layout:fixed;
+    width:100%;
+}
+
+.no-v-border tr td,
+.no-v-border tr th {
+    border-left:none;
+    border-right:none;
+    border-color:#DDD;
+    vertical-align:top;
+}
+
+th.pct20{
+    width:20%;
+}
+
+td.pct90{
+    width:90%;
+}
+
+.pathogens-content-page .usa-width-one-third {
+    margin-top: 50px;
+}
+
+.pathogens-content-page .usa-width-two-thirds {
+    padding-right: 1rem;
+}
+
+.side-box {
+    margin-bottom: 5rem;
+}
+
+.fixed-side-bar .side-box {
+    /* for side box to be only as wide as content */
+    display: inline-block;
+}
+
+.side-box .usa-unstyled-list > li {
+    margin-bottom: 1.5rem;
+}
+
+.side-box .usa-unstyled-list > li:last-child {
+    margin-bottom: 0;
+}
+
+.side-box h3 {
+    border-bottom: 2px #DDD solid;
+    margin-bottom: 1.5rem;
+}
+
+tr.g-total th,
+tr.g-total td {
+    border-color:#333;
+    border-bottom:none;
+}
+
+.fixed-side-bar li.nav-active {
+    list-style: disc;
+    color: #ddd;
+}
+
+.nav-links a,
+.nav-links a:visited,
+.nav-links a:hover,
+.nav-links a:active {
+    color: #0071bc;
+}
+
+.pathogens-title-label {
+    vertical-align: middle;
+    padding-top: .5rem;
+}
+
+body {
+    overflow-x: visible;
+}
+
+p.homepage-note1 {
+    background-color:#F3D3C3;
+    padding: 10px;
+}

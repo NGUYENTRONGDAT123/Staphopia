@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Mobile properties -->
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+    <!-- Stylesheets -->
+    
+    <link href="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/uswds.css" rel="stylesheet">
+    
+  
+  
+    <link rel="stylesheet" href="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/nwds.css">
+    <link rel="stylesheet" href="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/header.css">
+    <link rel="stylesheet" href="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/footer.css">
+    <link rel="stylesheet" href="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/form.css">
+  
+
+  
+    <link rel="stylesheet" href="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/font-awesome.css">
+  
+
+
+    <title>
+  AMRFinderPlus - 
+Pathogen Detection - NCBI
+
+  </title>
+
+  
+  
+<!-- extra head -->
+  
+  <!-- Favicons -->
+  <link rel="shortcut icon" type="image/ico" href="https://www.ncbi.nlm.nih.gov/coreutils/nwds/img/favicons/favicon.ico">
+  <link rel="icon" type="image/png" href="https://www.ncbi.nlm.nih.gov/coreutils/nwds/img/favicons/favicon.png">
+
+  <!-- 192x192, as recommended for Android
+  http://updates.html5rocks.com/2014/11/Support-for-theme-color-in-Chrome-39-for-Android
+  -->
+  <link rel="icon" type="image/png" sizes="192x192" href="https://www.ncbi.nlm.nih.gov/coreutils/nwds/img/favicons/favicon-192.png">
+
+  <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+  <link rel="apple-touch-icon-precomposed" href="https://www.ncbi.nlm.nih.gov/coreutils/nwds/img/favicons/favicon-57.png">
+  <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://www.ncbi.nlm.nih.gov/coreutils/nwds/img/favicons/favicon-72.png">
+  <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://www.ncbi.nlm.nih.gov/coreutils/nwds/img/favicons/favicon-114.png">
+  <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://www.ncbi.nlm.nih.gov/coreutils/nwds/img/favicons/favicon-144.png">
+
+
+  <link rel="stylesheet" href="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/app.css" type="text/css" media="screen">
+  <link rel="stylesheet" href="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/breadcrumbs.css" type="text/css" media="screen">
+  <!-- Logging params: Pinger defaults -->
+
+<meta name="ncbi_app" content="labs_pathogens">
+
+<meta name="ncbi_pdid" content="static">
+
+<meta name="ncbi_phid" content="322C9EFEDFE0EB4500003038F9335D01.1.m_9">
+
+
+<!-- /extra head -->
+
+  <link rel="stylesheet" href="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/page-search.css" type="text/css">
+  
+
+<meta name="ncbi_nwds_ver" content="0.15.10"><meta name="ncbi_nwds" content="yes"><script async="1" src="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/analytics.js"></script><style>.ncbi-alerts .ncbi-alert__shutdown-outer { position: relative; background-color: #f4e3db; border-left: 8px solid #d54309;  background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='126' height='126' viewBox='0 0 126 126'%3E%3Cpath fill='%231B1B1B' d='M117.18,31.592 C111.585,22.006 103.995,14.416 94.409,8.821 C84.821,3.226 74.354,0.429 63.001,0.429 C51.649,0.429 41.18,3.226 31.593,8.821 C22.006,14.415 14.416,22.005 8.821,31.592 C3.225,41.179 0.428,51.649 0.428,63 C0.428,74.351 3.226,84.82 8.82,94.408 C14.415,103.992 22.005,111.584 31.592,117.179 C41.179,122.774 51.648,125.571 63,125.571 C74.352,125.571 84.822,122.774 94.408,117.179 C103.994,111.585 111.584,103.994 117.179,94.408 C122.773,84.82 125.57,74.35 125.57,63 C125.57,51.649 122.773,41.178 117.18,31.592 Z M73.43,102.025 C73.43,102.786 73.184,103.423 72.696,103.939 C72.208,104.455 71.61,104.712 70.903,104.712 L55.26,104.712 C54.554,104.712 53.929,104.441 53.386,103.898 C52.843,103.355 52.572,102.73 52.572,102.025 L52.572,86.546 C52.572,85.84 52.843,85.215 53.386,84.672 C53.929,84.129 54.554,83.858 55.26,83.858 L70.903,83.858 C71.61,83.858 72.209,84.116 72.696,84.631 C73.184,85.149 73.43,85.785 73.43,86.546 L73.43,102.025 Z M73.266,73.999 C73.211,74.542 72.927,75.018 72.412,75.425 C71.895,75.832 71.258,76.035 70.498,76.035 L55.425,76.035 C54.664,76.035 54.012,75.832 53.469,75.425 C52.926,75.018 52.654,74.542 52.654,73.999 L51.269,23.404 C51.269,22.751 51.54,22.263 52.083,21.937 C52.627,21.503 53.279,21.285 54.039,21.285 L71.965,21.285 C72.726,21.285 73.377,21.502 73.92,21.937 C74.463,22.263 74.733,22.752 74.733,23.404 L73.266,73.999 Z'/%3E%3C/svg%3E%0A");}.ncbi-alerts .ncbi-alert__info-outer { position: relative; background-color: #e7f6f8; border-left: 8px solid #00bde3; background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='126' height='126' viewBox='0 0 126 126'%3E%3Cpath fill='%231B1B1B' d='M117.18,31.592 C111.585,22.006 103.995,14.416 94.409,8.821 C84.821,3.226 74.354,0.429 63.001,0.429 C51.649,0.429 41.179,3.226 31.593,8.821 C22.006,14.415 14.416,22.005 8.821,31.592 C3.225,41.179 0.428,51.649 0.428,63 C0.428,74.352 3.226,84.82 8.82,94.408 C14.415,103.993 22.005,111.584 31.592,117.179 C41.179,122.774 51.648,125.571 63,125.571 C74.352,125.571 84.822,122.774 94.408,117.179 C103.994,111.585 111.584,103.994 117.179,94.408 C122.773,84.821 125.57,74.351 125.57,63 C125.57,51.648 122.773,41.178 117.18,31.592 Z M52.572,16.071 C52.572,15.31 52.816,14.686 53.305,14.197 C53.794,13.709 54.419,13.464 55.179,13.464 L70.823,13.464 C71.583,13.464 72.208,13.709 72.695,14.197 C73.183,14.686 73.429,15.31 73.429,16.071 L73.429,29.107 C73.429,29.867 73.183,30.492 72.695,30.98 C72.208,31.469 71.583,31.713 70.823,31.713 L55.179,31.713 C54.419,31.713 53.794,31.469 53.305,30.98 C52.816,30.492 52.572,29.867 52.572,29.107 L52.572,16.071 Z M83.857,102.107 C83.857,102.867 83.611,103.492 83.124,103.979 C82.637,104.468 82.012,104.712 81.25,104.712 L44.75,104.712 C43.989,104.712 43.365,104.468 42.876,103.979 C42.387,103.491 42.143,102.866 42.143,102.106 L42.143,89.07 C42.143,88.308 42.387,87.685 42.876,87.196 C43.365,86.708 43.99,86.463 44.75,86.463 L52.572,86.463 L52.572,60.392 L44.75,60.392 C43.989,60.392 43.365,60.148 42.876,59.659 C42.387,59.171 42.143,58.546 42.143,57.785 L42.143,44.75 C42.143,43.989 42.387,43.365 42.876,42.876 C43.365,42.387 43.99,42.143 44.75,42.143 L70.823,42.143 C71.583,42.143 72.208,42.387 72.695,42.876 C73.183,43.365 73.429,43.989 73.429,44.75 L73.429,86.464 L81.249,86.464 C82.01,86.464 82.635,86.709 83.123,87.197 C83.61,87.685 83.856,88.31 83.856,89.071 L83.856,102.107 L83.857,102.107 Z'/%3E%3C/svg%3E");}.ncbi-alerts div[class$="-outer"]{background-position: 28px 20px;  background-size: 32px 32px;  background-repeat: no-repeat;padding:20px 20px 20px 28px;}.ncbi-alerts div[class$="-inner"]{padding-left: 52px; padding-right: 52px;}@media (max-width: 639px){.ncbi-alerts div[class$="outer"]{background-position: 15px 20px;}.ncbi-alerts div[class$="-inner"]{padding-left: 0px; padding-right: 0px; padding-top: 40px;}}.ncbi-alerts button.close{cursor: pointer;position:absolute; top: 10px; right: 20px; width: 36px; height: 32px; border:0; background-color: transparent; background-image: url("data:image/svg+xml,%3Csvg version='1.2' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' overflow='visible' preserveAspectRatio='none' viewBox='0 0 24 24' width='32' height='32'%3E%3Cg%3E%3Cpath xmlns:default='http://www.w3.org/2000/svg' id='window-close' d='M14.9,16.42c-0.13,0.13-0.33,0.14-0.47,0.01c0,0-0.01-0.01-0.01-0.01L12,14l-2.43,2.42 c-0.13,0.13-0.33,0.14-0.47,0.01c0,0-0.01-0.01-0.01-0.01L7.58,14.9c-0.13-0.13-0.14-0.33-0.01-0.47c0,0,0.01-0.01,0.01-0.01L10,12 L7.58,9.57C7.45,9.45,7.44,9.24,7.57,9.1c0,0,0.01-0.01,0.01-0.01L9.1,7.58c0.13-0.13,0.33-0.14,0.47-0.01c0,0,0.01,0.01,0.01,0.01 L12,10l2.43-2.43c0.13-0.13,0.33-0.14,0.47-0.01c0,0,0.01,0.01,0.01,0.01l1.51,1.53c0.13,0.13,0.14,0.33,0.01,0.47 c0,0-0.01,0.01-0.01,0.01L14,12l2.43,2.43c0.13,0.13,0.14,0.33,0.01,0.47c0,0-0.01,0.01-0.01,0.01L14.9,16.42L14.9,16.42z M20.84,4.49C20.53,4.17,20.1,3.99,19.66,4H4.34C3.42,4,2.67,4.75,2.67,5.67l0,0v12.66c0,0.92,0.75,1.67,1.67,1.67l0,0h15.32 c0.92,0,1.67-0.75,1.67-1.67l0,0V5.67C21.34,5.23,21.16,4.8,20.84,4.49z' style='fill: rgb(33, 33, 33);' vector-effect='non-scaling-stroke'/%3E%3C/g%3E%3C/svg%3E");background-size: 32px 32px; background-repeat:no-repeat;background-position:center center}.ncbi-alerts button.close:focus{ outline: 1px dotted #000000;}@media (max-width: 639px){.ncbi-alerts button.close{right: 0px;}}.ncbi-alerts p{margin-bottom: 0px; margin-top: 0px; font-size: 18px; line-height: 28px;}.ncbi-alerts .list-items > p{font-size: 0.94em; display: inline;}.ncbi-alerts .list-items > p a {font-weight: 700;}.ncbi-alerts .list-items > p:not(:last-child)::after{margin:0 8px;content:'|'}@media (min-width: 768px) and (max-width: 991px){.ncbi-alerts .list-items > p:nth-child(2)::after{content:'\a'!important;white-space: pre;}}@media(max-width: 767px){.ncbi-alerts .list-items > p{display:block;}.ncbi-alerts .list-items > p::after{content:''!important;}}</style><script charset="utf-8" src="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/15.js"></script><script charset="utf-8" src="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/1.js"></script></head>
+<body>
+
+  
+    <a class="usa-skipnav" href="#main_content">Skip to main page content</a>
+
+    <!-- ========== BEGIN HEADER ========== -->
+<div class="usa-overlay"></div>
+<header class="ncbi-header" role="banner" data-section="Header">
+
+	<div class="usa-grid">
+		<div class="usa-width-one-whole">
+			<div class="agencies">
+				<div class="nih"><span class="usa-sr-only">National Institutes of Health</span></div>
+				<div class="nlm">National Library of Medicine</div>
+				<div class="ncbi">National Center for Biotechnology Information</div>
+				<a href="https://www.ncbi.nlm.nih.gov/" class="homepage"><span class="usa-sr-only" id="header_ncbi">NCBI homepage</span></a>
+			</div>
+
+			<div class="account">
+				<a id="account_login" href="https://www.ncbi.nlm.nih.gov/labs/account/?back_url=https://www.ncbi.nlm.nih.gov/pathogens/antimicrobial-resistance/AMRFinder/" class="set-base-url usa-button header-button" style="">Log in</a>
+				<button id="account_info" class="header-button" style="display:none" aria-controls="account_popup" aria-haspopup="true" aria-expanded="false">
+					<span class="fa fa-user" aria-hidden="true"></span>
+					<span class="username desktop-only" aria-hidden="true" id="uname_short"></span>
+					<span class="sr-only">Show account info</span>
+				</button>
+			</div>
+
+			<div class="ncbi-popup-anchor">
+				<div class="ncbi-popup account-popup" id="account_popup" aria-hidden="true" tabindex="-1" aria-modal="true" style="display: none;">
+					<div class="ncbi-popup-head">
+						<button class="ncbi-close-button"><span class="fa fa-times"></span><span class="usa-sr-only">Close</span></button>
+						<h4>Account</h4>
+					</div>
+					<div class="account-user-info">
+						Logged in as:<br>
+						<b><span class="username" id="uname_long">username</span></b>
+					</div>
+					<div class="account-links">
+						<ul class="usa-unstyled-list">
+							<li><a id="account_myncbi" href="https://www.ncbi.nlm.nih.gov/myncbi/" class="set-base-url">Dashboard</a> <span class="ncbi-text-small-light">(My NCBI)</span></li>
+							<li><a id="account_pubs" href="https://www.ncbi.nlm.nih.gov/myncbi/collections/bibliography/" class="set-base-url">Publications</a> <span class="ncbi-text-small-light">(My Bibliography)</span></li>
+							<li><a id="account_settings" href="https://www.ncbi.nlm.nih.gov/account/settings/" class="set-base-url">Account settings</a></li>
+							<li><a id="account_logout" href="https://www.ncbi.nlm.nih.gov/account/signout/?back_url=https://www.ncbi.nlm.nih.gov/pathogens/antimicrobial-resistance/AMRFinder/" class="set-base-url">Log out</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</header>
+<div role="navigation" aria-label="access keys">
+<a id="nws_header_accesskey_0" href="https://www.ncbi.nlm.nih.gov/guide/browsers/#ncbi_accesskeys" class="usa-sr-only" accesskey="0" tabindex="-1">Access keys</a>
+<a id="nws_header_accesskey_1" href="https://www.ncbi.nlm.nih.gov/" class="usa-sr-only" accesskey="1" tabindex="-1">NCBI Homepage</a>
+<a id="nws_header_accesskey_2" href="https://www.ncbi.nlm.nih.gov/myncbi/" class="set-base-url usa-sr-only" accesskey="2" tabindex="-1">MyNCBI Homepage</a>
+<a id="nws_header_accesskey_3" href="#maincontent" class="usa-sr-only" accesskey="3" tabindex="-1">Main Content</a>
+<a id="nws_header_accesskey_4" href="#" class="usa-sr-only" accesskey="4" tabindex="-1">Main Navigation</a>
+</div>
+<section data-section="Alerts">
+	<div class="ncbi-alerts-placeholder" style="margin-bottom: 0px;"></div><div class="ncbi-alerts nCoV_shutdown" id="nCoV_shutdown" role="region" aria-label="Alert" style="margin-bottom: 0px;"><div class="ncbi-alert__shutdown-outer"><div class="ncbi-alert__shutdown-inner"><p><strong>COVID-19 Information</strong></p><div class="list-items"><p><a href="https://cdc.gov/coronavirus">Public health information (CDC)</a></p><p><a href="https://covid19.nih.gov/">Research information (NIH)</a></p><p><a href="https://www.ncbi.nlm.nih.gov/sars-cov-2/">SARS-CoV-2 data (NCBI)</a></p><p><a href="https://combatcovid.hhs.gov/">Prevention and treatment information (HHS)</a></p><p><a href="https://salud.nih.gov/covid-19/">Español</a></p></div></div><button type="button" class="close" aria-controls="nCoV_shutdown" aria-label="Close Alert">&nbsp;</button></div></div>
+</section>
+<!-- ========== END HEADER ========== -->
+
+
+    
+
+    
+    <main id="main_content" accesskey="3">
+      
+<section class="pathogens-content-page usa-grid">
+
+  <div class="usa-width-one-whole ptg-top">
+    <div><ul id="breadcrumbs" class="usa-unstyled-list breadcrumbs">
+    <li><a href="https://www.ncbi.nlm.nih.gov/home/health.shtml">Health</a></li>
+    
+    <li><a href="https://www.ncbi.nlm.nih.gov/pathogens/">Pathogen Detection</a></li>
+      
+        
+            <li><a href="https://www.ncbi.nlm.nih.gov/pathogens/antimicrobial-resistance/">Antimicrobial Resistance</a></li>
+        
+      
+    
+    <li>AMRFinderPlus</li>
+</ul>
+
+</div>
+    <div class="ptg-search">
+      <input placeholder="Search page" type="search"><button title="Previous" disabled="disabled"></button><button title="Next" disabled="disabled"></button>
+    </div>
+  </div>
+  <div> 
+<h1 id="amrfinderplus">AMRFinderPlus</h1>
+
+<p>NCBI has developed AMRFinderPlus, a tool that identifies AMR genes, 
+resistance-associated point mutations, and select other classes of genes
+ using  protein annotations and/or assembled nucleotide sequence. 
+AMRFinderPlus is used in the <a href="https://www.ncbi.nlm.nih.gov/pathogens/pathogens_help/#data-processing">Pathogen Detection pipeline</a>, and these data are displayed in <a href="https://www.ncbi.nlm.nih.gov/pathogens/isolates/">NCBI’s Isolate Browser</a>. AMRFinderPlus relies on NCBI’s curated <a href="https://www.ncbi.nlm.nih.gov/pathogens/isolates#/refgene/">Reference Gene Database</a> and curated collection of <a href="https://ftp.ncbi.nlm.nih.gov/hmm/NCBIfam-AMRFinder/latest">Hidden Markov Models</a>.  For more information on how AMRFinderPlus operates, please see the <a href="https://github.com/ncbi/amr/wiki/Methods">Methods section</a> of the <a href="https://github.com/ncbi/amr/wiki">AMRFinderPlus documentation</a>. See our <a href="https://www.ncbi.nlm.nih.gov/pathogens/pathogens_help/#amr">documentation</a> for a description of all our <a href="https://www.ncbi.nlm.nih.gov/pathogens/antimicrobial-resistance/">NCBI antimicrobial resistance resources</a>.</p>
+
+<h3 id="ncbi-has-made-amrfinderplus-soft">NCBI has made AMRFinderPlus software and databases open source and freely available</h3>
+
+<ul>
+<li><a href="https://github.com/ncbi/amr/wiki">Documentation</a></li>
+<li><a href="https://github.com/ncbi/amr/wiki/Installing-AMRFinder">Installation instructions</a></li>
+<li><a href="https://github.com/ncbi/amr/releases">Software releases</a></li>
+<li><a href="https://github.com/ncbi/amr">Source code</a></li>
+<li><a href="https://www.ncbi.nlm.nih.gov/pathogens/isolates#/refgene/">Pathogen Detecton Reference Gene Catalog</a> Includes web interface for AMR genes, point mutations, and other classes of genes</li>
+<li><a href="https://www.ncbi.nlm.nih.gov/pathogens/hmm/">Pathogen Detecton Reference HMM Catalog</a>
+ Includes web interface for carefully curated HMMs used by AMRFinderPlus
+ to identify AMR genes, and some stress and virulence proteins</li>
+<li><a href="https://www.ncbi.nlm.nih.gov/bioproject/PRJNA313047">Bacterial Antimicrobial Resistance Reference Gene Database</a> Bioproject containing curated AMR gene reference sequences only</li>
+<li><a href="https://ftp.ncbi.nlm.nih.gov/hmm/NCBIfam-AMRFinder/latest">NCBIfam-AMRFinder</a> Curated AMRFinderPlus HMM library</li>
+</ul>
+
+<h3 id="ncbi-runs-amrfinderplus-on-hundr">NCBI runs AMRFinderPlus on 
+hundreds of thousands of isolates as part of the Pathogen Detection 
+pipeline and makes the results publically available</h3>
+
+<ul>
+<li><a href="https://www.ncbi.nlm.nih.gov/pathogens/isolates#/search/">Pathogen Detection Isolates Browser</a> Includes genes found by AMRFinderPlus in the 
+<a href="https://www.ncbi.nlm.nih.gov/pathogens/pathogens_help/#data-field-AMRGenotypes">AMR genotypes</a>, 
+<a href="https://www.ncbi.nlm.nih.gov/pathogens/pathogens_help/#data-field-stress-genotypes">Stress genotypes</a>, and 
+<a href="https://www.ncbi.nlm.nih.gov/pathogens/pathogens_help/#data-field-virulence-genotypes">Virulence genotypes</a> columns</li>
+<li><a href="https://www.ncbi.nlm.nih.gov/pathogens/pathogens_help/#isolates-browser">Pathogen Detection Isolates Browser documentation</a></li>
+<li><a href="https://www.ncbi.nlm.nih.gov/pathogens/microbigge/">MicroBIGG-E</a> (<strong>Micro</strong>bial <strong>B</strong>rowser for <strong>I</strong>dentification of <strong>G</strong>enetic and <strong>G</strong>enomic <strong>E</strong>lements)
+ contains detailed AMRFinderPlus results and associated metadata for 
+individual AMRFinderPlus hits. Note that there may be a delay between 
+when isolates appear in the isolates browser and when MicroBIGG-E 
+results appear because MicroBIGG-E results are only available for 
+isolates that have public assembly accessions.</li>
+<li><a href="https://www.ncbi.nlm.nih.gov/pathogens/pathogens_help/#microbigge">MicroBIGG-E documentation</a></li>
+</ul>
+
+<h3 id="a-note-about-abricate">A note about ABRicate</h3>
+
+<p>Many people are using <a href="https://github.com/tseemann/abricate">ABRicate</a> with the
+default "ncbi" database, and it has come to our attention that at least some
+users are confused that they are getting the same or similar results to what
+they would get from AMRFinderPlus. ABRicate uses a subset of the AMRFinderPlus
+database to do AMR gene detection and different methods so the results are not
+the same as those you get by running AMRFinderPlus. To identify AMR genes from
+assembled sequence we recommend using
+<a href="https://github.com/ncbi/amr/wiki/Running-AMRFinderPlus">AMRFinderPlus</a> to get
+the full value out of the NCBI compiled database, including correct allele and
+gene symbols, named allele vs. novel allele determination, protein-based
+search/naming, curated cutoffs, HMM searches, etc.</p>
+
+<hr>
+
+<p>If you have questions about the database or software, or experience problems with AMRFinderPlus please contact <a href="mailto:pd-help@ncbi.nlm.nih.gov">pd-help@ncbi.nlm.nih.gov</a></p>
+
+<p><a href="http://www.ncbi.nlm.nih.gov/mailman/listinfo/amrfinder-announce">Subscribe to the amrfinder-announce mailing list</a> to get updates when we release new versions of the software or database. This is a low-traffic list.</p>
+
+</div>
+  
+
+  
+</section>
+
+    </main>
+    
+
+     <!-- ========== BEGIN FOOTER ========== -->
+ <footer id="ncbi-footer" class="usa-footer usa-footer-medium ncbi-footer" role="contentinfo" data-section="Footer">
+  <div class="icon-section">
+    <div class="usa-grid">
+		<div class="usa-width-one-whole">
+		<h3 class="usa-sr-only">Connect</h3>
+		<ul class="ncbi-inline-list icon-list">
+			<li><a id="footer_twitter" href="https://twitter.com/ncbi">Twitter</a></li>
+			<li><a id="footer_facebook" href="https://www.facebook.com/ncbi.nlm">Facebook</a></li>
+			<li><a id="footer_youtube" href="https://www.youtube.com/user/NCBINLM">YouTube</a></li>
+			<li><a id="footer_linkedin" href="https://www.linkedin.com/company/ncbinlm/">LinkedIn</a></li>
+			<li><a id="footer_github" href="https://github.com/ncbi">GitHub</a></li>
+		</ul>
+		<ul class="ncbi-inline-list icon-list icon-list-elastic">
+			<li class="li-blog"><a id="footer_blog" href="https://ncbiinsights.ncbi.nlm.nih.gov/">Blog</a></li>
+			<li class="li-support"><a id="footer_support" href="https://support.ncbi.nlm.nih.gov/">Support Center</a></li>
+		</ul>
+		</div>
+		</div>
+  </div>
+  <div class="usa-footer-secondary_section ncbi-section">
+    <div class="usa-grid">
+      <div class="usa-width-one-half ncbi">
+        <h3 class="ncbi-full-name">National Center for Biotechnology Information</h3>
+		<address>
+        <a id="google_maps" href="https://www.google.com/maps/place/8600+Rockville+Pike,+Bethesda,+MD+20894/@38.9959508,-77.101021,17z/data=!3m1!4b1!4m5!3m4!1s0x89b7c95e25765ddb:0x19156f88b27635b8!8m2!3d38.9959508!4d-77.0988323">
+        <span class="h-adr"> <span class="p-street-address break">8600 Rockville Pike</span>
+        <span class="p-locality">Bethesda</span>, <span class="p-region"> MD</span>  <span class="p-postal-code">20894</span> <span class="p-country-name usa-sr-only">USA</span> </span>
+		</a>
+		</address>
+        <ul class="ncbi-inline-list">
+			<li><a id="footer_about" href="https://www.ncbi.nlm.nih.gov/home/about/">About us</a></li>
+          <li><a id="footer_contact" href="https://www.ncbi.nlm.nih.gov/home/about/contact.shtml">Contact us</a></li>
+          <li><a id="footer_policies" href="https://www.ncbi.nlm.nih.gov/home/about/policies.shtml">Policies</a></li>
+          <li><a id="footer_foia" href="https://www.nih.gov/institutes-nih/nih-office-director/office-communications-public-liaison/freedom-information-act-office">FOIA</a></li>
+        </ul>
+      </div>
+      <div class="usa-width-one-half">
+      <div class="usa-grid-full">
+		<div class="usa-width-one-third">
+		<h4>Popular</h4>
+
+        <ul class="ncbi-unstyled-list">
+				<li><a id="footer_pubmed" href="https://www.ncbi.nlm.nih.gov/pubmed/">PubMed</a></li>
+				<li><a id="footer_pmc" href="https://www.ncbi.nlm.nih.gov/pmc/">PubMed Central</a></li>
+				<li><a id="footer_bookshelf" href="https://www.ncbi.nlm.nih.gov/books/">Bookshelf</a></li>
+				<li><a id="footer_pubchem" href="https://pubchem.ncbi.nlm.nih.gov/">PubChem</a></li>
+				<li><a id="footer_gene" href="https://www.ncbi.nlm.nih.gov/gene/">Gene</a></li>
+				<li><a id="footer_blast" href="https://blast.ncbi.nlm.nih.gov/">BLAST</a></li>
+				<li><a id="footer_nucleotide" href="https://www.ncbi.nlm.nih.gov/nucleotide/">Nucleotide</a></li>
+				<li><a id="footer_protein" href="https://www.ncbi.nlm.nih.gov/protein/">Protein</a></li>
+				<li><a id="footer_geo" href="https://www.ncbi.nlm.nih.gov/geo/">GEO</a></li>
+        </ul>
+
+			</div>
+		<div class="usa-width-one-third">
+			<h4>Resources</h4>
+			<ul class="ncbi-unstyled-list ncbi-undecorated-links">
+				  <li><a id="footer_literature" href="https://www.ncbi.nlm.nih.gov/home/literature/">Literature</a></li>
+				  <li><a id="footer_health" href="https://www.ncbi.nlm.nih.gov/home/health/">Health</a></li>
+				  <li><a id="footer_genomes" href="https://www.ncbi.nlm.nih.gov/home/genomes/">Genomes</a></li>
+				  <li><a id="footer_genes" href="https://www.ncbi.nlm.nih.gov/home/genes/">Genes</a></li>
+				  <li><a id="footer_proteins" href="https://www.ncbi.nlm.nih.gov/home/proteins/">Proteins</a></li>
+				  <li><a id="footer_chemicals" href="https://www.ncbi.nlm.nih.gov/home/chemicals/">Chemicals</a></li>
+			</ul>
+		</div>
+		<div class="usa-width-one-third">
+   <h4>Actions</h4>
+   <ul class="ncbi-unstyled-list">
+              <li><a id="footer_submit" href="https://www.ncbi.nlm.nih.gov/home/submit/">Submit</a></li>
+              <li><a id="footer_download" href="https://www.ncbi.nlm.nih.gov/home/download/">Download</a></li>
+              <li><a id="footer_learn" href="https://www.ncbi.nlm.nih.gov/home/learn/">Learn</a></li>
+              <li><a id="footer_develop" href="https://www.ncbi.nlm.nih.gov/home/develop/">Develop</a></li>
+              <li><a id="footer_analyze" href="https://www.ncbi.nlm.nih.gov/home/analyze/">Analyze</a></li>
+              <li><a id="footer_research" href="https://www.ncbi.nlm.nih.gov/research/">Research</a></li>
+   </ul>
+		  </div>
+		  </div>
+		  </div>
+    </div>
+	</div>
+     <div class="usa-footer-secondary_section gov-agencies">
+    <div class="usa-grid">
+    <div class="usa-width-one-whole">
+		<p>
+			<a id="footer_nlm" href="https://www.nlm.nih.gov/">NLM</a>
+			 | 
+			<a id="footer_nih" href="https://www.nih.gov/">NIH</a>
+			 | 
+			<a id="footer_hhs" href="https://www.hhs.gov/">HHS</a>
+			 | 
+			<a id="footer_usagov" href="https://www.usa.gov/">USA.gov</a>
+		</p>
+	 </div>
+	 </div>
+	</div>
+
+ </footer>
+ <!-- ========== END FOOTER ========== -->
+  <!-- javascript to inject NWDS meta tags. Note: value of nwds_version is updated by "npm version" command -->
+  <script type="text/javascript">
+    var nwds_version = "0.15.10";
+
+    var meta_nwds_ver = document.createElement('meta');
+    meta_nwds_ver.name = 'ncbi_nwds_ver';
+    meta_nwds_ver.content = nwds_version;
+    document.getElementsByTagName('head')[0].appendChild(meta_nwds_ver);
+
+    var meta_nwds = document.createElement('meta');
+    meta_nwds.name = 'ncbi_nwds';
+    meta_nwds.content = 'yes';
+    document.getElementsByTagName('head')[0].appendChild(meta_nwds);
+
+	var alertsUrl = "/core/alerts/alerts.js";
+	if (typeof ncbiBaseUrl !== 'undefined') {
+		alertsUrl = ncbiBaseUrl + alertsUrl;
+	}
+  </script>
+
+
+
+  
+  
+    <!-- JavaScript -->
+    
+    <script src="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/uswds.js"></script>
+    
+  
+  
+    <script src="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/jquery-3.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous">
+    </script>
+    <script>
+        var fallbackJquery = "/pathogens/static/base/js/jquery-3.5.0.min.js";
+        window.jQuery || document.write("<script src=" + fallbackJquery + ">\x3C/script>")
+    </script>
+  
+
+  
+    <script src="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/nwds.js" type="text/javascript"> </script>
+    <script src="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/header.js" type="text/javascript"> </script>
+    <script src="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/ncbipopup.js" type="text/javascript"> </script>
+    <script src="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/ncbiclearbutton.js" type="text/javascript"> </script>
+    <script src="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/override-uswds.js" type="text/javascript"> </script>
+    <script src="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/ncbifeedback.js" type="text/javascript"> </script>
+  
+
+  
+  <script type="text/javascript" src="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/pinger.js"> </script><div id="ZN_dikYWqsjiUWN0Q5"></div>
+
+
+
+  <script type="text/javascript" src="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/page-search.js" charset="utf-8"></script>
+  
+
+  
+
+
+<div class="ptg-mask"><span class="ptg-close"></span></div><script type="text/javascript" src="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/a"></script><script src="AMRFinderPlus%20-%20Pathogen%20Detection%20-%20NCBI_files/CoreModule.js" defer="defer"></script></body></html>

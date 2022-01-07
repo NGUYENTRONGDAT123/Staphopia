@@ -1,0 +1,40 @@
+#breadcrumbs {
+    margin: 1em 0;
+}
+
+#breadcrumbs > li {
+    display: inline-block;
+    margin-right: 1rem;
+}
+
+#breadcrumbs a:visited {
+    color: #0071bc;
+}
+
+
+#breadcrumbs > li.js-hide {
+    display: none;
+}
+
+#breadcrumbs > li::after,
+#breadcrumbs li::after {
+    content:'\3E';
+    margin-left: 1rem;
+    display: inline-block;
+    color: #0071bc;
+}
+
+#breadcrumbs > li:last-child,
+#breadcrumbs > li:last-child > a {
+    color: #5b616b;
+}
+
+#breadcrumbs > li:last-child > a:hover {
+    color: #5b616b;
+    text-decoration: none;
+    cursor: default;
+}
+
+#breadcrumbs > li:last-child::after {
+    display: none;
+}
